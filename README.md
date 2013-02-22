@@ -1,4 +1,4 @@
 haxelib
 =======
 
-for Haxe
+licence: MIT

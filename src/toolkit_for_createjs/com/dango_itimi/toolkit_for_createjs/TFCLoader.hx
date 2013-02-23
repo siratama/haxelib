@@ -16,7 +16,7 @@ class TFCLoader {
 	private var templateHtmlLoader:TemplateHtmlLoader;
 	private var templateHtmlParser:TemplateHtmlParser;
 	private var materialLoader:MaterialLoader;
-
+	
 	public function new(
 		baseDirectoryName:String, 
 		?baseSoundsDirectoryName:String = "",

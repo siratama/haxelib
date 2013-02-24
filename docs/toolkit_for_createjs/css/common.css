@@ -1,0 +1,61 @@
+* { 
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	width: 100%;
+	
+	/* for yui */
+	font: 13px arial,helvetica,"ＭＳ　Ｐゴシック",clean,sans-serif;
+	*font-size: small;
+	*font: x-small;
+	background-color: #555555;
+}
+table {
+	/* for yui */
+	font-size: inherit;
+	font: 100%;
+}
+
+#container{
+	
+	position: relative;
+	margin: 20px auto;
+	width: 800px;
+    padding: 30px 20px 20px 20px;
+    border-radius: 5px;
+	background-color: #ffffff;
+}
+#contents{
+	/*
+	 * for ie6
+	 */
+	width: 100%;
+}
+
+.clear_both{
+	clear: both;
+}
+a{
+	text-decoration: none;
+	color: #554444;
+}
+a:visited{
+    color: #554444;
+}
+a:hover{
+    color: #992222;
+}
+
+a img{
+	border-style: none;
+}
+
+/*
+ *
+ */
+#header{
+}
+#footer{
+}

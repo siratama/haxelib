@@ -148,6 +148,8 @@ Main.prototype = {
 		com.dango_itimi.toolkit_for_createjs.SoundPlayer.initialize();
 		this.player = new shooting.player.Player();
 		this.player.addChildToLayer(this.stage);
+		shooting.se.SoundMixer.initialize();
+		shooting.se.SoundMixer.playForBgm();
 		this.mainFunction = $bind(this,this.runForGameScene);
 	}
 	,loadTFC: function() {
@@ -801,15 +803,21 @@ com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariab
 	return 0;
 }
 com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifest = function(lineSet,checkedFirstLineNum,checkedEndLineNum) {
-	var list = ["["];
+	var list = [];
 	var _g1 = checkedFirstLineNum, _g = lineSet.length;
 	while(_g1 < _g) {
 		var i = _g1++;
 		if(i == checkedEndLineNum) break;
-		list.push(lineSet[i]);
+		var line = lineSet[i];
+		var arr = line.split("\"");
+		var src = arr[1];
+		var id = arr[3];
+		var data = { };
+		data.src = src;
+		data.id = id;
+		list.push(data);
 	}
-	list.push("]");
-	return eval(list.join(""));
+	return list;
 }
 com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.addUri = function(manifest,materialDirectoryName) {
 	var materialDirectory = com.dango_itimi.toolkit_for_createjs.MaterialURI.getMaterialDirectory(materialDirectoryName);
@@ -824,6 +832,13 @@ com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.addUri = function
 		}
 	}
 }
+if(!com.dango_itimi.toolkit_for_createjs.utils) com.dango_itimi.toolkit_for_createjs.utils = {}
+com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil = $hxClasses["com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil"] = function() { }
+com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.__name__ = ["com","dango_itimi","toolkit_for_createjs","utils","ContainerUtil"];
+com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getNominalBounds = function(container) {
+	var rect = container.nominalBounds;
+	return com.dango_itimi.utils.RectangleUtil.convert(rect);
+}
 if(!com.dango_itimi.utils) com.dango_itimi.utils = {}
 com.dango_itimi.utils.ClassUtil = $hxClasses["com.dango_itimi.utils.ClassUtil"] = function() { }
 com.dango_itimi.utils.ClassUtil.__name__ = ["com","dango_itimi","utils","ClassUtil"];
@@ -836,6 +851,51 @@ com.dango_itimi.utils.ClassUtil.getPackageNamesWithClass = function(cls) {
 	var packageNames = className.split(".");
 	packageNames.pop();
 	return packageNames;
+}
+com.dango_itimi.utils.RectangleUtil = $hxClasses["com.dango_itimi.utils.RectangleUtil"] = function(x,y,width,height) {
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+	this.right = x + width;
+	this.bottom = y + height;
+};
+com.dango_itimi.utils.RectangleUtil.__name__ = ["com","dango_itimi","utils","RectangleUtil"];
+com.dango_itimi.utils.RectangleUtil.convert = function(rect) {
+	return new com.dango_itimi.utils.RectangleUtil(rect.x,rect.y,rect.width,rect.height);
+}
+com.dango_itimi.utils.RectangleUtil.prototype = {
+	hitTestObject: function(checkedRectangle) {
+		if(this.x > checkedRectangle.right) return false;
+		if(this.right < checkedRectangle.x) return false;
+		if(this.y > checkedRectangle.bottom) return false;
+		if(this.bottom < checkedRectangle.y) return false;
+		return true;
+	}
+	,hitTestPoint: function(nx,ny) {
+		return this.x <= nx && this.y <= ny && this.right >= nx && this.bottom >= ny;
+	}
+	,addY: function(addedY) {
+		this.y += addedY;
+		this.bottom += addedY;
+	}
+	,addX: function(addedX) {
+		this.x += addedX;
+		this.right += addedX;
+	}
+	,toString: function() {
+		return "w:" + this.width + ", h:" + this.height + ", x:" + this.x + ", y:" + this.y;
+	}
+	,clone: function() {
+		return new com.dango_itimi.utils.RectangleUtil(this.x,this.y,this.width,this.height);
+	}
+	,right: null
+	,bottom: null
+	,y: null
+	,x: null
+	,width: null
+	,height: null
+	,__class__: com.dango_itimi.utils.RectangleUtil
 }
 var js = js || {}
 js.Boot = $hxClasses["js.Boot"] = function() { }
@@ -995,7 +1055,7 @@ shooting.player.Player = $hxClasses["shooting.player.Player"] = function() {
 	this.view = com.dango_itimi.toolkit_for_createjs.Instance.createWithSamePackageInstance("View",this);
 	this.view.x = 52;
 	this.view.y = 195;
-	this.mainFunction = $bind(this,this.run);
+	this.nominalBounds = com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getNominalBounds(this.view);
 };
 shooting.player.Player.__name__ = ["shooting","player","Player"];
 shooting.player.Player.prototype = {
@@ -1005,9 +1065,26 @@ shooting.player.Player.prototype = {
 	,addChildToLayer: function(layer) {
 		layer.addChild(this.view);
 	}
+	,nominalBounds: null
 	,view: null
-	,mainFunction: null
 	,__class__: shooting.player.Player
+}
+if(!shooting.se) shooting.se = {}
+shooting.se.SoundMixer = $hxClasses["shooting.se.SoundMixer"] = function() { }
+shooting.se.SoundMixer.__name__ = ["shooting","se","SoundMixer"];
+shooting.se.SoundMixer.SOUND_PACKAGE = null;
+shooting.se.SoundMixer.initialize = function() {
+	shooting.se.SoundMixer.SOUND_PACKAGE = com.dango_itimi.utils.ClassUtil.getPackageNamesWithClass(shooting.se.SoundMixer).join("");
+}
+shooting.se.SoundMixer.play = function(soundClassName,volume,delay,offset,loop) {
+	if(loop == null) loop = 0;
+	if(offset == null) offset = 0;
+	if(delay == null) delay = 0;
+	if(volume == null) volume = 1;
+	com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap().play(shooting.se.SoundMixer.SOUND_PACKAGE + soundClassName,createjs.Sound.INTERRUPT_EARLY,delay,offset,loop,volume);
+}
+shooting.se.SoundMixer.playForBgm = function() {
+	shooting.se.SoundMixer.play("Bgm",1,0,0,-1);
 }
 var $_;
 function $bind(o,m) { var f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; return f; };
@@ -1056,5 +1133,6 @@ com.dango_itimi.toolkit_for_createjs.Instance.NAMESPACE_SYMBOL = "lib";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_HTML = ".html";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_MP3 = ".mp3";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_OGG = ".ogg";
+com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.QUOTATION = "\"";
 js.Lib.onerror = null;
 Main.main();

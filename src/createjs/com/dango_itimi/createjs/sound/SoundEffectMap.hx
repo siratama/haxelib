@@ -13,7 +13,7 @@ class SoundEffectMap {
 	}
 	public function play(
 		soundId:String, interrupt:String, ?delay:Int = 0, ?offset:Int = 0, ?loop:Int = 0, ?volume:Float = 1, ?pan:Float = 0){
-			
+
 		var soundInstance:SoundInstance = map.get(soundId);
 		if(soundInstance == null){
 			

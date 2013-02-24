@@ -762,15 +762,21 @@ com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariab
 	return 0;
 }
 com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifest = function(lineSet,checkedFirstLineNum,checkedEndLineNum) {
-	var list = ["["];
+	var list = [];
 	var _g1 = checkedFirstLineNum, _g = lineSet.length;
 	while(_g1 < _g) {
 		var i = _g1++;
 		if(i == checkedEndLineNum) break;
-		list.push(lineSet[i]);
+		var line = lineSet[i];
+		var arr = line.split("\"");
+		var src = arr[1];
+		var id = arr[3];
+		var data = { };
+		data.src = src;
+		data.id = id;
+		list.push(data);
 	}
-	list.push("]");
-	return eval(list.join(""));
+	return list;
 }
 com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.addUri = function(manifest,materialDirectoryName) {
 	var materialDirectory = com.dango_itimi.toolkit_for_createjs.MaterialURI.getMaterialDirectory(materialDirectoryName);
@@ -1049,5 +1055,6 @@ com.dango_itimi.toolkit_for_createjs.Instance.NAMESPACE_SYMBOL = "lib";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_HTML = ".html";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_MP3 = ".mp3";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_OGG = ".ogg";
+com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.QUOTATION = "\"";
 js.Lib.onerror = null;
 TFCLib.main();

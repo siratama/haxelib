@@ -1,5 +1,6 @@
 package;
 
+import shooting.se.SoundMixer;
 import shooting.player.Player;
 import createjs.easeljs.Stage;
 import createjs.easeljs.Ticker;
@@ -55,6 +56,9 @@ class Main {
 
 		player = new Player();
 		player.addChildToLayer(stage);
+
+		SoundMixer.initialize();
+		SoundMixer.playForBgm();
 
 		mainFunction = runForGameScene;
 	}

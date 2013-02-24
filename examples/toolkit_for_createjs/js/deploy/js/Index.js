@@ -35,14 +35,62 @@ Index.prototype.initializeToPlay = function(){
 
     com.dango_itimi.toolkit_for_createjs.SoundPlayer.initialize();
 
-    this.playerView = new lib.shootingplayerView();
-    this.playerView.setTransform(52,195);
-    this.stage.addChild(this.playerView);
+    this.player = new Player();
+    this.player.addChildToLayer(this.stage);
+
+    SoundMixer.initialize();
+    SoundMixer.playForBgm();
 
     this.mainFunction = this.play;
 };
 Index.prototype.play = function(){
 
-    this.playerView.x += 1;
+    this.player.run();
     this.stage.update();
 };
+
+/**
+ *
+ */
+function Player(){
+
+    this.init.apply(this, arguments);
+}
+Player.prototype.init = function(){
+
+    this.view = new lib.shootingplayerView();
+    this.view.x = 52;
+    this.view.y = 195;
+
+    this.nominalBounds = com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getNominalBounds(this.view);
+    //console.log(this.nominalBounds);
+};
+Player.prototype.addChildToLayer = function(layer){
+
+    layer.addChild(this.view);
+};
+Player.prototype.run = function(){
+
+    this.view.x += 1;
+};
+
+/**
+ *
+ */
+function SoundMixer(){
+}
+SoundMixer.initialize = function(){
+
+    SoundMixer.SOUND_PACKAGE = ["shooting", "se"].join("");
+};
+SoundMixer.play = function(soundClassName, volume, delay, offset, loop){
+
+    com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap().play(
+        SoundMixer.SOUND_PACKAGE + soundClassName,
+        createjs.Sound.INTERRUPT_EARLY, delay, offset, loop, volume
+    );
+};
+SoundMixer.playForBgm = function(){
+    SoundMixer.play("Bgm", 1, 0, 0, -1);
+};
+

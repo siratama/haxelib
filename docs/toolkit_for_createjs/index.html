@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+	<head>
+		<title>TFCLib Doc</title>
+
+		<meta charset="utf-8"/>
+
+        <link rel="stylesheet" type="text/css" href="http://yui.yahooapis.com/3.4.1/build/cssfonts/fonts-min.css" />
+        <link rel="stylesheet" type="text/css" href="css/common.css" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+	</head>
+
+	<body>
+		<div id="container">
+			<div id="header"></div>
+			<div id="contents">
+                <h1>
+                    TFCLib
+                </h1>
+                <div>
+                    <p>
+                        TFCLib は、Toolkit For CreateJS のパブリッシュデータを
+                        スクリプトから利用しやすくするためのライブラリです。
+                    </p>
+                    <p>
+                        Haxe 用ライブラリの他、javascript から直接利用可能なライブラリファイルも用意しています。
+                        よって、Haxe 以外の javascript 変換言語からも利用が可能です。
+                    </p>
+                </div>
+                <div>
+                    <h2>MENU</h2>
+                    <ul class="menu">
+                        <li><a href="#a1">特徴</a></li>
+                        <li><a href="#a2">利用例 概略</a></li>
+                        <li><a href="#a3">利用手順 javascript 編</a></li>
+                        <li><a href="#a4">利用手順 Haxe 編</a></li>
+                        <li><a href="#a5">TIPS</a></li>
+                        <li><a href="#a6">TFCLib を用いて作成したサンプルシューティングゲーム</a></li>
+                        <li><a href="#a7">注意事項</a></li>
+                    </ul>
+                </div>
+                <a name="a1"></a>
+                <div>
+                    <h2>特徴</h2>
+                    <p>TFCLib を用いることにより以下の改善が行われます。</p>
+                    <ul>
+                        <li>パブリッシュデータ読み込みの自動化</li>
+                        <li>ogg 形式のサウンドファイル手動配置に対応</li>
+                        <li>サウンドファイル手動配置ディレクトリを任意に設定可能</li>
+                        <li>タイムライン上に配置したサウンド含む サウンドファイルの再生における SoundInstance の再利用化</li>
+                        <li>fla ファイル分割化対応</li>
+                    </ul>
+                </div>
+                <a name="a2"></a>
+                <div>
+                    <h2>利用例 概略</h2>
+                    <p>
+                        TFCLib は簡単なスクリプト記述で利用が可能です。
+                        例えば Haxe からは以下のような記述で
+                        Toolkit for CreateJS からパブリッシュされた素材の読み込みが完了します。
+                    </p>
+<pre><code>private function initialize(){
+
+    Ticker.setFPS(24);
+    Ticker.addEventListener("tick", run);
+
+    initializeToLoadTFC();
+}
+private function run(){
+
+    mainFunction();
+}
+private function initializeToLoadTFC(){
+
+    tfcLoader = new TFCLoader("tfc", "tfc_sounds", true);
+    tfcLoader.addMaterialDirectory("view");
+    mainFunction = loadTFC;
+}
+private function loadTFC(){
+
+    tfcLoader.run();
+    if(tfcLoader.isFinished()){
+        //読み込み完了
+    }
+}</code></pre>
+                    <p>
+                        TFCLoader クラスコンストラクタ引数に
+                        Toolkit for CreateJS のパブリッシュ先ディレクトリ等 指定した後、
+                        TFCLoader.run メソッドを定期的に呼び出します。
+                        TFCLoader.isFinished メソッドが true を返せば読み込み処理は完了です。
+                    </p>
+                </div>
+                <div class="to_top"><a href="#">▲ TOP へ</a></div>
+
+                <a name="a3"></a>
+                <div>
+                    <h2>利用手順 javascript 編</h2>
+
+                    <p>
+                        TFCLib の本体となる javascript ファイルは
+                        build/toolkit_for_createjs/tfclib.js に配置しています。このファイルをコピーしてご利用ください。
+                    </p>
+                    <p>
+                        利用例ファイル一式は examples/toolkit_for_createjs/js/ ディレクトリに配置しています。
+                        以下、この利用例ファイル一式を元に利用手順を記述します。
+                    </p>
+
+                    <div>
+                        <h3>fla ファイル作成</h3>
+
+                        <p>
+                            素材をひとまとめにした fla/view.fla を作成します。
+                            view.fla 内の各素材データには スクリプトから制御できるよう名前付け(リンケージ設定)を行います。
+                        </p>
+                        <p>
+                            fla/view.fla 内では以下のリンケージ設定を行なっています。
+                        </p>
+
+                        <ul>
+                            <li>shooting.player.View --- シューティングゲームの機体用クラス
+                            <li>shooting.se.Bgm --- バックグラウンドミュージック用クラス
+                            <li>shooting.se.Shot --- 弾発射音用クラス
+                        </ul>
+
+                        <p>
+                            shooting.se.Shot は shooting.player.View のタイムライン上に配置しており、
+                            shooting.player.View を再生する事で、発射音が自動的に再生されるようにしています。
+                        </p>
+                        <p>
+                            shooting.se.Bgm はスクリプトから任意のタイミングで再生する用のサウンドファイルです。
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3>Toolkit for CreateJS によるパブリッシュ</h3>
+
+                        <p>
+                            Flash CS6 の Toolkit for CreateJS ウインドウからパブリッシュを行います。
+                        </p>
+                        <p>
+                            Toolkit for CreateJS 1.1 ではパブリッシュ先の相対パス指定ができないため、
+                            サンプルの fla/view.fla のパブリッシュ先ディレクトリは
+                            TFCLib 制作者の制作環境のものとなってしまっています。
+                            fla/view.fla を利用する場合、
+                            パブリッシュ先は deploy/tfc/view/ ディレクトリとなるようにしてください。
+                        </p>
+                        <p>
+                            tfc というディレクトリ名は任意に変更可能です。
+                            view というディレクトリ名は fla ファイルと同じ名前にする必要があるため、変更不可です。
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3>サウンドファイルの手動配置</h3>
+
+                        <p>
+                            Toolkit for CreateJS 1.1 から出力されるサウンドファイルは mp3 のみとなります。
+                            あらゆるブラウザに対応するためには、mp3 形式の他 ogg 形式のサウンドファイルが必要です。
+                            また、Toolkit for CreateJS 1.1 から出力される mp3 ファイルは
+                            音量がとても大きくなってしまう場合があります。
+                        </p>
+                        <p>
+                            これら問題を避けるために、別途サウンド編集ソフトで mp3 と ogg ファイルを作成し、
+                            手動で任意のディレクトリに配置します。
+                        </p>
+                        <p>
+                            Toolkit for CreateJS から出力されたサウンドファイルは deploy/tfc/view/sounds/ ディレクトリ内の
+                            「shootingseBgm.mp3」「shootingseShot.mp3」という名前で配置されています。
+                            同じ名称の mp3 と ogg ファイルを作成後、
+                            deploy/tfc_sounds/view/sounds/ ディレクトリに配置してください。
+                            tfc_sounds というディレクトリ名は任意に変更可能です。
+                        </p>
+                        <p>
+                            サウンドファイル配置ディレクトリは以下のようになります。
+                        </p>
+<pre>
+├ tfc/
+│　└ view/
+│　　　└ sounds/
+│　　　　　├ shootingseBgm.mp3
+│　　　　　└ shootingseShot.mp3
+└ tfc_sounds/
+　　└ view/
+　　　　└ sounds/
+　　　　　　├ shootingseBgm.mp3
+　　　　　　├ shootingseBgm.ogg
+　　　　　　├ shootingseShot.mp3
+　　　　　　└ shootingseShot.ogg</pre>
+                        <p>
+                            tfc/ と同じディレクトリ構成にした後
+                            スクリプト側から指定する事により tfc_sounds/ 内のサウンドファイルが利用されるようになります。
+                        </p>
+                    </div>
+
+                    <div>
+                        <h3>表示用 index.html 作成</h3>
+
+                        <p>
+                            deploy/index.html を作成します。この deploy/index.html 内の canvas に
+                            Toolkit for CreateJS でパブリッシュした素材データの描画を行います。
+                        </p>
+                        <p>
+                            deploy/index.html head タグ内には CreateJS を利用するための script タグ記述を行います。
+                        </p>
+<pre><code>&lt;script src="http://code.createjs.com/easeljs-0.6.0.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://code.createjs.com/tweenjs-0.4.0.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://code.createjs.com/movieclip-0.6.0.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://code.createjs.com/preloadjs-0.3.0.min.js"&gt;&lt;/script&gt;
+&lt;script src="http://code.createjs.com/soundjs-0.4.0.min.js"&gt;&lt;/script&gt;</code></pre>
+                        <p>
+                            Toolkit for CreateJS でパブリッシュされた js ファイル deploy/tfc/view/view.js と、
+                            TFCLib 本体用ファイル deploy/js/tfclib.js を利用する旨の script タグの記述も行います。
+                        </p>
+<pre><code>&lt;script src="tfc/view/view.js"&gt;&lt;/script&gt;
+&lt;script src="js/tfclib.js"&gt;&lt;/script&gt;</code></pre>
+                        <p>
+                            更に 上記 js ファイル全てを利用し制御するための deploy/js/Index.js ファイルを新規で作成し、
+                            以下のようにして呼び出します。
+                        </p>
+                        <pre>
+<code>&lt;script src="js/Index.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    window.onload = function(){
+        new Index();
+    };
+&lt;/script&gt;</code></pre>
+                    </div>
+
+                    <div>
+                        <h3>Toolkit for CreateJS パブリッシュデータ読み込み</h3>
+
+                        <p>
+                            deploy/js/Index.js 内の Toolkit for CreateJS パブリッシュデータ読み込み設定箇所は
+                            以下のようになります。
+                        </p>
+                        <pre>
+<code>this.tfcLoader = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc", "tfc_sounds", true);
+this.tfcLoader.addMaterialDirectory("view");</code></pre>
+                        <p>
+                            TFCLoader クラスのコンストラクタ 引数の説明は以下となります。
+                        </p>
+
+                        <ul>
+                            <li>第一引数 --- Toolkit for CreateJS パブリッシュ先 ディレクトリ名</li>
+                            <li>第ニ引数 --- 手動サウンド配置ディレクトリ名</li>
+                            <li>第三引数 --- ogg 形式のサウンドファイルを利用するかどうか</li>
+                        </ul>
+
+                        <p>
+                            TFCLoader.addMaterialDirectory メソッドには パブリッシュ元の fla ファイル名を指定します。
+                        </p>
+                        <p>
+                            サウンドファイルを利用しない場合や、
+                            Tookit for CreateJS で出力されたサウンドファイルをそのまま利用する場合、
+                            以下のように第二・第三引数を省略します。
+                        </p>
+                        <pre>
+<code>this.tfcLoader = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc");</code></pre>
+                        <p>
+                            Tookit for CreateJS で出力されたサウンドファイルをそのまま利用し、
+                            Tookit for CreateJS で出力されたサウンドファイル と同じディレクトリに ogg ファイル配置する場合、
+                            以下の様な記述を行います。
+                        </p>
+                        <pre>
+<code>this.tfcLoader = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc", "", true);</code></pre>
+                        <p>
+                            読み込み設定完了後、TFCLoader.run メソッドを定期的に呼び出し、
+                            TFCLoader.isFinished メソッドが true を返すと読み込みが完了した事になります。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>タイムライン(フレーム)に配置したサウンドファイルの再生有効化</h3>
+
+                        <p>
+                            パブリッシュデータ読み込み完了後、以下の記述を行うことで、
+                            タイムラインに配置したサウンドファイルの再生の有効化が行われます。
+                            サンプルファイルでは、shooting.se.Shot の再生が有効化されます。
+                        </p>
+                        <pre>
+<code>com.dango_itimi.toolkit_for_createjs.SoundPlayer.initialize();</code></pre>
+                        <p>
+                            有効化されるだけであり、まだこの段階で音が再生されるわけではありません。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>MovieClip 生成とタイムラインサウンドの再生</h3>
+
+                        <p>
+                            deploy/js/Index.js 内 Player クラスにて、
+                            fla ファイルで設定した shooting.player.View クラスに対する
+                            MovieClip (lib.shootingplayerView) の生成を行なっています。
+                            この MovieClip を再生すると、
+                            タイムラインに配置したサウンドファイル shooting.se.Shot の再生も行われます。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>任意のタイミングでのサウンド再生</h3>
+                        <p>
+                            deploy/js/Index.js 内 SoundMixer クラスにて、
+                            fla ファイルで設定した shooting.se.Bgm の再生を行なっています。
+                        </p>
+                        <p>
+                            SoundPlayer.getSoundEffectMap().play メソッド経由でサウンドを再生する事により、
+                            SoundJS の Sound.play メソッドから生成される SoundInstance の
+                            再利用化が自動的になされる仕組みになっています。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>サウンド追加</h3>
+                        <p>
+                            Bgm の他、例えば fla/view.fla ファイル内に Test というサウンドファイルを追加した場合、
+                            SoundMixer クラス内に以下の playForTest メソッドを追加します。
+                        <p>
+                        <pre>
+<code>SoundMixer.playForTest = function(){
+    SoundMixer.play("Test");
+};</code></pre>
+                    </div>
+                    <p>
+                        以上で、javascript による利用手順の説明は完了です。
+                    </p>
+                </div>
+                <div class="to_top"><a href="#">▲ TOP へ</a></div>
+
+                <a name="a4"></a>
+                <div>
+                    <h2>利用手順 Haxe 編</h2>
+
+                    <p>
+                        javascript 編と流れや内容はほぼ同じなので、異なる点のみ記述します。
+                    </p>
+
+                    <p>
+                        利用例ファイル一式は examples/toolkit_for_createjs/haxe/ ディレクトリに配置しています。
+                    </p>
+                    <p>
+                        TFCLib Haxe 用ライブラリファイルと、その他 ライブラリファイルは src/ ディレクトリにあります。
+                        「src/core/」「src/createjs/」「src/toolkit_for_createjs/」各ディレクトリに
+                        クラスパスを通してご利用ください。
+                    </p>
+
+                    <div>
+                        <h3>fla ファイル作成</h3>
+                        <p>javascript 編と同じにつき略</p>
+                    </div>
+                    <div>
+                        <h3>Toolkit for CreateJS によるパブリッシュ</h3>
+                        <p>javascript 編と同じにつき略</p>
+                    </div>
+                    <div>
+                        <h3>サウンドファイルの手動配置</h3>
+                        <p>javascript 編と同じにつき略</p>
+                    </div>
+                    <div>
+                        <h3>表示用 index.html 作成</h3>
+
+                        <p>
+                            内容は javascript 編とほぼ同じです。
+                        </p>
+                        <p>
+                            Haxe 編では js/tfclib.js の利用は行わず、js/Index.js の作成も行いません。
+                            代わりに examples/toolkit_for_createjs/haxe/src/ ディレクトリ内に
+                            全ての処理を行う Main.hx クラスを作成し、
+                            Main.hx クラスのコンパイルにより生成される js/App.js ファイルを呼び出す記述を行います。
+                        </p>
+<pre>
+<code>&lt;script src="js/App.js"&gt;&lt;/script&gt;</code>
+</pre>
+                    </div>
+                    <div>
+                        <h3>Toolkit for CreateJS パブリッシュデータ読み込み</h3>
+                        <p>
+                            examples/toolkit_for_createjs/haxe/src/Main.hx 内に、全ての制御を行う処理を記述しています。
+                            書き方が異なるだけで内容は javascript 編の Index.js の内容とほぼ同じです。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>タイムライン(フレーム)に配置したサウンドファイルの再生有効化</h3>
+                        <p>javascript 編と同じにつき略</p>
+                    </div>
+                    <div>
+                        <h3>MovieClip 生成とタイムラインサウンドの再生</h3>
+                        <p>
+                            Player クラスを shooting.player パッケージに配置し、
+                            Instance.createWithSamePackageInstance メソッドを利用する事で、
+                            fla ファイルで設定した同一パッケージ shooting.player.View の生成を行なっています。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>任意のタイミングでのサウンド再生</h3>
+                        <p>
+                            SoundMixer クラスを shooting.se パッケージに配置し、
+                            ClassUtil.getPackageNamesWithClass メソッドを利用する事で、
+                            サウンド配置パッケージの指定を行なっています。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>サウンド追加</h3>
+                        <p>javascript 編と同じにつき略</p>
+                    </div>
+                    <p>
+                        以上で、Haxe による利用手順の説明は完了です。
+                    </p>
+                </div>
+                <div class="to_top"><a href="#">▲ TOP へ</a></div>
+
+                <a name="a5"></a>
+                <div>
+                    <h2>TIPS</h2>
+
+                    <div>
+                        <h3>シンボルの初期表示サイズ・位置情報取得 nominalBounds</h3>
+                        <p>
+                            EaselJS の Container クラスには width や height プロパティは用意されていません。
+                            しかし Toolkit for CreateJS からパブリッシュされた javascript 内 MovieClip には
+                            Rectangle 型の nominalBounds プロパティというものが付与され、
+                            そこから width や height 値を取得する事が可能です。
+                        </p>
+                        <p>
+                            サンプルの Player クラス内コンストラクタでは
+                            nominalBounds を取得変換(com.dango_itimi.utils.RectangleUtil 型に変換) し
+                            フィールド値として設定しています。
+                        </p>
+                    </div>
+                    <div>
+                        <h3>fla ファイル分割</h3>
+
+                        <p>
+                            プロジェクトの規模が大きくなると fla ファイルを複数に分割して作成する事があります。
+                            サンプルの view.fla 以外に test.fla というものを作成した場合、
+                            パブリッシュ先ディレクトリは以下の様な構成にします。
+                        </p>
+<pre>
+├ tfc/
+│　├ view/
+│　└ test/
+│　
+└ tfc_sounds/
+　　├ view/
+　　└ test/</pre>
+                        <p>
+                            スクリプト側は TFCLoader.addMaterialDirectory メソッドに test ディレクトリ指定を追加します。
+                        </p>
+<pre>
+<code>this.tfcLoader = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc", "tfc_sounds", true);
+this.tfcLoader.addMaterialDirectory("view");
+this.tfcLoader.addMaterialDirectory("test");</code></pre>
+                    </div>
+                    <div>
+                        <h3>分割読み込み</h3>
+
+                        <p>
+                            上記は view.fla と test.fla のパブリッシュ内容を一括して読み込みますが、
+                            分割してそれぞれ別々に読み込みたい場合は以下の様に記述します。
+                        </p>
+<pre>
+<code>this.tfcLoaderForView = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc", "tfc_sounds", true);
+this.tfcLoaderForView.addMaterialDirectory("view");
+
+this.tfcLoaderForTest = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc", "tfc_sounds", true);
+this.tfcLoaderForTest.addMaterialDirectory("test");</code></pre>
+                        <p>
+                            TFCLoader インスタンスを別々に生成し、
+                            それぞれ任意のタイミングで TFCLoader.run メソッドを実行すれば良しとなります。
+                        </p>
+                    </div>
+                </div>
+                <div class="to_top"><a href="#">▲ TOP へ</a></div>
+
+                <a name="a6"></a>
+                <div>
+                    <h2>TFCLib を用いて作成したサンプルシューティングゲーム</h2>
+
+                    <p>
+                        <a href="http://www.dango-itimi.com/html5/1/" target="_blank">http://www.dango-itimi.com/html5/1/</a>
+                    </p>
+                </div>
+
+                <a name="a7"></a>
+                <div>
+                    <h2>注意事項</h2>
+                    <p>
+                        TFCLib は MIT ライセンスです。
+                    </p>
+                    <p>TFCLib はそれぞれ以下のバージョンに対応しています。</p>
+                    <ul>
+                        <li>Toolkit for CreateJS 1.1</li>
+                        <li>EaselJS 0.6.0</li>
+                        <li>TweenJS 0.4.0</li>
+                        <li>SoundJS 0.4.0</li>
+                        <li>PreloadJS 0.3.0</li>
+                        <li>Haxe 2.10</li>
+                    </ul>
+                    <p>
+                        TFCLib は、
+                        Toolkit for CreateJS からパブリッシュされる 雛形 html の読み込みと解析を行う事で、
+                        パブリッシュデータ自動読み込み処理を実現しています。
+                    </p>
+                    <p>
+                        ファイル読み込みの制限上、ローカル環境上では TFCLib は動作しません。
+                        自身の PC に Apache を導入する、
+                        あるいはインターネット上にアップロードする等して動作確認をする必要があります。
+                    </p>
+                </div>
+                <div class="to_top"><a href="#">▲ TOP へ</a></div>
+
+            </div>
+			<div id="footer">
+            </div>
+		</div>
+    </body>
+</html>
+

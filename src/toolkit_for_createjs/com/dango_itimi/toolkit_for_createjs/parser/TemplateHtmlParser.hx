@@ -3,6 +3,8 @@ package com.dango_itimi.toolkit_for_createjs.parser;
 import js.Lib;
 
 class TemplateHtmlParser {
+
+	private static inline var QUOTATION:String = "\"";
 	
 	public static function execute(loadedHtml:String, materialDirectoryName:String):Array<Dynamic>{
 
@@ -38,16 +40,23 @@ class TemplateHtmlParser {
 		checkedEndLineNum:Int
 	):Array<Dynamic>{
 		
-		var list:Array<String> = ["["];
-		
+		var list:Array<Dynamic> = [];
+
 		for(i in checkedFirstLineNum...lineSet.length){
 			
 			if(i == checkedEndLineNum) break;
-			list.push(lineSet[i]);
+
+			var line:String = lineSet[i];
+			var arr = line.split(QUOTATION);
+			var src:String = arr[1];
+			var id:String = arr[3];
+			var data:Dynamic = {};
+			data.src = src;
+			data.id = id;
+			list.push(data);
 		}
-		list.push("]");
-		
-		return Lib.eval(list.join(""));
+
+		return list;
 	}
 	private static function addUri(manifest:Array<Dynamic>, materialDirectoryName:String){
 			

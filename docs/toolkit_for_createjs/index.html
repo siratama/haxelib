@@ -410,7 +410,7 @@ this.tfcLoader.addMaterialDirectory("view");</code></pre>
                     <h2>TIPS</h2>
 
                     <div>
-                        <h3>シンボルの初期表示サイズ・位置情報取得 nominalBounds</h3>
+                        <h3>シンボルの初期表示サイズ・位置情報取得: ContainerUtils.getNominalBounds メソッド</h3>
                         <p>
                             EaselJS の Container クラスには width や height プロパティは用意されていません。
                             しかし Toolkit for CreateJS からパブリッシュされた javascript 内 MovieClip には
@@ -423,6 +423,29 @@ this.tfcLoader.addMaterialDirectory("view");</code></pre>
                             フィールド値として設定しています。
                         </p>
                     </div>
+
+                    <div>
+                        <h3>Flash CS のステージ上に配置したインスタンスプロパティの取得: ContainerUtils.getProperty メソッド</h3>
+                        <p>
+                            Flash CS のステージ上に配置したインスタンスプロパティをスクリプトから取得する場合、
+                            com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil クラスの
+                            getProperty メソッドを利用します。
+                        </p>
+                        <p>
+                            例えば、 Flash CS 上で設定した
+                            shooting.player.View ムービークリップ内 test インスタンスプロパティを取得するには
+                            javascript の場合以下のように記述します。
+                        </p>
+<pre><code>var view = new lib.shootingplayerView();
+var testProperty = com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getProperty(view, "test");</code></pre>
+                        <p>
+                            詳細は以下の URL をご覧ください。
+                        </p>
+                        <p>
+                            <a href="http://www.dango-itimi.com/blog/archives/2013/001164.html">http://www.dango-itimi.com/blog/archives/2013/001164.html</a>
+                        </p>
+                    </div>
+
                     <div>
                         <h3>fla ファイル分割</h3>
 

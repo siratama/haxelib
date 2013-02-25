@@ -798,6 +798,21 @@ com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getNominalBounds = func
 	var rect = container.nominalBounds;
 	return com.dango_itimi.utils.RectangleUtil.convert(rect);
 }
+com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getProperty = function(container,propertyStr) {
+	var property = Reflect.field(container,propertyStr);
+	if(property != null) return property;
+	var fields = Reflect.fields(container);
+	var _g = 0;
+	while(_g < fields.length) {
+		var prop = fields[_g];
+		++_g;
+		if(prop.indexOf(propertyStr) == -1) continue;
+		var arr = prop.split("_");
+		var checkedStr = arr[arr.length - 1];
+		if(!Math.isNaN(checkedStr)) return Reflect.field(container,prop);
+	}
+	return null;
+}
 if(!com.dango_itimi.utils) com.dango_itimi.utils = {}
 com.dango_itimi.utils.ClassUtil = $hxClasses["com.dango_itimi.utils.ClassUtil"] = function() { }
 com.dango_itimi.utils.ClassUtil.__name__ = ["com","dango_itimi","utils","ClassUtil"];

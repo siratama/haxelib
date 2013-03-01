@@ -46,7 +46,6 @@ class TFCLoader {
 		templateHtmlLoader.run();
 		if(templateHtmlLoader.isFinished())
 			parseTemplateHtml();
-			//mainFunction = error;
 
 		else if(templateHtmlLoader.getLoader().isError())
 			mainFunction = error;

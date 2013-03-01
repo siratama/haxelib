@@ -66,7 +66,7 @@ class TemplateHtmlParser {
 		for(i in 0...manifest.length){
 			
 			var src:String = manifest[i].src;
-			
+
 			if(src.indexOf(MaterialURI.EXT_MP3) == -1){
 				
 				manifest[i].src = materialDirectory + src;

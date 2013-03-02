@@ -24,7 +24,7 @@ TFCLib を用いることにより以下の改善が行われます。
 * タイムライン上に配置したサウンド含む サウンドファイルの再生における SoundInstance の再利用化
 * fla ファイル分割化対応
 
-##利用例 概略<a name="a1"></a>
+##利用例 概略<a name="a2"></a>
 
 TFCLib は簡単なスクリプト記述で利用が可能です。 例えば Haxe からは以下のような記述で Toolkit for CreateJS からパブリッシュされた素材の読み込みが完了します。
 
@@ -52,7 +52,7 @@ TFCLoader クラスコンストラクタ引数に Toolkit for CreateJS のパブ
 
 [▲ TOPへ](#)
 
-##利用手順 javascript 編<a name="a2"></a>
+##利用手順 javascript 編<a name="a3"></a>
 
 TFCLib の本体となる javascript ファイルは build/toolkit\_for\_createjs/tfclib.js に配置しています。このファイルをコピーしてご利用ください。 
 
@@ -189,7 +189,7 @@ Bgm の他、例えば fla/view.fla ファイル内に Test というサウン�
 
 [▲ TOPへ](#)
 
-##利用手順 Haxe 編<a name="a3"></a>
+##利用手順 Haxe 編<a name="a4"></a>
 
 javascript 編と流れや内容はほぼ同じなので、異なる点のみ記述します。 
 
@@ -250,7 +250,7 @@ javascript 編と同じにつき略
 [▲ TOPへ](#)
 
 
-##TIPS<a name="a4"></a>
+##TIPS<a name="a5"></a>
 
 ###シンボルの初期表示サイズ・位置情報取得: ContainerUtils.getNominalBounds メソッド
 
@@ -303,11 +303,11 @@ TFCLoader インスタンスを別々に生成し、 それぞれ任意のタイ
 
 [▲ TOPへ](#)
 
-##TFCLib を用いて作成したサンプルシューティングゲーム<a name="a5"></a>
+##TFCLib を用いて作成したサンプルシューティングゲーム<a name="a6"></a>
 
 [http://www.dango-itimi.com/html5/1/](http://www.dango-itimi.com/html5/1/)
 
-##注意事項<a name="a6"></a>
+##注意事項<a name="a7"></a>
 
 TFCLib は MIT ライセンスです。 
 

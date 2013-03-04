@@ -252,13 +252,13 @@ javascript 編と同じにつき略
 
 ##TIPS<a name="a5"></a>
 
-###シンボルの初期表示サイズ・位置情報取得: ContainerUtils.getNominalBounds メソッド
+###シンボルの初期表示サイズ・位置情報取得: ContainerUtil.getNominalBounds メソッド
 
 EaselJS の Container クラスには width や height プロパティは用意されていません。 しかし Toolkit for CreateJS からパブリッシュされた javascript 内 MovieClip には Rectangle 型の nominalBounds プロパティというものが付与され、 そこから width や height 値を取得する事が可能です。 
 
 サンプルの Player クラス内コンストラクタでは nominalBounds を取得変換(com.dango_itimi.utils.RectangleUtil 型に変換) し フィールド値として設定しています。 
 
-###Flash CS のステージ上に配置したインスタンスプロパティの取得: ContainerUtils.getProperty メソッド
+###Flash CS のステージ上に配置したインスタンスプロパティの取得: ContainerUtil.getProperty メソッド
 
 Flash CS のステージ上に配置したインスタンスプロパティをスクリプトから取得する場合、 com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil クラスの getProperty メソッドを利用します。 
 

@@ -158,7 +158,7 @@ Main.prototype = {
 		debugDraw.setLineThickness(2);
 		debugDraw.setAlpha(1);
 		debugDraw.setFillAlpha(0);
-		debugDraw.setFlags(box2D.dynamics.B2DebugDraw.e_shapeBit | box2D.dynamics.B2DebugDraw.e_jointBit);
+		debugDraw.setFlags(box2D.dynamics.B2DebugDraw.e_shapeBit);
 		this.b2World.setDebugDraw(debugDraw);
 	}
 	,initializeTest: function() {

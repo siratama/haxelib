@@ -289,6 +289,8 @@ Flash CS のステージ上に配置したインスタンスプロパティを�
     this.tfcLoader.addMaterialDirectory("view");
     this.tfcLoader.addMaterialDirectory("test");
 
+ただし fla ファイルを分割すると、Javascript 名前空間の取り扱いが やや面倒になる難点が出てきますのでご注意ください。
+
 ###分割読み込み
 
 上記は view.fla と test.fla のパブリッシュ内容を一括して読み込みますが、 分割してそれぞれ別々に読み込みたい場合は以下の様に記述します。 

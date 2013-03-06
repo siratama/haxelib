@@ -2,34 +2,68 @@ package com.dango_itimi.toolkit_for_createjs;
 
 class MaterialURI {
 	
-	private static var baseDirectory:String;
-	private static var baseSoundsDirectory:String;
-	public static var usedSoundOgg:Bool;
+	private var baseDirectory:String;
+	private var baseSoundsDirectory:String;
+	private var usedSoundOgg:Bool;
 	
 	public static inline var EXT_HTML = ".html";
 	public static inline var EXT_MP3 = ".mp3";
 	public static inline var EXT_OGG = ".ogg";
 
-	public static function initialize(
-		baseDirectoryName:String, usedSoundOgg:Bool, baseSoundsDirectoryName:String){
+	public function new (
+		baseDirectoryName:String, ?baseSoundsDirectoryName:String = "", ?usedSoundOgg:Bool = false){
 			
-		MaterialURI.baseDirectory = baseDirectoryName + "/";
-		MaterialURI.usedSoundOgg = usedSoundOgg;
-		
-		MaterialURI.baseSoundsDirectory = 
+		this.baseDirectory = baseDirectoryName + "/";
+		this.baseSoundsDirectory =
 			(baseSoundsDirectoryName != "") ? baseSoundsDirectoryName + "/" : "";
+		this.usedSoundOgg = usedSoundOgg;
 	}
-	public static function getTemplateHtmlUri(materialDirectoryName:String){
+	public function getTemplateHtmlUri(materialDirectoryName:String){
 		
 		return baseDirectory + materialDirectoryName + "/" + materialDirectoryName + EXT_HTML;
 	}
-	public static function getMaterialDirectory(materialDirectoryName:String){
-		
-		return baseDirectory + materialDirectoryName + "/";
+	private function getMaterialDirectory(materialDirectoryName:String):String{
+
+		return  baseDirectory + materialDirectoryName + "/";
 	}
-	public static function getSoundsDirectory(materialDirectoryName:String){
-		
-		var soundDirectory = (baseSoundsDirectory == "") ? baseDirectory : baseSoundsDirectory;
-		return soundDirectory + materialDirectoryName + "/";
+	private function getSoundsDirectory(materialDirectoryName:String):String{
+
+		var soundsDirectory = (baseSoundsDirectory == "") ? baseDirectory : baseSoundsDirectory;
+		return soundsDirectory + materialDirectoryName + "/";
+	}
+	public function addUri(manifest:Array<Dynamic>, materialDirectoryName:String){
+
+		var materialDirectory:String =  getMaterialDirectory(materialDirectoryName);
+		var soundsDirectory = getSoundsDirectory(materialDirectoryName);
+
+		for(i in 0...manifest.length){
+			manifest[i].src = convertSrc(materialDirectory, soundsDirectory, manifest[i].src);
+		}
+	}
+	public function addUriToImgSrcMap(imgSrcMap:Dynamic, materialDirectoryName:String){
+
+		var materialDirectory:String =  getMaterialDirectory(materialDirectoryName);
+		var soundsDirectory = getSoundsDirectory(materialDirectoryName);
+
+		var fields = Reflect.fields(imgSrcMap);
+		for(propertyName in fields){
+			var src:String = convertSrc(materialDirectory, soundsDirectory, Reflect.field(imgSrcMap, propertyName));
+			Reflect.setField(imgSrcMap, propertyName, src);
+		}
+	}
+	private function convertSrc(materialDirectory:String, soundsDirectory:String, src:String){
+
+		if(src.indexOf(MaterialURI.EXT_MP3) == -1){
+
+			return materialDirectory + src;
+		}
+		else{
+
+			var oggSrc:String = (usedSoundOgg) ?
+				"|" + soundsDirectory + src.split(".")[0] + EXT_OGG :
+				"";
+
+			return soundsDirectory + src + oggSrc;
+		}
 	}
 }

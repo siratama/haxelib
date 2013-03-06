@@ -23,7 +23,6 @@ class Main {
 	private var stage:Stage;
 	private var b2World:B2World;
 	private var flashToBox2dConverter:FlashToBox2dConverter;
-	//private var flipper:View;
 
 	public static function main() {
 		new Main();

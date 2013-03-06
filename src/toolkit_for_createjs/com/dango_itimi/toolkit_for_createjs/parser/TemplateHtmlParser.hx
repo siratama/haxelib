@@ -6,7 +6,7 @@ class TemplateHtmlParser {
 
 	private static inline var QUOTATION:String = "\"";
 	
-	public static function execute(loadedHtml:String, materialDirectoryName:String):Array<Dynamic>{
+	public static function execute(loadedHtml:String):Array<Dynamic>{
 
 		var lineSet:Array<String> = loadedHtml.split("\n");
 		
@@ -14,7 +14,7 @@ class TemplateHtmlParser {
 		var checkedEndLineNum = getManifestVariablesEndLineNumber(lineSet, checkedFirstLineNum);
 		 
 		var manifest = getManifest(lineSet, checkedFirstLineNum, checkedEndLineNum);
-		addUri(manifest, materialDirectoryName);
+		//addUri(manifest, materialDirectoryName);
 		
 		return manifest;
 	}
@@ -58,6 +58,7 @@ class TemplateHtmlParser {
 
 		return list;
 	}
+	/*
 	private static function addUri(manifest:Array<Dynamic>, materialDirectoryName:String){
 			
 		var materialDirectory = MaterialURI.getMaterialDirectory(materialDirectoryName);
@@ -81,4 +82,5 @@ class TemplateHtmlParser {
 			}
 		}
 	}
+	*/
 }

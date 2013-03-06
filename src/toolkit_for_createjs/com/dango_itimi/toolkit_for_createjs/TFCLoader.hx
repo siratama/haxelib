@@ -22,7 +22,7 @@ class TFCLoader {
 		?baseSoundsDirectoryName:String = "",
 		?usedSoundOgg:Bool = false
 	){
-		MaterialURI.initialize(baseDirectoryName, usedSoundOgg, baseSoundsDirectoryName);
+		materialURI = new MaterialURI(baseDirectoryName, baseSoundsDirectoryName, usedSoundOgg);
 		materialDirectorySet = [];
 		
 		mainFunction = initializeToLoadTemplateHtml;
@@ -37,7 +37,7 @@ class TFCLoader {
 	}
 	private function initializeToLoadTemplateHtml(){
 
-		templateHtmlLoader = new TemplateHtmlLoader(materialDirectorySet);
+		templateHtmlLoader = new TemplateHtmlLoader(materialDirectorySet, materialURI);
 		templateHtmlLoader.load();
 		mainFunction = loadTemplateHtml;
 	}
@@ -58,12 +58,12 @@ class TFCLoader {
 		for(i in 0...materialDirectorySet.length){
 			
 			var materialDirectoryName = materialDirectorySet[i];
-			var templateHtmlUri = MaterialURI.getTemplateHtmlUri(materialDirectoryName);
+			var templateHtmlUri = materialURI.getTemplateHtmlUri(materialDirectoryName);
 			var loadedHtml = loader.getLoadQueue().getResult(templateHtmlUri);
 
-			manifest = manifest.concat(TemplateHtmlParser.execute(
-				loadedHtml, materialDirectoryName
-			));
+			var m:Array<Dynamic> = TemplateHtmlParser.execute(loadedHtml);
+			materialURI.addUri(m, materialDirectoryName);
+			manifest = manifest.concat(m);
 		}
 		initializeToLoadMaterial(manifest);
 	}

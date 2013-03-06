@@ -9,13 +9,13 @@ class TemplateHtmlLoader {
 	private var manifestItemSet:ManifestItemSet;
 	private var mainFunction:Dynamic;
 
-	public function new(materialDirectorySet:Array<String>){
+	public function new(materialDirectorySet:Array<String>, materialURI:MaterialURI){
 		
 		manifestItemSet = new ManifestItemSet();
 		
 		for(i in 0...materialDirectorySet.length){
 			manifestItemSet.add(
-				MaterialURI.getTemplateHtmlUri(materialDirectorySet[i])
+				materialURI.getTemplateHtmlUri(materialDirectorySet[i])
 			);
 		}
 		loader = new LoaderWithLoadQueue();

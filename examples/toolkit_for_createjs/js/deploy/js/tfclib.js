@@ -561,25 +561,56 @@ com.dango_itimi.toolkit_for_createjs.Instance.create = function(createdClassName
 	if(symbolNameSpace == null) symbolNameSpace = "lib";
 	return eval(["new ",symbolNameSpace,".",packageNames.join(""),createdClassName,"()"].join(""));
 }
-com.dango_itimi.toolkit_for_createjs.MaterialURI = $hxClasses["com.dango_itimi.toolkit_for_createjs.MaterialURI"] = function() { }
+com.dango_itimi.toolkit_for_createjs.MaterialURI = $hxClasses["com.dango_itimi.toolkit_for_createjs.MaterialURI"] = function(baseDirectoryName,baseSoundsDirectoryName,usedSoundOgg) {
+	if(usedSoundOgg == null) usedSoundOgg = false;
+	if(baseSoundsDirectoryName == null) baseSoundsDirectoryName = "";
+	this.baseDirectory = baseDirectoryName + "/";
+	this.baseSoundsDirectory = baseSoundsDirectoryName != ""?baseSoundsDirectoryName + "/":"";
+	this.usedSoundOgg = usedSoundOgg;
+};
 com.dango_itimi.toolkit_for_createjs.MaterialURI.__name__ = ["com","dango_itimi","toolkit_for_createjs","MaterialURI"];
-com.dango_itimi.toolkit_for_createjs.MaterialURI.baseDirectory = null;
-com.dango_itimi.toolkit_for_createjs.MaterialURI.baseSoundsDirectory = null;
-com.dango_itimi.toolkit_for_createjs.MaterialURI.usedSoundOgg = null;
-com.dango_itimi.toolkit_for_createjs.MaterialURI.initialize = function(baseDirectoryName,usedSoundOgg,baseSoundsDirectoryName) {
-	com.dango_itimi.toolkit_for_createjs.MaterialURI.baseDirectory = baseDirectoryName + "/";
-	com.dango_itimi.toolkit_for_createjs.MaterialURI.usedSoundOgg = usedSoundOgg;
-	com.dango_itimi.toolkit_for_createjs.MaterialURI.baseSoundsDirectory = baseSoundsDirectoryName != ""?baseSoundsDirectoryName + "/":"";
-}
-com.dango_itimi.toolkit_for_createjs.MaterialURI.getTemplateHtmlUri = function(materialDirectoryName) {
-	return com.dango_itimi.toolkit_for_createjs.MaterialURI.baseDirectory + materialDirectoryName + "/" + materialDirectoryName + ".html";
-}
-com.dango_itimi.toolkit_for_createjs.MaterialURI.getMaterialDirectory = function(materialDirectoryName) {
-	return com.dango_itimi.toolkit_for_createjs.MaterialURI.baseDirectory + materialDirectoryName + "/";
-}
-com.dango_itimi.toolkit_for_createjs.MaterialURI.getSoundsDirectory = function(materialDirectoryName) {
-	var soundDirectory = com.dango_itimi.toolkit_for_createjs.MaterialURI.baseSoundsDirectory == ""?com.dango_itimi.toolkit_for_createjs.MaterialURI.baseDirectory:com.dango_itimi.toolkit_for_createjs.MaterialURI.baseSoundsDirectory;
-	return soundDirectory + materialDirectoryName + "/";
+com.dango_itimi.toolkit_for_createjs.MaterialURI.prototype = {
+	convertSrc: function(materialDirectory,soundsDirectory,src) {
+		if(src.indexOf(".mp3") == -1) return materialDirectory + src; else {
+			var oggSrc = this.usedSoundOgg?"|" + soundsDirectory + src.split(".")[0] + ".ogg":"";
+			return soundsDirectory + src + oggSrc;
+		}
+	}
+	,addUriToImgSrcMap: function(imgSrcMap,materialDirectoryName) {
+		var materialDirectory = this.getMaterialDirectory(materialDirectoryName);
+		var soundsDirectory = this.getSoundsDirectory(materialDirectoryName);
+		var fields = Reflect.fields(imgSrcMap);
+		var _g = 0;
+		while(_g < fields.length) {
+			var propertyName = fields[_g];
+			++_g;
+			var src = this.convertSrc(materialDirectory,soundsDirectory,Reflect.field(imgSrcMap,propertyName));
+			imgSrcMap[propertyName] = src;
+		}
+	}
+	,addUri: function(manifest,materialDirectoryName) {
+		var materialDirectory = this.getMaterialDirectory(materialDirectoryName);
+		var soundsDirectory = this.getSoundsDirectory(materialDirectoryName);
+		var _g1 = 0, _g = manifest.length;
+		while(_g1 < _g) {
+			var i = _g1++;
+			manifest[i].src = this.convertSrc(materialDirectory,soundsDirectory,manifest[i].src);
+		}
+	}
+	,getSoundsDirectory: function(materialDirectoryName) {
+		var soundsDirectory = this.baseSoundsDirectory == ""?this.baseDirectory:this.baseSoundsDirectory;
+		return soundsDirectory + materialDirectoryName + "/";
+	}
+	,getMaterialDirectory: function(materialDirectoryName) {
+		return this.baseDirectory + materialDirectoryName + "/";
+	}
+	,getTemplateHtmlUri: function(materialDirectoryName) {
+		return this.baseDirectory + materialDirectoryName + "/" + materialDirectoryName + ".html";
+	}
+	,usedSoundOgg: null
+	,baseSoundsDirectory: null
+	,baseDirectory: null
+	,__class__: com.dango_itimi.toolkit_for_createjs.MaterialURI
 }
 com.dango_itimi.toolkit_for_createjs.SoundPlayer = $hxClasses["com.dango_itimi.toolkit_for_createjs.SoundPlayer"] = function() { }
 com.dango_itimi.toolkit_for_createjs.SoundPlayer.__name__ = ["com","dango_itimi","toolkit_for_createjs","SoundPlayer"];
@@ -599,7 +630,7 @@ com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap = function() 
 com.dango_itimi.toolkit_for_createjs.TFCLoader = $hxClasses["com.dango_itimi.toolkit_for_createjs.TFCLoader"] = function(baseDirectoryName,baseSoundsDirectoryName,usedSoundOgg) {
 	if(usedSoundOgg == null) usedSoundOgg = false;
 	if(baseSoundsDirectoryName == null) baseSoundsDirectoryName = "";
-	com.dango_itimi.toolkit_for_createjs.MaterialURI.initialize(baseDirectoryName,usedSoundOgg,baseSoundsDirectoryName);
+	this.materialURI = new com.dango_itimi.toolkit_for_createjs.MaterialURI(baseDirectoryName,baseSoundsDirectoryName,usedSoundOgg);
 	this.materialDirectorySet = [];
 	this.mainFunction = $bind(this,this.initializeToLoadTemplateHtml);
 };
@@ -631,9 +662,11 @@ com.dango_itimi.toolkit_for_createjs.TFCLoader.prototype = {
 		while(_g1 < _g) {
 			var i = _g1++;
 			var materialDirectoryName = this.materialDirectorySet[i];
-			var templateHtmlUri = com.dango_itimi.toolkit_for_createjs.MaterialURI.getTemplateHtmlUri(materialDirectoryName);
+			var templateHtmlUri = this.materialURI.getTemplateHtmlUri(materialDirectoryName);
 			var loadedHtml = loader.getLoadQueue().getResult(templateHtmlUri);
-			manifest = manifest.concat(com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.execute(loadedHtml,materialDirectoryName));
+			var m = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.execute(loadedHtml);
+			this.materialURI.addUri(m,materialDirectoryName);
+			manifest = manifest.concat(m);
 		}
 		this.initializeToLoadMaterial(manifest);
 	}
@@ -642,7 +675,7 @@ com.dango_itimi.toolkit_for_createjs.TFCLoader.prototype = {
 		if(this.templateHtmlLoader.isFinished()) this.parseTemplateHtml(); else if(this.templateHtmlLoader.getLoader().isError()) this.mainFunction = $bind(this,this.error);
 	}
 	,initializeToLoadTemplateHtml: function() {
-		this.templateHtmlLoader = new com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader(this.materialDirectorySet);
+		this.templateHtmlLoader = new com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader(this.materialDirectorySet,this.materialURI);
 		this.templateHtmlLoader.load();
 		this.mainFunction = $bind(this,this.loadTemplateHtml);
 	}
@@ -700,12 +733,12 @@ com.dango_itimi.toolkit_for_createjs.loader.MaterialLoader.prototype = {
 	,images: null
 	,__class__: com.dango_itimi.toolkit_for_createjs.loader.MaterialLoader
 }
-com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader = $hxClasses["com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader"] = function(materialDirectorySet) {
+com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader = $hxClasses["com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader"] = function(materialDirectorySet,materialURI) {
 	this.manifestItemSet = new com.dango_itimi.createjs.net.manifest.ManifestItemSet();
 	var _g1 = 0, _g = materialDirectorySet.length;
 	while(_g1 < _g) {
 		var i = _g1++;
-		this.manifestItemSet.add(com.dango_itimi.toolkit_for_createjs.MaterialURI.getTemplateHtmlUri(materialDirectorySet[i]));
+		this.manifestItemSet.add(materialURI.getTemplateHtmlUri(materialDirectorySet[i]));
 	}
 	this.loader = new com.dango_itimi.createjs.net.LoaderWithLoadQueue();
 };
@@ -737,12 +770,11 @@ com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader.prototype = {
 if(!com.dango_itimi.toolkit_for_createjs.parser) com.dango_itimi.toolkit_for_createjs.parser = {}
 com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser = $hxClasses["com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser"] = function() { }
 com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.__name__ = ["com","dango_itimi","toolkit_for_createjs","parser","TemplateHtmlParser"];
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.execute = function(loadedHtml,materialDirectoryName) {
+com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.execute = function(loadedHtml) {
 	var lineSet = loadedHtml.split("\n");
 	var checkedFirstLineNum = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariablesLineNumber(lineSet) + 1;
 	var checkedEndLineNum = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariablesEndLineNumber(lineSet,checkedFirstLineNum);
 	var manifest = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifest(lineSet,checkedFirstLineNum,checkedEndLineNum);
-	com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.addUri(manifest,materialDirectoryName);
 	return manifest;
 }
 com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariablesLineNumber = function(lineSet) {
@@ -777,19 +809,6 @@ com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifest = fun
 		list.push(data);
 	}
 	return list;
-}
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.addUri = function(manifest,materialDirectoryName) {
-	var materialDirectory = com.dango_itimi.toolkit_for_createjs.MaterialURI.getMaterialDirectory(materialDirectoryName);
-	var soundsDirectory = com.dango_itimi.toolkit_for_createjs.MaterialURI.getSoundsDirectory(materialDirectoryName);
-	var _g1 = 0, _g = manifest.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		var src = manifest[i].src;
-		if(src.indexOf(".mp3") == -1) manifest[i].src = materialDirectory + src; else {
-			var oggSrc = com.dango_itimi.toolkit_for_createjs.MaterialURI.usedSoundOgg?"|" + soundsDirectory + src.split(".")[0] + ".ogg":"";
-			manifest[i].src = soundsDirectory + src + oggSrc;
-		}
-	}
 }
 if(!com.dango_itimi.toolkit_for_createjs.utils) com.dango_itimi.toolkit_for_createjs.utils = {}
 com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil = $hxClasses["com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil"] = function() { }

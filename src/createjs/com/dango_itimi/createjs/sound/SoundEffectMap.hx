@@ -16,13 +16,13 @@ class SoundEffectMap {
 
 		var soundInstance:SoundInstance = map.get(soundId);
 		if(soundInstance == null){
-			
+
 			soundInstance = Sound.play(soundId, interrupt, delay, offset, loop);
 			map.set(soundId, soundInstance);
 		}
 		else
 			soundInstance.play();
-			
+
 		soundInstance.setVolume(volume);
 		soundInstance.setPan(pan);
 	}

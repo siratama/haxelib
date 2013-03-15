@@ -16,6 +16,7 @@ class LoaderWithLoadQueue {
 		loadQueue.addEventListener("fileload", onFileLoad);
 		loadQueue.addEventListener("error", onFileError);
 		loadQueue.addEventListener("complete", onComplete);
+
 		if(plugin != null) loadQueue.installPlugin(plugin);
 	}
 	public function removeEventListener(){
@@ -40,6 +41,7 @@ class LoaderWithLoadQueue {
 	private function onComplete(event){
 	}
 	public function isFinished():Bool{
+		//trace("finish");
 		return loadQueue.loaded;
 	}
 	public function isError():Bool{

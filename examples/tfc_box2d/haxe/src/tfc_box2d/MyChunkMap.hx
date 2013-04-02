@@ -2,7 +2,7 @@ package tfc_box2d;
 import com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil;
 import com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS;
 import createjs.easeljs.MovieClip;
-import com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkMap;
+import com.dango_itimi.box2d.fla.ChunkMap;
 
 class MyChunkMap extends ChunkMap{
 

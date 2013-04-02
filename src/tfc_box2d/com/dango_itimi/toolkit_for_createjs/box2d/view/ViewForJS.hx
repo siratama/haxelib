@@ -11,6 +11,8 @@ class ViewForJS extends View{
 
 	public function createBaseShape(chunkSprite:MovieClip) {
 
+		this.chunkSprite = chunkSprite;
+
 		baseShape = new BaseShapeForJS();
 		cast(baseShape, BaseShapeForJS).setShapeSprite(chunkSprite);
 		angle = MathUtil.degToRad(chunkSprite.rotation);

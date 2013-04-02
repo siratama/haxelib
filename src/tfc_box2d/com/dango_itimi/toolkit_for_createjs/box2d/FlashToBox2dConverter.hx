@@ -1,18 +1,21 @@
 package com.dango_itimi.toolkit_for_createjs.box2d;
+
 import box2D.dynamics.B2World;
-import com.dango_itimi.toolkit_for_createjs.box2d.view.View;
-import com.dango_itimi.toolkit_for_createjs.box2d.userdata.UserData;
+import com.dango_itimi.toolkit_for_createjs.box2d.view.ViewForJS;
+import com.dango_itimi.box2d.userdata.UserData;
 import createjs.easeljs.MovieClip;
-import com.dango_itimi.toolkit_for_createjs.box2d.fla.Chunk;
 import com.dango_itimi.toolkit_for_createjs.box2d.view.Polygon;
 import com.dango_itimi.toolkit_for_createjs.box2d.view.Circle;
 import com.dango_itimi.toolkit_for_createjs.box2d.view.Box;
-import com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkMap;
+import com.dango_itimi.box2d.fla.ChunkMap;
+import com.dango_itimi.box2d.fla.Chunk;
+import com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS;
+
 class FlashToBox2dConverter {
 
-	private var boxMap:Hash<Hash<Hash<View>>>;
-	private var circleMap:Hash<Hash<Hash<View>>>;
-	private var polygonMap:Hash<Hash<Hash<View>>>;
+	private var boxMap:Hash<Hash<Hash<ViewForJS>>>;
+	private var circleMap:Hash<Hash<Hash<ViewForJS>>>;
+	private var polygonMap:Hash<Hash<Hash<ViewForJS>>>;
 
 	public function new(chunkMap:ChunkMap) {
 
@@ -24,21 +27,21 @@ class FlashToBox2dConverter {
 		parse(chunkMap.getCircleSet(), circleMap, Circle);
 		parse(chunkMap.getPolygonSet(), polygonMap, Polygon);
 	}
-	private function parse(chunkSet:Array<Chunk>, map:Hash<Hash<Hash<View>>>, viewClass:Class<View>){
+	private function parse(chunkSet:Array<Chunk>, map:Hash<Hash<Hash<ViewForJS>>>, viewClass:Class<ViewForJS>){
 
 		var len:Int = chunkSet.length;
 		for (i in 0...len)
 			map.set(cast i, createViewMap(chunkSet[i], viewClass, i));
 	}
-	private function createViewMap(chunk:Chunk, viewClass:Class<View>, materialId:Int):Hash<Hash<View>> {
+	private function createViewMap(chunk:Chunk, viewClass:Class<ViewForJS>, materialId:Int):Hash<Hash<ViewForJS>> {
 
-		var viewMap:Hash<Hash<View>> = new Hash();
+		var viewMap:Hash<Hash<ViewForJS>> = new Hash();
 		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL, new Hash());
 		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO, new Hash());
 
 		var userDataSetLength:Int = chunk.getUserDataSetLength();
 
-		var chunkSprite = chunk.getChunkSprite();
+		var chunkSprite = cast(chunk, ChunkForJS).getChunkSprite();
 		for (i in 0...chunkSprite.getNumChildren()) {
 
 			var childSprite:MovieClip = cast(chunkSprite.getChildAt(i));
@@ -70,9 +73,10 @@ class FlashToBox2dConverter {
 			) ?
 			chunk.getUserData(viewId) : new UserData();
 
-			var view:View = Type.createInstance(viewClass, []);
+			var view:ViewForJS = Type.createInstance(viewClass, []);
+			view.createBaseShape(childSprite);
 			view.initialize(
-				childSprite, materialId, mcHeadName, viewId,
+				materialId, mcHeadName, viewId,
 				chunk.bodyType, chunk.bullet, chunk.restitution, chunk.friction, chunk.density,
 				chunk.fixedRotation, userData, chunk.groupIndex, chunk.firstVisible
 			);
@@ -91,12 +95,12 @@ class FlashToBox2dConverter {
 		executeForMap(circleMap, world, BOX2D_SCALE);
 		executeForMap(polygonMap, world, BOX2D_SCALE);
 	}
-	private function executeForMap(map:Hash<Hash<Hash<View>>>, world:B2World,  BOX2D_SCALE:Float) {
+	private function executeForMap(map:Hash<Hash<Hash<ViewForJS>>>, world:B2World,  BOX2D_SCALE:Float) {
 
 		for (kindMap in map){
 			for (viewMap in kindMap){
 				for (view in viewMap){
-					cast(view, View).createBox2D(world, BOX2D_SCALE);
+					cast(view, ViewForJS).createBox2D(world, BOX2D_SCALE);
 				}
 			}
 		}
@@ -105,19 +109,19 @@ class FlashToBox2dConverter {
 	/**
 	*
 	**/
-	public function getBox(materialId:Int, viewId:Int):View {
+	public function getBox(materialId:Int, viewId:Int):ViewForJS {
 
 		return getView(materialId, viewId, boxMap);
 	}
-	public function getCircle(materialId:Int, viewId:Int):View {
+	public function getCircle(materialId:Int, viewId:Int):ViewForJS {
 
 		return getView(materialId, viewId, circleMap);
 	}
-	public function getPolygon(materialId:Int, viewId:Int):View {
+	public function getPolygon(materialId:Int, viewId:Int):ViewForJS {
 
 		return getView(materialId, viewId, polygonMap);
 	}
-	private function getView(materialId:Int, viewId:Int, map:Hash<Hash<Hash<View>>>):View {
+	private function getView(materialId:Int, viewId:Int, map:Hash<Hash<Hash<ViewForJS>>>):ViewForJS {
 
 		return map.get(cast materialId).get(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL).get(cast viewId);
 	}

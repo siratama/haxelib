@@ -1,4 +1,4 @@
-package com.dango_itimi.toolkit_for_createjs.box2d.fla;
+package com.dango_itimi.box2d.fla;
 class ChunkMap {
 
 	private var boxSet:Array<Chunk>;

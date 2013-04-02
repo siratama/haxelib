@@ -1,4 +1,4 @@
-package com.dango_itimi.toolkit_for_createjs.box2d.userdata;
+package com.dango_itimi.box2d.userdata;
 class UserData {
 
 	public var key:String;

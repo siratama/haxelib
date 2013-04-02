@@ -3,10 +3,10 @@ import createjs.easeljs.MovieClip;
 import com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil;
 import box2D.collision.shapes.B2PolygonShape;
 import box2D.common.math.B2Vec2;
-class Polygon extends View{
+class Polygon extends ViewForJS{
 
 	private static inline var POINT_MC_HEAD_NAME:String = "p";
-	private var verticesMap:Hash<BaseShape>;
+	private var verticesMap:Hash<BaseShapeForJS>;
 	private var verticesTotal:Int;
 
 	override private function initializeChild(){
@@ -23,7 +23,8 @@ class Polygon extends View{
 			if(Math.isNaN(cast id)) continue;
 
 			var property:MovieClip = ContainerUtil.getProperty(chunkSprite, prop);
-			var baseShape = new BaseShape(property);
+			var baseShape = new BaseShapeForJS();
+			baseShape.setShapeSprite(property);
 			verticesMap.set(id, baseShape);
 
 			var n:Int = cast id;
@@ -42,7 +43,7 @@ class Polygon extends View{
 		var vertices:Array<B2Vec2> = [];
 		for (i in 0...verticesTotal) {
 
-			var pt:BaseShape = verticesMap.get(cast i);
+			var pt:BaseShapeForJS = verticesMap.get(cast i);
 			var b2Vec2 = new B2Vec2(pt.getCenterX() / scale, pt.getCenterY() / scale);
 			vertices.push(b2Vec2);
 		}

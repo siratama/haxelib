@@ -10211,13 +10211,13 @@ com.dango_itimi.toolkit_for_createjs.box2d.view.View.prototype = {
 		return view;
 	}
 	,toString: function() {
-		haxe.Log.trace("------",{ fileName : "View.hx", lineNumber : 90, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString", customParams : [this.chunkSprite.name]});
-		haxe.Log.trace("key: " + this.key,{ fileName : "View.hx", lineNumber : 91, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "View.hx", lineNumber : 92, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "View.hx", lineNumber : 93, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("friction: " + this.friction,{ fileName : "View.hx", lineNumber : 94, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "View.hx", lineNumber : 95, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "View.hx", lineNumber : 96, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("------",{ fileName : "ViewForJS.hx", lineNumber : 90, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString", customParams : [this.chunkSprite.name]});
+		haxe.Log.trace("key: " + this.key,{ fileName : "ViewForJS.hx", lineNumber : 91, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "ViewForJS.hx", lineNumber : 92, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "ViewForJS.hx", lineNumber : 93, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("friction: " + this.friction,{ fileName : "ViewForJS.hx", lineNumber : 94, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "ViewForJS.hx", lineNumber : 95, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "ViewForJS.hx", lineNumber : 96, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "toString"});
 	}
 	,initializeChild: function() {
 	}
@@ -10240,7 +10240,7 @@ com.dango_itimi.toolkit_for_createjs.box2d.view.View.prototype = {
 		this.angle = Math.PI / 180 * chunkSprite.rotation;
 		this.key = Type.getClassName(Type.getClass(this)) + materialId + "_" + mcHeadName + "_" + id;
 		if(clonedId != -1) this.key = this.key + "_" + clonedId;
-		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "View.hx", lineNumber : 79, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "initialize"});
+		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "ViewForJS.hx", lineNumber : 79, className : "com.dango_itimi.toolkit_for_createjs.box2d.view.View", methodName : "initialize"});
 		userData.key = this.key;
 		this.initializeChild();
 	}

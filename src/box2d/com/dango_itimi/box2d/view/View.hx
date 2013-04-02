@@ -1,4 +1,5 @@
-package com.dango_itimi.toolkit_for_createjs.box2d.view;
+package com.dango_itimi.box2d.view;
+
 import com.dango_itimi.utils.MathUtil;
 import box2D.common.math.B2Vec2;
 import box2D.dynamics.B2FilterData;
@@ -7,11 +8,9 @@ import box2D.dynamics.B2Body;
 import box2D.dynamics.B2FixtureDef;
 import box2D.dynamics.B2BodyDef;
 import box2D.collision.shapes.B2Shape;
-import com.dango_itimi.toolkit_for_createjs.box2d.userdata.UserData;
-import createjs.easeljs.MovieClip;
+import com.dango_itimi.box2d.userdata.UserData;
 class View {
 
-	private var chunkSprite:MovieClip;
 	private var baseShape:BaseShape;
 
 	private var bodyType:Bool;
@@ -37,7 +36,6 @@ class View {
 	private var id:Int;
 
 	public function initialize(
-		chunkSprite:MovieClip,
 		materialId:Int,
 		mcHeadName:String,
 		id:Int,
@@ -64,11 +62,10 @@ class View {
 		this.restitution = restitution;
 		this.density = density;
 		this.bodyType = bodyType;
-		this.chunkSprite = chunkSprite;
 		this.userData = userData;
 
-		baseShape = new BaseShape(chunkSprite);
-		angle = MathUtil.degToRad(chunkSprite.rotation);
+		//baseShape = new BaseShape();
+		//angle = MathUtil.degToRad(chunkSprite.rotation);
 
 		key = Type.getClassName(Type.getClass(this)) + materialId + "_" + mcHeadName + "_" + id;
 
@@ -87,7 +84,6 @@ class View {
 
 	public function toString() {
 
-		trace("------", chunkSprite.name);
 		trace('key: ' + (key));
 		trace('bodyType: ' + (bodyType));
 		trace('restitution: ' + (restitution));
@@ -101,8 +97,11 @@ class View {
 		var viewClass = Type.getClass(this);
 		var view:View = Type.createInstance(viewClass, []);
 		var clonedUserData:UserData = userData.clone();
-		view.initialize(chunkSprite, materialId, mcHeadName, id, bodyType, bullet, restitution, friction, density, fixedRotation, clonedUserData, groupIndex, firstVisible, clonedId);
+		cloneChild(view);
+		view.initialize(materialId, mcHeadName, id, bodyType, bullet, restitution, friction, density, fixedRotation, clonedUserData, groupIndex, firstVisible, clonedId);
 		return view;
+	}
+	private function cloneChild(view:View){
 	}
 
 	/**
@@ -205,10 +204,6 @@ class View {
 
 	public function setAngle(angle:Float) {
 		this.angle = angle;
-	}
-
-	public function getChunkSprite():MovieClip {
-		return chunkSprite;
 	}
 
 	public function getFixtureDef():B2FixtureDef {

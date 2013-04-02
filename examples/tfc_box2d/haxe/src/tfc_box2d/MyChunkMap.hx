@@ -1,6 +1,10 @@
 package tfc_box2d;
+import tfc_box2d.polygon.Flipper;
+import tfc_box2d.circle.CircleTest2;
+import tfc_box2d.circle.CircleTest;
+import tfc_box2d.box.Character;
+import tfc_box2d.box.BoxBackground;
 import com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil;
-import com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS;
 import createjs.easeljs.MovieClip;
 import com.dango_itimi.box2d.fla.ChunkMap;
 
@@ -22,26 +26,18 @@ class MyChunkMap extends ChunkMap{
 	//groupIndex
 	private static inline var GROUP_CIRCLE:Int = -1;
 
-	public function initialize(chunkMapContainer:MovieClip) {
+	override private function initializeForBox() {
 
-		this.chunkMapContainer = chunkMapContainer;
-
-		initializeForBox();
-		initializeForCircle();
-		initializeForPolygon();
+		createBox(ID_BOX_BACKGROUND, BoxBackground, false, false, 0, 1);
+		createBox(ID_CHARACTER, Character, true, false, 1, 1, 1, false);
 	}
-	private function initializeForBox() {
+	override private function initializeForCircle() {
 
-		boxSet[ID_BOX_BACKGROUND] = new ChunkForJS(ContainerUtil.getProperty(chunkMapContainer, "boxBackground"), false, false, 0, 1);
-		boxSet[ID_CHARACTER] = new ChunkForJS(ContainerUtil.getProperty(chunkMapContainer, "character"), true, false, 1, 1, 1, false);
+		createCircle(ID_CIRCLE, CircleTest, false, true, 1, 0, 1, false, GROUP_CIRCLE);
+		createCircle(ID_CIRCLE2, CircleTest2, true, true, 1, 0.5, 1, false, GROUP_CIRCLE);
 	}
-	private function initializeForCircle() {
+	override private function initializeForPolygon() {
 
-		circleSet[ID_CIRCLE] = new ChunkForJS(ContainerUtil.getProperty(chunkMapContainer, "circleTest"), false, true, 1, 0, 1, false, GROUP_CIRCLE);
-		circleSet[ID_CIRCLE2] = new ChunkForJS(ContainerUtil.getProperty(chunkMapContainer, "circleTest2"), true, true, 1, 0.5, 1, false, GROUP_CIRCLE);
-	}
-	private function initializeForPolygon() {
-
-		polygonSet[ID_FLIPPER] = new ChunkForJS(ContainerUtil.getProperty(chunkMapContainer, "flipper"), true, true, 1, 0, 1, false);
+		createPolygon(ID_FLIPPER, Flipper, true, true, 1, 0, 1, false);
 	}
 }

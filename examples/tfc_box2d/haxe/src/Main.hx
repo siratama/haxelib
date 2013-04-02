@@ -61,9 +61,8 @@ class Main {
 
 		b2World = new B2World(new B2Vec2(0, GRAVITY_Y), true);
 
-		var chunkMapContainer:MovieClip = Instance.createWithSamePackageClass("ChunkMapContainer", MyChunkMap);
+		//var chunkMapContainer:MovieClip = Instance.createWithSamePackageClass("ChunkMapContainer", MyChunkMap);
 		var myChunkMap = new MyChunkMap();
-		myChunkMap.initialize(chunkMapContainer);
 
 		flashToBox2dConverter = new FlashToBox2dConverterForJS(myChunkMap);
 		flashToBox2dConverter.execute(b2World, BOX2D_SCALE);

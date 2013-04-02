@@ -15,7 +15,28 @@ class Chunk {
 	public var bullet:Bool;
 	private var userDataSet:Array<UserData>;
 
-	public function new() {
+	public var chunkSprite:Dynamic;
+
+	public function new(
+		chunkSprite:Dynamic,
+		?bodyType:Bool = false,
+		?bullet:Bool = false,
+		?restitution:Float = 0,
+		?friction:Float = 1.0,
+		?density:Float = 1.0,
+		?fixedRotation:Bool = false,
+		?groupIndex:Int = 0,
+		?firstVisible:Bool = true
+	) {
+		this.chunkSprite = chunkSprite;
+		this.bullet = bullet;
+		this.firstVisible = firstVisible;
+		this.groupIndex = groupIndex;
+		this.fixedRotation = fixedRotation;
+		this.density = density;
+		this.friction = friction;
+		this.restitution = restitution;
+		this.bodyType = bodyType;
 
 		userDataSet = new Array<UserData>();
 	}

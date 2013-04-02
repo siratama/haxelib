@@ -9,7 +9,7 @@ import createjs.easeljs.Stage;
 import createjs.easeljs.Ticker;
 import createjs.easeljs.Container;
 import com.dango_itimi.toolkit_for_createjs.Instance;
-import com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverter;
+import com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS;
 import js.Lib;
 import tfc_box2d.MyChunkMap;
 
@@ -22,7 +22,7 @@ class Main {
 	private var mainFunction:Void->Void;
 	private var stage:Stage;
 	private var b2World:B2World;
-	private var flashToBox2dConverter:FlashToBox2dConverter;
+	private var flashToBox2dConverter:FlashToBox2dConverterForJS;
 
 	public static function main() {
 		new Main();
@@ -65,7 +65,7 @@ class Main {
 		var myChunkMap = new MyChunkMap();
 		myChunkMap.initialize(chunkMapContainer);
 
-		flashToBox2dConverter = new FlashToBox2dConverter(myChunkMap);
+		flashToBox2dConverter = new FlashToBox2dConverterForJS(myChunkMap);
 		flashToBox2dConverter.execute(b2World, BOX2D_SCALE);
 	}
 	private function initializeTest() {

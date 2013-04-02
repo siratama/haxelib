@@ -9931,8 +9931,86 @@ box2D.dynamics.joints.B2WeldJointDef.prototype = $extend(box2D.dynamics.joints.B
 var com = com || {}
 if(!com.dango_itimi) com.dango_itimi = {}
 if(!com.dango_itimi.box2d) com.dango_itimi.box2d = {}
+com.dango_itimi.box2d.FlashToBox2dConverter = $hxClasses["com.dango_itimi.box2d.FlashToBox2dConverter"] = function(chunkMap) {
+	this.boxMap = new Hash();
+	this.circleMap = new Hash();
+	this.polygonMap = new Hash();
+	this.parse(chunkMap.getBoxSet(),this.boxMap,this.boxClass);
+	this.parse(chunkMap.getCircleSet(),this.circleMap,this.circleClass);
+	this.parse(chunkMap.getPolygonSet(),this.polygonMap,this.polygonClass);
+};
+com.dango_itimi.box2d.FlashToBox2dConverter.__name__ = ["com","dango_itimi","box2d","FlashToBox2dConverter"];
+com.dango_itimi.box2d.FlashToBox2dConverter.prototype = {
+	getView: function(materialId,viewId,map) {
+		return map.get(materialId).get("c").get(viewId);
+	}
+	,getPolygon: function(materialId,viewId) {
+		return this.getView(materialId,viewId,this.polygonMap);
+	}
+	,getCircle: function(materialId,viewId) {
+		return this.getView(materialId,viewId,this.circleMap);
+	}
+	,getBox: function(materialId,viewId) {
+		return this.getView(materialId,viewId,this.boxMap);
+	}
+	,executeForMap: function(map,world,BOX2D_SCALE) {
+		var $it0 = map.iterator();
+		while( $it0.hasNext() ) {
+			var kindMap = $it0.next();
+			var $it1 = kindMap.iterator();
+			while( $it1.hasNext() ) {
+				var viewMap = $it1.next();
+				var $it2 = viewMap.iterator();
+				while( $it2.hasNext() ) {
+					var view = $it2.next();
+					(js.Boot.__cast(view , com.dango_itimi.box2d.view.View)).createBox2D(world,BOX2D_SCALE);
+				}
+			}
+		}
+	}
+	,execute: function(world,BOX2D_SCALE) {
+		this.executeForMap(this.boxMap,world,BOX2D_SCALE);
+		this.executeForMap(this.circleMap,world,BOX2D_SCALE);
+		this.executeForMap(this.polygonMap,world,BOX2D_SCALE);
+	}
+	,createViewMap: function(chunk,viewClass,materialId) {
+		return null;
+	}
+	,parse: function(chunkSet,map,viewClass) {
+		var len = chunkSet.length;
+		var _g = 0;
+		while(_g < len) {
+			var i = _g++;
+			map.set(i,this.createViewMap(chunkSet[i],viewClass,i));
+		}
+	}
+	,polygonMap: null
+	,circleMap: null
+	,boxMap: null
+	,polygonClass: null
+	,circleClass: null
+	,boxClass: null
+	,__class__: com.dango_itimi.box2d.FlashToBox2dConverter
+}
 if(!com.dango_itimi.box2d.fla) com.dango_itimi.box2d.fla = {}
-com.dango_itimi.box2d.fla.Chunk = $hxClasses["com.dango_itimi.box2d.fla.Chunk"] = function() {
+com.dango_itimi.box2d.fla.Chunk = $hxClasses["com.dango_itimi.box2d.fla.Chunk"] = function(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+	if(firstVisible == null) firstVisible = true;
+	if(groupIndex == null) groupIndex = 0;
+	if(fixedRotation == null) fixedRotation = false;
+	if(density == null) density = 1.0;
+	if(friction == null) friction = 1.0;
+	if(restitution == null) restitution = 0;
+	if(bullet == null) bullet = false;
+	if(bodyType == null) bodyType = false;
+	this.chunkSprite = chunkSprite;
+	this.bullet = bullet;
+	this.firstVisible = firstVisible;
+	this.groupIndex = groupIndex;
+	this.fixedRotation = fixedRotation;
+	this.density = density;
+	this.friction = friction;
+	this.restitution = restitution;
+	this.bodyType = bodyType;
 	this.userDataSet = new Array();
 };
 com.dango_itimi.box2d.fla.Chunk.__name__ = ["com","dango_itimi","box2d","fla","Chunk"];
@@ -9946,6 +10024,7 @@ com.dango_itimi.box2d.fla.Chunk.prototype = {
 	,setUserData: function(optionalChunkId,userData) {
 		this.userDataSet[optionalChunkId] = userData;
 	}
+	,chunkSprite: null
 	,userDataSet: null
 	,bullet: null
 	,firstVisible: null
@@ -9961,6 +10040,9 @@ com.dango_itimi.box2d.fla.ChunkMap = $hxClasses["com.dango_itimi.box2d.fla.Chunk
 	this.boxSet = new Array();
 	this.circleSet = new Array();
 	this.polygonSet = new Array();
+	this.initializeForBox();
+	this.initializeForCircle();
+	this.initializeForPolygon();
 };
 com.dango_itimi.box2d.fla.ChunkMap.__name__ = ["com","dango_itimi","box2d","fla","ChunkMap"];
 com.dango_itimi.box2d.fla.ChunkMap.prototype = {
@@ -9973,6 +10055,60 @@ com.dango_itimi.box2d.fla.ChunkMap.prototype = {
 	,getBoxSet: function() {
 		return this.boxSet;
 	}
+	,createChunk: function(chunkSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+		if(firstVisible == null) firstVisible = true;
+		if(groupIndex == null) groupIndex = 0;
+		if(fixedRotation == null) fixedRotation = false;
+		if(density == null) density = 1.0;
+		if(friction == null) friction = 1.0;
+		if(restitution == null) restitution = 0;
+		if(bullet == null) bullet = false;
+		if(bodyType == null) bodyType = false;
+		var chunkSprite = Type.createInstance(chunkSpriteClass,[]);
+		var chunk = new com.dango_itimi.box2d.fla.Chunk(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+		chunkSet[chunkSetId] = chunk;
+		return chunk;
+	}
+	,createPolygon: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+		if(firstVisible == null) firstVisible = true;
+		if(groupIndex == null) groupIndex = 0;
+		if(fixedRotation == null) fixedRotation = false;
+		if(density == null) density = 1.0;
+		if(friction == null) friction = 1.0;
+		if(restitution == null) restitution = 0;
+		if(bullet == null) bullet = false;
+		if(bodyType == null) bodyType = false;
+		return this.createChunk(this.polygonSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+	}
+	,createCircle: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+		if(firstVisible == null) firstVisible = true;
+		if(groupIndex == null) groupIndex = 0;
+		if(fixedRotation == null) fixedRotation = false;
+		if(density == null) density = 1.0;
+		if(friction == null) friction = 1.0;
+		if(restitution == null) restitution = 0;
+		if(bullet == null) bullet = false;
+		if(bodyType == null) bodyType = false;
+		return this.createChunk(this.circleSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+	}
+	,createBox: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+		if(firstVisible == null) firstVisible = true;
+		if(groupIndex == null) groupIndex = 0;
+		if(fixedRotation == null) fixedRotation = false;
+		if(density == null) density = 1.0;
+		if(friction == null) friction = 1.0;
+		if(restitution == null) restitution = 0;
+		if(bullet == null) bullet = false;
+		if(bodyType == null) bodyType = false;
+		return this.createChunk(this.boxSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+	}
+	,initializeForPolygon: function() {
+	}
+	,initializeForCircle: function() {
+	}
+	,initializeForBox: function() {
+	}
+	,chunkClass: null
 	,polygonSet: null
 	,circleSet: null
 	,boxSet: null
@@ -10093,12 +10229,12 @@ com.dango_itimi.box2d.view.View.prototype = {
 		return view;
 	}
 	,toString: function() {
-		haxe.Log.trace("key: " + this.key,{ fileName : "View.hx", lineNumber : 87, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "View.hx", lineNumber : 88, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "View.hx", lineNumber : 89, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("friction: " + this.friction,{ fileName : "View.hx", lineNumber : 90, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "View.hx", lineNumber : 91, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "View.hx", lineNumber : 92, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("key: " + this.key,{ fileName : "View.hx", lineNumber : 84, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "View.hx", lineNumber : 85, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "View.hx", lineNumber : 86, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("friction: " + this.friction,{ fileName : "View.hx", lineNumber : 87, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "View.hx", lineNumber : 88, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "View.hx", lineNumber : 89, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
 	}
 	,initializeChild: function() {
 	}
@@ -10118,7 +10254,7 @@ com.dango_itimi.box2d.view.View.prototype = {
 		this.userData = userData;
 		this.key = Type.getClassName(Type.getClass(this)) + materialId + "_" + mcHeadName + "_" + id;
 		if(clonedId != -1) this.key = this.key + "_" + clonedId;
-		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "View.hx", lineNumber : 76, className : "com.dango_itimi.box2d.view.View", methodName : "initialize"});
+		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "View.hx", lineNumber : 73, className : "com.dango_itimi.box2d.view.View", methodName : "initialize"});
 		userData.key = this.key;
 		this.initializeChild();
 	}
@@ -10147,54 +10283,21 @@ com.dango_itimi.box2d.view.View.prototype = {
 }
 if(!com.dango_itimi.toolkit_for_createjs) com.dango_itimi.toolkit_for_createjs = {}
 if(!com.dango_itimi.toolkit_for_createjs.box2d) com.dango_itimi.toolkit_for_createjs.box2d = {}
-com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverter = $hxClasses["com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverter"] = function(chunkMap) {
-	this.boxMap = new Hash();
-	this.circleMap = new Hash();
-	this.polygonMap = new Hash();
-	this.parse(chunkMap.getBoxSet(),this.boxMap,com.dango_itimi.toolkit_for_createjs.box2d.view.Box);
-	this.parse(chunkMap.getCircleSet(),this.circleMap,com.dango_itimi.toolkit_for_createjs.box2d.view.Circle);
-	this.parse(chunkMap.getPolygonSet(),this.polygonMap,com.dango_itimi.toolkit_for_createjs.box2d.view.Polygon);
+com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS = $hxClasses["com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS"] = function(chunkMap) {
+	this.boxClass = com.dango_itimi.toolkit_for_createjs.box2d.view.Box;
+	this.circleClass = com.dango_itimi.toolkit_for_createjs.box2d.view.Circle;
+	this.polygonClass = com.dango_itimi.toolkit_for_createjs.box2d.view.Polygon;
+	com.dango_itimi.box2d.FlashToBox2dConverter.call(this,chunkMap);
 };
-com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverter.__name__ = ["com","dango_itimi","toolkit_for_createjs","box2d","FlashToBox2dConverter"];
-com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverter.prototype = {
-	getView: function(materialId,viewId,map) {
-		return map.get(materialId).get("c").get(viewId);
-	}
-	,getPolygon: function(materialId,viewId) {
-		return this.getView(materialId,viewId,this.polygonMap);
-	}
-	,getCircle: function(materialId,viewId) {
-		return this.getView(materialId,viewId,this.circleMap);
-	}
-	,getBox: function(materialId,viewId) {
-		return this.getView(materialId,viewId,this.boxMap);
-	}
-	,executeForMap: function(map,world,BOX2D_SCALE) {
-		var $it0 = map.iterator();
-		while( $it0.hasNext() ) {
-			var kindMap = $it0.next();
-			var $it1 = kindMap.iterator();
-			while( $it1.hasNext() ) {
-				var viewMap = $it1.next();
-				var $it2 = viewMap.iterator();
-				while( $it2.hasNext() ) {
-					var view = $it2.next();
-					(js.Boot.__cast(view , com.dango_itimi.toolkit_for_createjs.box2d.view.ViewForJS)).createBox2D(world,BOX2D_SCALE);
-				}
-			}
-		}
-	}
-	,execute: function(world,BOX2D_SCALE) {
-		this.executeForMap(this.boxMap,world,BOX2D_SCALE);
-		this.executeForMap(this.circleMap,world,BOX2D_SCALE);
-		this.executeForMap(this.polygonMap,world,BOX2D_SCALE);
-	}
-	,createViewMap: function(chunk,viewClass,materialId) {
+com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.__name__ = ["com","dango_itimi","toolkit_for_createjs","box2d","FlashToBox2dConverterForJS"];
+com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.__super__ = com.dango_itimi.box2d.FlashToBox2dConverter;
+com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.prototype = $extend(com.dango_itimi.box2d.FlashToBox2dConverter.prototype,{
+	createViewMap: function(chunk,viewClass,materialId) {
 		var viewMap = new Hash();
 		viewMap.set("c",new Hash());
 		viewMap.set("instance",new Hash());
 		var userDataSetLength = chunk.getUserDataSetLength();
-		var chunkSprite = (js.Boot.__cast(chunk , com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS)).getChunkSprite();
+		var chunkSprite = chunk.chunkSprite;
 		var _g1 = 0, _g = chunkSprite.getNumChildren();
 		while(_g1 < _g) {
 			var i = _g1++;
@@ -10213,54 +10316,13 @@ com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverter.prototype = {
 			var viewId = mcHeadName == "c"?mcName.substring(mcHeadName.length).split("_")[0]:mcName.substring(mcHeadName.length).split("_").slice(-1)[0];
 			var userData = mcHeadName == "c" && viewId < userDataSetLength?chunk.getUserData(viewId):new com.dango_itimi.box2d.userdata.UserData();
 			var view = Type.createInstance(viewClass,[]);
-			view.createBaseShape(childSprite);
+			(js.Boot.__cast(view , com.dango_itimi.toolkit_for_createjs.box2d.view.ViewForJS)).createBaseShape(childSprite);
 			view.initialize(materialId,mcHeadName,viewId,chunk.bodyType,chunk.bullet,chunk.restitution,chunk.friction,chunk.density,chunk.fixedRotation,userData,chunk.groupIndex,chunk.firstVisible);
 			viewMap.get(mcHeadName).set(viewId,view);
 		}
 		return viewMap;
 	}
-	,parse: function(chunkSet,map,viewClass) {
-		var len = chunkSet.length;
-		var _g = 0;
-		while(_g < len) {
-			var i = _g++;
-			map.set(i,this.createViewMap(chunkSet[i],viewClass,i));
-		}
-	}
-	,polygonMap: null
-	,circleMap: null
-	,boxMap: null
-	,__class__: com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverter
-}
-if(!com.dango_itimi.toolkit_for_createjs.box2d.fla) com.dango_itimi.toolkit_for_createjs.box2d.fla = {}
-com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS = $hxClasses["com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS"] = function(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
-	if(firstVisible == null) firstVisible = true;
-	if(groupIndex == null) groupIndex = 0;
-	if(fixedRotation == null) fixedRotation = false;
-	if(density == null) density = 1.0;
-	if(friction == null) friction = 1.0;
-	if(restitution == null) restitution = 0;
-	if(bullet == null) bullet = false;
-	if(bodyType == null) bodyType = false;
-	this.bullet = bullet;
-	this.chunkSprite = chunkSprite;
-	this.firstVisible = firstVisible;
-	this.groupIndex = groupIndex;
-	this.fixedRotation = fixedRotation;
-	this.density = density;
-	this.friction = friction;
-	this.restitution = restitution;
-	this.bodyType = bodyType;
-	com.dango_itimi.box2d.fla.Chunk.call(this);
-};
-com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS.__name__ = ["com","dango_itimi","toolkit_for_createjs","box2d","fla","ChunkForJS"];
-com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS.__super__ = com.dango_itimi.box2d.fla.Chunk;
-com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS.prototype = $extend(com.dango_itimi.box2d.fla.Chunk.prototype,{
-	getChunkSprite: function() {
-		return this.chunkSprite;
-	}
-	,chunkSprite: null
-	,__class__: com.dango_itimi.toolkit_for_createjs.box2d.fla.ChunkForJS
+	,__class__: com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS
 });
 if(!com.dango_itimi.toolkit_for_createjs.box2d.view) com.dango_itimi.toolkit_for_createjs.box2d.view = {}
 com.dango_itimi.toolkit_for_createjs.box2d.view.BaseShapeForJS = $hxClasses["com.dango_itimi.toolkit_for_createjs.box2d.view.BaseShapeForJS"] = function() {

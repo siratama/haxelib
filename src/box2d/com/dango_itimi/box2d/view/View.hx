@@ -1,6 +1,5 @@
 package com.dango_itimi.box2d.view;
 
-import com.dango_itimi.utils.MathUtil;
 import box2D.common.math.B2Vec2;
 import box2D.dynamics.B2FilterData;
 import box2D.dynamics.B2World;
@@ -9,6 +8,7 @@ import box2D.dynamics.B2FixtureDef;
 import box2D.dynamics.B2BodyDef;
 import box2D.collision.shapes.B2Shape;
 import com.dango_itimi.box2d.userdata.UserData;
+
 class View {
 
 	private var baseShape:BaseShape;
@@ -63,9 +63,6 @@ class View {
 		this.density = density;
 		this.bodyType = bodyType;
 		this.userData = userData;
-
-		//baseShape = new BaseShape();
-		//angle = MathUtil.degToRad(chunkSprite.rotation);
 
 		key = Type.getClassName(Type.getClass(this)) + materialId + "_" + mcHeadName + "_" + id;
 

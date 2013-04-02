@@ -34,9 +34,11 @@ class ChunkMap {
 		?density:Float = 1.0,
 		?fixedRotation:Bool = false,
 		?groupIndex:Int = 0,
+		?categoryBits:Int = 0x0001,
+		?maskBits:Int = 0xffff,
 		?firstVisible:Bool = true
 	):Chunk {
-		return createChunk(boxSet, chunkSetId, chunkSpriteClass, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, firstVisible);
+		return createChunk(boxSet, chunkSetId, chunkSpriteClass, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 	}
 	private function createCircle(
 		chunkSetId:Int,
@@ -48,9 +50,11 @@ class ChunkMap {
 		?density:Float = 1.0,
 		?fixedRotation:Bool = false,
 		?groupIndex:Int = 0,
+		?categoryBits:Int = 0x0001,
+		?maskBits:Int = 0xffff,
 		?firstVisible:Bool = true
 	):Chunk {
-		return createChunk(circleSet, chunkSetId, chunkSpriteClass, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, firstVisible);
+		return createChunk(circleSet, chunkSetId, chunkSpriteClass, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 	}
 	private function createPolygon(
 		chunkSetId:Int,
@@ -62,9 +66,11 @@ class ChunkMap {
 		?density:Float = 1.0,
 		?fixedRotation:Bool = false,
 		?groupIndex:Int = 0,
+		?categoryBits:Int = 0x0001,
+		?maskBits:Int = 0xffff,
 		?firstVisible:Bool = true
 	):Chunk {
-		return createChunk(polygonSet, chunkSetId, chunkSpriteClass, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, firstVisible);
+		return createChunk(polygonSet, chunkSetId, chunkSpriteClass, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 	}
 	private function createChunk(
 		chunkSet:Array<Chunk>,
@@ -77,11 +83,13 @@ class ChunkMap {
 		?density:Float = 1.0,
 		?fixedRotation:Bool = false,
 		?groupIndex:Int = 0,
+		?categoryBits:Int = 0x0001,
+		?maskBits:Int = 0xffff,
 		?firstVisible:Bool = true
 	):Chunk {
 
 		var chunkSprite = Type.createInstance(chunkSpriteClass, []);
-		var chunk:Chunk = new Chunk(chunkSprite, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, firstVisible);
+		var chunk:Chunk = new Chunk(chunkSprite, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 		chunkSet[chunkSetId] = chunk;
 		return chunk;
 	}

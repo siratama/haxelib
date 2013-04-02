@@ -34,6 +34,8 @@ class View {
 	private var materialId:Int;
 	private var mcHeadName:String;
 	private var id:Int;
+	private var categoryBits:Int;
+	private var maskBits:Int;
 
 	public function initialize(
 		materialId:Int,
@@ -47,10 +49,13 @@ class View {
 		fixedRotation:Bool,
 		userData:UserData,
 		groupIndex:Int,
+		categoryBits:Int,
+		maskBits:Int,
 		firstVisible:Bool,
 		?clonedId:Int = -1
 	) {
-
+		this.maskBits = maskBits;
+		this.categoryBits = categoryBits;
 		this.id = id;
 		this.mcHeadName = mcHeadName;
 		this.materialId = materialId;
@@ -95,7 +100,7 @@ class View {
 		var view:View = Type.createInstance(viewClass, []);
 		var clonedUserData:UserData = userData.clone();
 		cloneChild(view);
-		view.initialize(materialId, mcHeadName, id, bodyType, bullet, restitution, friction, density, fixedRotation, clonedUserData, groupIndex, firstVisible, clonedId);
+		view.initialize(materialId, mcHeadName, id, bodyType, bullet, restitution, friction, density, fixedRotation, clonedUserData, groupIndex, categoryBits, maskBits, firstVisible, clonedId);
 		return view;
 	}
 	private function cloneChild(view:View){
@@ -148,6 +153,8 @@ class View {
 
 		var filter:B2FilterData = new B2FilterData();
 		filter.groupIndex = groupIndex;
+		filter.categoryBits = categoryBits;
+		filter.maskBits = maskBits;
 		fixtureDef.filter = filter;
 	}
 	public function createB2Body(world:B2World) {

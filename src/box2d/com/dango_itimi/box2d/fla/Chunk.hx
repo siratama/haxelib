@@ -13,6 +13,8 @@ class Chunk {
 	public var groupIndex:Int;
 	public var firstVisible:Bool;
 	public var bullet:Bool;
+	public var categoryBits:Int;
+	public var maskBits:Int;
 	private var userDataSet:Array<UserData>;
 
 	public var chunkSprite:Dynamic;
@@ -26,8 +28,12 @@ class Chunk {
 		?density:Float = 1.0,
 		?fixedRotation:Bool = false,
 		?groupIndex:Int = 0,
+		?categoryBits:Int = 0x0001,
+		?maskBits:Int = 0xffff,
 		?firstVisible:Bool = true
 	) {
+		this.maskBits = maskBits;
+		this.categoryBits = categoryBits;
 		this.chunkSprite = chunkSprite;
 		this.bullet = bullet;
 		this.firstVisible = firstVisible;

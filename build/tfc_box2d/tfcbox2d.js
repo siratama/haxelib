@@ -9993,8 +9993,10 @@ com.dango_itimi.box2d.FlashToBox2dConverter.prototype = {
 	,__class__: com.dango_itimi.box2d.FlashToBox2dConverter
 }
 if(!com.dango_itimi.box2d.fla) com.dango_itimi.box2d.fla = {}
-com.dango_itimi.box2d.fla.Chunk = $hxClasses["com.dango_itimi.box2d.fla.Chunk"] = function(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+com.dango_itimi.box2d.fla.Chunk = $hxClasses["com.dango_itimi.box2d.fla.Chunk"] = function(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
 	if(firstVisible == null) firstVisible = true;
+	if(maskBits == null) maskBits = 65535;
+	if(categoryBits == null) categoryBits = 1;
 	if(groupIndex == null) groupIndex = 0;
 	if(fixedRotation == null) fixedRotation = false;
 	if(density == null) density = 1.0;
@@ -10002,6 +10004,8 @@ com.dango_itimi.box2d.fla.Chunk = $hxClasses["com.dango_itimi.box2d.fla.Chunk"] 
 	if(restitution == null) restitution = 0;
 	if(bullet == null) bullet = false;
 	if(bodyType == null) bodyType = false;
+	this.maskBits = maskBits;
+	this.categoryBits = categoryBits;
 	this.chunkSprite = chunkSprite;
 	this.bullet = bullet;
 	this.firstVisible = firstVisible;
@@ -10026,6 +10030,8 @@ com.dango_itimi.box2d.fla.Chunk.prototype = {
 	}
 	,chunkSprite: null
 	,userDataSet: null
+	,maskBits: null
+	,categoryBits: null
 	,bullet: null
 	,firstVisible: null
 	,groupIndex: null
@@ -10055,8 +10061,10 @@ com.dango_itimi.box2d.fla.ChunkMap.prototype = {
 	,getBoxSet: function() {
 		return this.boxSet;
 	}
-	,createChunk: function(chunkSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+	,createChunk: function(chunkSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
 		if(firstVisible == null) firstVisible = true;
+		if(maskBits == null) maskBits = 65535;
+		if(categoryBits == null) categoryBits = 1;
 		if(groupIndex == null) groupIndex = 0;
 		if(fixedRotation == null) fixedRotation = false;
 		if(density == null) density = 1.0;
@@ -10065,12 +10073,14 @@ com.dango_itimi.box2d.fla.ChunkMap.prototype = {
 		if(bullet == null) bullet = false;
 		if(bodyType == null) bodyType = false;
 		var chunkSprite = Type.createInstance(chunkSpriteClass,[]);
-		var chunk = new com.dango_itimi.box2d.fla.Chunk(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+		var chunk = new com.dango_itimi.box2d.fla.Chunk(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
 		chunkSet[chunkSetId] = chunk;
 		return chunk;
 	}
-	,createPolygon: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+	,createPolygon: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
 		if(firstVisible == null) firstVisible = true;
+		if(maskBits == null) maskBits = 65535;
+		if(categoryBits == null) categoryBits = 1;
 		if(groupIndex == null) groupIndex = 0;
 		if(fixedRotation == null) fixedRotation = false;
 		if(density == null) density = 1.0;
@@ -10078,10 +10088,12 @@ com.dango_itimi.box2d.fla.ChunkMap.prototype = {
 		if(restitution == null) restitution = 0;
 		if(bullet == null) bullet = false;
 		if(bodyType == null) bodyType = false;
-		return this.createChunk(this.polygonSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+		return this.createChunk(this.polygonSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
 	}
-	,createCircle: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+	,createCircle: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
 		if(firstVisible == null) firstVisible = true;
+		if(maskBits == null) maskBits = 65535;
+		if(categoryBits == null) categoryBits = 1;
 		if(groupIndex == null) groupIndex = 0;
 		if(fixedRotation == null) fixedRotation = false;
 		if(density == null) density = 1.0;
@@ -10089,10 +10101,12 @@ com.dango_itimi.box2d.fla.ChunkMap.prototype = {
 		if(restitution == null) restitution = 0;
 		if(bullet == null) bullet = false;
 		if(bodyType == null) bodyType = false;
-		return this.createChunk(this.circleSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+		return this.createChunk(this.circleSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
 	}
-	,createBox: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible) {
+	,createBox: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
 		if(firstVisible == null) firstVisible = true;
+		if(maskBits == null) maskBits = 65535;
+		if(categoryBits == null) categoryBits = 1;
 		if(groupIndex == null) groupIndex = 0;
 		if(fixedRotation == null) fixedRotation = false;
 		if(density == null) density = 1.0;
@@ -10100,7 +10114,7 @@ com.dango_itimi.box2d.fla.ChunkMap.prototype = {
 		if(restitution == null) restitution = 0;
 		if(bullet == null) bullet = false;
 		if(bodyType == null) bodyType = false;
-		return this.createChunk(this.boxSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,firstVisible);
+		return this.createChunk(this.boxSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
 	}
 	,initializeForPolygon: function() {
 	}
@@ -10192,6 +10206,8 @@ com.dango_itimi.box2d.view.View.prototype = {
 		this.fixtureDef.friction = this.friction;
 		var filter = new box2D.dynamics.B2FilterData();
 		filter.groupIndex = this.groupIndex;
+		filter.categoryBits = this.categoryBits;
+		filter.maskBits = this.maskBits;
 		this.fixtureDef.filter = filter;
 	}
 	,createShape: function(scale) {
@@ -10225,21 +10241,23 @@ com.dango_itimi.box2d.view.View.prototype = {
 		var view = Type.createInstance(viewClass,[]);
 		var clonedUserData = this.userData.clone();
 		this.cloneChild(view);
-		view.initialize(this.materialId,this.mcHeadName,this.id,this.bodyType,this.bullet,this.restitution,this.friction,this.density,this.fixedRotation,clonedUserData,this.groupIndex,this.firstVisible,clonedId);
+		view.initialize(this.materialId,this.mcHeadName,this.id,this.bodyType,this.bullet,this.restitution,this.friction,this.density,this.fixedRotation,clonedUserData,this.groupIndex,this.categoryBits,this.maskBits,this.firstVisible,clonedId);
 		return view;
 	}
 	,toString: function() {
-		haxe.Log.trace("key: " + this.key,{ fileName : "View.hx", lineNumber : 84, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "View.hx", lineNumber : 85, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "View.hx", lineNumber : 86, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("friction: " + this.friction,{ fileName : "View.hx", lineNumber : 87, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "View.hx", lineNumber : 88, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "View.hx", lineNumber : 89, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("key: " + this.key,{ fileName : "View.hx", lineNumber : 89, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "View.hx", lineNumber : 90, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "View.hx", lineNumber : 91, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("friction: " + this.friction,{ fileName : "View.hx", lineNumber : 92, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "View.hx", lineNumber : 93, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "View.hx", lineNumber : 94, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
 	}
 	,initializeChild: function() {
 	}
-	,initialize: function(materialId,mcHeadName,id,bodyType,bullet,restitution,friction,density,fixedRotation,userData,groupIndex,firstVisible,clonedId) {
+	,initialize: function(materialId,mcHeadName,id,bodyType,bullet,restitution,friction,density,fixedRotation,userData,groupIndex,categoryBits,maskBits,firstVisible,clonedId) {
 		if(clonedId == null) clonedId = -1;
+		this.maskBits = maskBits;
+		this.categoryBits = categoryBits;
 		this.id = id;
 		this.mcHeadName = mcHeadName;
 		this.materialId = materialId;
@@ -10254,10 +10272,12 @@ com.dango_itimi.box2d.view.View.prototype = {
 		this.userData = userData;
 		this.key = Type.getClassName(Type.getClass(this)) + materialId + "_" + mcHeadName + "_" + id;
 		if(clonedId != -1) this.key = this.key + "_" + clonedId;
-		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "View.hx", lineNumber : 73, className : "com.dango_itimi.box2d.view.View", methodName : "initialize"});
+		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "View.hx", lineNumber : 78, className : "com.dango_itimi.box2d.view.View", methodName : "initialize"});
 		userData.key = this.key;
 		this.initializeChild();
 	}
+	,maskBits: null
+	,categoryBits: null
 	,id: null
 	,mcHeadName: null
 	,materialId: null
@@ -10317,7 +10337,7 @@ com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.prototype 
 			var userData = mcHeadName == "c" && viewId < userDataSetLength?chunk.getUserData(viewId):new com.dango_itimi.box2d.userdata.UserData();
 			var view = Type.createInstance(viewClass,[]);
 			(js.Boot.__cast(view , com.dango_itimi.toolkit_for_createjs.box2d.view.ViewForJS)).createBaseShape(childSprite);
-			view.initialize(materialId,mcHeadName,viewId,chunk.bodyType,chunk.bullet,chunk.restitution,chunk.friction,chunk.density,chunk.fixedRotation,userData,chunk.groupIndex,chunk.firstVisible);
+			view.initialize(materialId,mcHeadName,viewId,chunk.bodyType,chunk.bullet,chunk.restitution,chunk.friction,chunk.density,chunk.fixedRotation,userData,chunk.groupIndex,chunk.categoryBits,chunk.maskBits,chunk.firstVisible);
 			viewMap.get(mcHeadName).set(viewId,view);
 		}
 		return viewMap;

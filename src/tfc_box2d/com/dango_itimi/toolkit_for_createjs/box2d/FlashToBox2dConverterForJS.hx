@@ -69,7 +69,7 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 			view.initialize(
 				materialId, mcHeadName, viewId,
 				chunk.bodyType, chunk.bullet, chunk.restitution, chunk.friction, chunk.density,
-				chunk.fixedRotation, userData, chunk.groupIndex, chunk.firstVisible
+				chunk.fixedRotation, userData, chunk.groupIndex, chunk.categoryBits, chunk.maskBits, chunk.firstVisible
 			);
 
 			viewMap.get(mcHeadName).set(cast viewId, view);

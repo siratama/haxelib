@@ -20,12 +20,22 @@ Toolkit For CreateJS のパブリッシュデータを スクリプトから利�
 * examples/toolkit\_for\_createjs/
 * build/toolkit\_for\_createjs/
 
-##Flash To CanvasBox2D Converter
+##FlashCS To CanvasBox2D Converter
 
 Flash CS のステージ上に配置したシンボルを html5 canvas Box2D オブジェクトに変換する Haxe/js ライブラリ
 
 ###ディレクトリ
+* src/box2d/
 * src/tfc\_box2d/
-* docs/tfc\_box2d/
-* examples/tfc\_box2d/
+* examples/box2d/
 * build/tfc\_box2d/
+
+##FlashCS To FlashBox2D Converter
+
+Flash CS のステージ上に配置したシンボルを flash Box2D オブジェクトに変換する Haxe ライブラリ
+
+###ディレクトリ
+* src/box2d/
+* src/as3\_box2d/
+* examples/box2d/
+

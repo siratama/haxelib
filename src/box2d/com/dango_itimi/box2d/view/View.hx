@@ -11,6 +11,8 @@ import com.dango_itimi.box2d.userdata.UserData;
 
 class View {
 
+	private static inline var POINT_MC_HEAD_NAME:String = "p";
+
 	private var baseShape:BaseShape;
 
 	private var bodyType:Bool;

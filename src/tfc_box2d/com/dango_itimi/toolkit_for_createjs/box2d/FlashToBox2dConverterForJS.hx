@@ -24,13 +24,7 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 		super(chunkMap);
 	}
 
-	override private function createViewMap(chunk:Chunk, viewClass:Class<View>, materialId:Int):Hash<Hash<View>> {
-
-		var viewMap:Hash<Hash<View>> = new Hash();
-		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL, new Hash());
-		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO, new Hash());
-
-		var userDataSetLength:Int = chunk.getUserDataSetLength();
+	override private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, materialId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int) {
 
 		var chunkSprite = chunk.chunkSprite;
 		for (i in 0...chunkSprite.getNumChildren()) {
@@ -47,8 +41,8 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 			}
 
 			var mcHeadName:String =
-				(mcName.indexOf(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO) == -1) ?
-					Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL : Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO;
+			(mcName.indexOf(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO) == -1) ?
+			Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL : Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO;
 
 			//Instance property name of Toolkit for CreateJS 1.1 is
 			// "OriginalProperty" + "_" + "SerialNumber" or
@@ -62,7 +56,7 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 				mcHeadName == Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL &&
 				viewId < userDataSetLength
 			) ?
-			chunk.getUserData(viewId) : new UserData();
+				chunk.getUserData(viewId) : new UserData();
 
 			var view:View = Type.createInstance(viewClass, []);
 			cast(view, ViewForJS).createBaseShape(childSprite);
@@ -74,7 +68,5 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 
 			viewMap.get(mcHeadName).set(cast viewId, view);
 		}
-		return viewMap;
 	}
-
 }

@@ -34,58 +34,17 @@ class FlashToBox2dConverter {
 	}
 	private function createViewMap(chunk:Chunk, viewClass:Class<View>, materialId:Int):Hash<Hash<View>> {
 
-		/*
 		var viewMap:Hash<Hash<View>> = new Hash();
 		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL, new Hash());
 		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO, new Hash());
 
 		var userDataSetLength:Int = chunk.getUserDataSetLength();
 
-		var chunkSprite = chunk.chunkSprite;
-		for (i in 0...chunkSprite.getNumChildren()) {
+		createViewMapChild(chunk, viewClass, materialId, viewMap, userDataSetLength);
 
-			var childSprite:MovieClip = cast(chunkSprite.getChildAt(i));
-
-			var mcName:String = "";
-			var fields = Reflect.fields(chunkSprite);
-
-			for(prop in fields){
-				if(Reflect.field(chunkSprite, prop) != childSprite) continue;
-				mcName = prop;
-				break;
-			}
-
-			var mcHeadName:String =
-				(mcName.indexOf(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO) == -1) ?
-					Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL : Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO;
-
-			//Instance property name of Toolkit for CreateJS 1.1 is
-			// "OriginalProperty" + "_" + "SerialNumber" or
-			// "instance" + "_" + "SerialNumber"
-			var viewId:Int =
-				(mcHeadName == Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL) ?
-					cast mcName.substring(mcHeadName.length).split("_")[0] :
-					cast mcName.substring(mcHeadName.length).split("_").slice(-1)[0];
-
-			var userData:UserData = (
-				mcHeadName == Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL &&
-				viewId < userDataSetLength
-			) ?
-			chunk.getUserData(viewId) : new UserData();
-
-			var view:View = Type.createInstance(viewClass, []);
-			view.createBaseShape(childSprite);
-			view.initialize(
-				materialId, mcHeadName, viewId,
-				chunk.bodyType, chunk.bullet, chunk.restitution, chunk.friction, chunk.density,
-				chunk.fixedRotation, userData, chunk.groupIndex, chunk.firstVisible
-			);
-
-			viewMap.get(mcHeadName).set(cast viewId, view);
-		}
 		return viewMap;
-		*/
-		return null;
+	}
+	private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, materialId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int){
 	}
 
 	/**

@@ -1,12 +1,13 @@
-package com.dango_itimi.toolkit_for_createjs.box2d.view;
+package com.dango_itimi.as3.box2d.view;
+
+import flash.display.MovieClip;
 import com.dango_itimi.box2d.view.View;
-import createjs.easeljs.MovieClip;
-import com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil;
 import box2D.collision.shapes.B2PolygonShape;
 import box2D.common.math.B2Vec2;
-class Polygon extends ViewForJS{
 
-	private var verticesMap:Hash<BaseShapeForJS>;
+class Polygon extends ViewForFlash{
+
+	private var verticesMap:Hash<BaseShapeForFlash>;
 	private var verticesTotal:Int;
 
 	override private function initializeChild(){
@@ -22,8 +23,8 @@ class Polygon extends ViewForJS{
 			var id = prop.substring(View.POINT_MC_HEAD_NAME.length).split("_")[0];
 			if(Math.isNaN(cast id)) continue;
 
-			var property:MovieClip = ContainerUtil.getProperty(chunkSprite, prop);
-			var baseShape = new BaseShapeForJS();
+			var property:MovieClip = Reflect.field(chunkSprite, prop);
+			var baseShape = new BaseShapeForFlash();
 			baseShape.setShapeSprite(property);
 			verticesMap.set(id, baseShape);
 
@@ -43,7 +44,7 @@ class Polygon extends ViewForJS{
 		var vertices:Array<B2Vec2> = [];
 		for (i in 0...verticesTotal) {
 
-			var pt:BaseShapeForJS = verticesMap.get(cast i);
+			var pt:BaseShapeForFlash = verticesMap.get(cast i);
 			var b2Vec2 = new B2Vec2(pt.getCenterX() / scale, pt.getCenterY() / scale);
 			vertices.push(b2Vec2);
 		}

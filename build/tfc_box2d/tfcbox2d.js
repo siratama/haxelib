@@ -9973,8 +9973,15 @@ com.dango_itimi.box2d.FlashToBox2dConverter.prototype = {
 		this.executeForMap(this.circleMap,world,BOX2D_SCALE);
 		this.executeForMap(this.polygonMap,world,BOX2D_SCALE);
 	}
+	,createViewMapChild: function(chunk,viewClass,materialId,viewMap,userDataSetLength) {
+	}
 	,createViewMap: function(chunk,viewClass,materialId) {
-		return null;
+		var viewMap = new Hash();
+		viewMap.set("c",new Hash());
+		viewMap.set("instance",new Hash());
+		var userDataSetLength = chunk.getUserDataSetLength();
+		this.createViewMapChild(chunk,viewClass,materialId,viewMap,userDataSetLength);
+		return viewMap;
 	}
 	,parse: function(chunkSet,map,viewClass) {
 		var len = chunkSet.length;
@@ -10245,12 +10252,12 @@ com.dango_itimi.box2d.view.View.prototype = {
 		return view;
 	}
 	,toString: function() {
-		haxe.Log.trace("key: " + this.key,{ fileName : "View.hx", lineNumber : 89, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "View.hx", lineNumber : 90, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "View.hx", lineNumber : 91, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("friction: " + this.friction,{ fileName : "View.hx", lineNumber : 92, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "View.hx", lineNumber : 93, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
-		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "View.hx", lineNumber : 94, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("key: " + this.key,{ fileName : "View.hx", lineNumber : 91, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("bodyType: " + Std.string(this.bodyType),{ fileName : "View.hx", lineNumber : 92, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("restitution: " + this.restitution,{ fileName : "View.hx", lineNumber : 93, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("friction: " + this.friction,{ fileName : "View.hx", lineNumber : 94, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("fixedRotation: " + Std.string(this.fixedRotation),{ fileName : "View.hx", lineNumber : 95, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
+		haxe.Log.trace("userData: " + Std.string(this.userData),{ fileName : "View.hx", lineNumber : 96, className : "com.dango_itimi.box2d.view.View", methodName : "toString"});
 	}
 	,initializeChild: function() {
 	}
@@ -10272,7 +10279,7 @@ com.dango_itimi.box2d.view.View.prototype = {
 		this.userData = userData;
 		this.key = Type.getClassName(Type.getClass(this)) + materialId + "_" + mcHeadName + "_" + id;
 		if(clonedId != -1) this.key = this.key + "_" + clonedId;
-		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "View.hx", lineNumber : 78, className : "com.dango_itimi.box2d.view.View", methodName : "initialize"});
+		if(userData.key != null) haxe.Log.trace("Error! Dont set up userData.key",{ fileName : "View.hx", lineNumber : 80, className : "com.dango_itimi.box2d.view.View", methodName : "initialize"});
 		userData.key = this.key;
 		this.initializeChild();
 	}
@@ -10312,11 +10319,7 @@ com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS = $hxClass
 com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.__name__ = ["com","dango_itimi","toolkit_for_createjs","box2d","FlashToBox2dConverterForJS"];
 com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.__super__ = com.dango_itimi.box2d.FlashToBox2dConverter;
 com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.prototype = $extend(com.dango_itimi.box2d.FlashToBox2dConverter.prototype,{
-	createViewMap: function(chunk,viewClass,materialId) {
-		var viewMap = new Hash();
-		viewMap.set("c",new Hash());
-		viewMap.set("instance",new Hash());
-		var userDataSetLength = chunk.getUserDataSetLength();
+	createViewMapChild: function(chunk,viewClass,materialId,viewMap,userDataSetLength) {
 		var chunkSprite = chunk.chunkSprite;
 		var _g1 = 0, _g = chunkSprite.getNumChildren();
 		while(_g1 < _g) {
@@ -10340,7 +10343,6 @@ com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.prototype 
 			view.initialize(materialId,mcHeadName,viewId,chunk.bodyType,chunk.bullet,chunk.restitution,chunk.friction,chunk.density,chunk.fixedRotation,userData,chunk.groupIndex,chunk.categoryBits,chunk.maskBits,chunk.firstVisible);
 			viewMap.get(mcHeadName).set(viewId,view);
 		}
-		return viewMap;
 	}
 	,__class__: com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS
 });
@@ -10846,5 +10848,5 @@ box2D.dynamics.joints.B2PulleyJoint.b2_minPulleyLength = 2.0;
 box2D.dynamics.joints.B2RevoluteJoint.tImpulse = new box2D.common.math.B2Vec2();
 com.dango_itimi.box2d.fla.Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL = "c";
 com.dango_itimi.box2d.fla.Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO = "instance";
-com.dango_itimi.toolkit_for_createjs.box2d.view.Polygon.POINT_MC_HEAD_NAME = "p";
+com.dango_itimi.box2d.view.View.POINT_MC_HEAD_NAME = "p";
 TFCBox2D.main();

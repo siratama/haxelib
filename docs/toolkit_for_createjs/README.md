@@ -258,19 +258,6 @@ EaselJS の Container クラスには width や height プロパティは用意�
 
 サンプルの Player クラス内コンストラクタでは nominalBounds を取得変換(com.dango_itimi.utils.RectangleUtil 型に変換) し フィールド値として設定しています。 
 
-###Flash CS のステージ上に配置したインスタンスプロパティの取得: ContainerUtil.getProperty メソッド
-
-Flash CS のステージ上に配置したインスタンスプロパティをスクリプトから取得する場合、 com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil クラスの getProperty メソッドを利用します。 
-
-例えば、 Flash CS 上で設定した shooting.player.View ムービークリップ内 test インスタンスプロパティを取得するには javascript の場合以下のように記述します。 
-
-    var view = new lib.shootingplayerView();
-    var testProperty = com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getProperty(view, "test");
-
-詳細は以下の URL をご覧ください。 
-
-[http://www.dango-itimi.com/blog/archives/2013/001164.html](http://www.dango-itimi.com/blog/archives/2013/001164.html)
-
 ###fla ファイル分割
 
 プロジェクトの規模が大きくなると fla ファイルを複数に分割して作成する事があります。 サンプルの view.fla 以外に test.fla というものを作成した場合、 パブリッシュ先ディレクトリは以下の様な構成にします。 
@@ -315,7 +302,7 @@ TFCLib は MIT ライセンスです。
 
 TFCLib はそれぞれ以下のバージョンに対応しています。
 
-* Toolkit for CreateJS 1.1
+* Toolkit for CreateJS 1.2
 * EaselJS 0.6.0
 * TweenJS 0.4.0
 * SoundJS 0.4.0

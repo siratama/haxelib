@@ -41,15 +41,15 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 			}
 
 			var mcHeadName:String =
-			(mcName.indexOf(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO) == -1) ?
-			Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL : Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO;
+				(mcName.indexOf(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO) == -1) ?
+					Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL : Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO;
 
-			//Instance property name of Toolkit for CreateJS 1.1 is
-			// "OriginalProperty" + "_" + "SerialNumber" or
+			//Instance property name of Toolkit for CreateJS 1.2 is
+			// "OriginalProperty" or
 			// "instance" + "_" + "SerialNumber"
 			var viewId:Int =
 				(mcHeadName == Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL) ?
-					cast mcName.substring(mcHeadName.length).split("_")[0] :
+					cast mcName.substring(mcHeadName.length) :
 					cast mcName.substring(mcHeadName.length).split("_").slice(-1)[0];
 
 			var userData:UserData = (

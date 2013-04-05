@@ -10423,7 +10423,7 @@ com.dango_itimi.toolkit_for_createjs.box2d.FlashToBox2dConverterForJS.prototype 
 				break;
 			}
 			var mcHeadName = mcName.indexOf("instance") == -1?"c":"instance";
-			var viewId = mcHeadName == "c"?mcName.substring(mcHeadName.length).split("_")[0]:mcName.substring(mcHeadName.length).split("_").slice(-1)[0];
+			var viewId = mcHeadName == "c"?mcName.substring(mcHeadName.length):mcName.substring(mcHeadName.length).split("_").slice(-1)[0];
 			var userData = mcHeadName == "c" && viewId < userDataSetLength?chunk.getUserData(viewId):new com.dango_itimi.box2d.userdata.UserData();
 			var view = Type.createInstance(viewClass,[]);
 			(js.Boot.__cast(view , com.dango_itimi.toolkit_for_createjs.box2d.view.ViewForJS)).createBaseShape(childSprite);

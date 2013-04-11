@@ -1,9 +1,9 @@
 package com.dango_itimi.box2d.fla;
 class ChunkMap {
 
-	private var boxSet:Array<Chunk>;
-	private var circleSet:Array<Chunk>;
-	private var polygonSet:Array<Chunk>;
+	public var boxSet(default, null):Array<Chunk>;
+	public var circleSet(default, null):Array<Chunk>;
+	public var polygonSet(default, null):Array<Chunk>;
 
 	private var chunkClass:Class<Chunk>;
 
@@ -92,15 +92,5 @@ class ChunkMap {
 		var chunk:Chunk = new Chunk(chunkSprite, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 		chunkSet[chunkSetId] = chunk;
 		return chunk;
-	}
-
-	public function getBoxSet():Array<Chunk> {
-		return boxSet;
-	}
-	public function getCircleSet():Array<Chunk> {
-		return circleSet;
-	}
-	public function getPolygonSet():Array<Chunk> {
-		return polygonSet;
 	}
 }

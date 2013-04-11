@@ -5,7 +5,7 @@ import com.dango_itimi.utils.RectangleUtil;
 import createjs.easeljs.MovieClip;
 class BaseShapeForJS extends BaseShape{
 
-	private var bounds:RectangleUtil;
+	public var bounds(default, null):RectangleUtil;
 
 	public function setShapeSprite(shapeSprite:MovieClip) {
 
@@ -19,9 +19,5 @@ class BaseShapeForJS extends BaseShape{
 		centerX = shapeSprite.x;
 		centerY = shapeSprite.y;
 		shapeSprite.rotation = rotation;
-	}
-
-	public function getBounds():RectangleUtil {
-		return bounds;
 	}
 }

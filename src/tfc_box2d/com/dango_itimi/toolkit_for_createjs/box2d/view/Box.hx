@@ -6,7 +6,7 @@ class Box extends ViewForJS{
 
 		shape = new B2PolygonShape();
 
-		var bounds = cast(baseShape, BaseShapeForJS).getBounds();
+		var bounds = cast(baseShape, BaseShapeForJS).bounds;
 		cast(shape, B2PolygonShape).setAsBox(
 			bounds.width / 2 / scale,
 			bounds.height / 2 / scale

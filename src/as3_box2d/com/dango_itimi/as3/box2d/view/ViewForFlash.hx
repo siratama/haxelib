@@ -7,7 +7,7 @@ import com.dango_itimi.utils.MathUtil;
 
 class ViewForFlash extends View{
 
-	private var chunkSprite:MovieClip;
+	public var chunkSprite(default, null):MovieClip;
 
 	public function createBaseShape(chunkSprite:MovieClip) {
 
@@ -18,10 +18,9 @@ class ViewForFlash extends View{
 		angle = MathUtil.degToRad(chunkSprite.rotation);
 	}
 
-	override public function toString() {
+	override public function toString():String{
 
-		trace("------", chunkSprite.name);
-		super.toString();
+		return [chunkSprite.name, super.toString()].join(",");
 	}
 
 	override private function cloneChild(view:View) {
@@ -29,7 +28,10 @@ class ViewForFlash extends View{
 		cast(view, ViewForFlash).createBaseShape(chunkSprite);
 	}
 
-	public function getChunkSprite():MovieClip {
-		return chunkSprite;
+	override public function getBaseShapeWidth():Float{
+		return cast(baseShape, BaseShapeForFlash).bounds.width;
+	}
+	override public function getBaseShapeHeight():Float{
+		return cast(baseShape, BaseShapeForFlash).bounds.height;
 	}
 }

@@ -45,7 +45,7 @@ class Polygon extends ViewForFlash{
 		for (i in 0...verticesTotal) {
 
 			var pt:BaseShapeForFlash = verticesMap.get(cast i);
-			var b2Vec2 = new B2Vec2(pt.getCenterX() / scale, pt.getCenterY() / scale);
+			var b2Vec2 = new B2Vec2(pt.centerX / scale, pt.centerY / scale);
 			vertices.push(b2Vec2);
 		}
 		shape = new B2PolygonShape();

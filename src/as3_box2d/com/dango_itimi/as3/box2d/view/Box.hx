@@ -6,7 +6,7 @@ class Box extends ViewForFlash{
 
 		shape = new B2PolygonShape();
 
-		var bounds = cast(baseShape, BaseShapeForFlash).getBounds();
+		var bounds = cast(baseShape, BaseShapeForFlash).bounds;
 		cast(shape, B2PolygonShape).setAsBox(
 			bounds.width / 2 / scale,
 			bounds.height / 2 / scale

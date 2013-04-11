@@ -1,5 +1,6 @@
 package com.dango_itimi.box2d.view;
 
+import com.dango_itimi.utils.RectangleUtil;
 import box2D.common.math.B2Vec2;
 import box2D.dynamics.B2FilterData;
 import box2D.dynamics.B2World;
@@ -22,25 +23,26 @@ class View {
 	private var bodyDefPosX:Float;
 	private var bodyDefPosY:Float;
 
+	public var body(default, null):B2Body;
+	public var key(default, null):String;
+	public var fixtureDef(default, null):B2FixtureDef;
+
 	private var bodyDef:B2BodyDef;
-	private var fixtureDef:B2FixtureDef;
-	private var body:B2Body;
 	private var fixedRotation:Bool;
 	private var userData:UserData;
-	private var key:String;
 	private var angle:Float;
 	private var density:Float;
 	private var groupIndex:Int;
 	private var firstVisible:Bool;
 	private var bullet:Bool;
-	private var materialId:Int;
+	private var chunkSetId:Int;
 	private var mcHeadName:String;
 	private var id:Int;
 	private var categoryBits:Int;
 	private var maskBits:Int;
 
 	public function initialize(
-		materialId:Int,
+		chunkSetId:Int,
 		mcHeadName:String,
 		id:Int,
 		bodyType:Bool,
@@ -60,7 +62,7 @@ class View {
 		this.categoryBits = categoryBits;
 		this.id = id;
 		this.mcHeadName = mcHeadName;
-		this.materialId = materialId;
+		this.chunkSetId = chunkSetId;
 		this.bullet = bullet;
 		this.firstVisible = firstVisible;
 		this.groupIndex = groupIndex;
@@ -71,7 +73,7 @@ class View {
 		this.bodyType = bodyType;
 		this.userData = userData;
 
-		key = Type.getClassName(Type.getClass(this)) + materialId + "_" + mcHeadName + "_" + id;
+		key = Type.getClassName(Type.getClass(this)) + chunkSetId + "_" + mcHeadName + "_" + id;
 
 		if(clonedId != -1)
 			key = key + "_" + clonedId;
@@ -86,14 +88,8 @@ class View {
 	private function initializeChild() {
 	}
 
-	public function toString() {
-
-		trace('key: ' + (key));
-		trace('bodyType: ' + (bodyType));
-		trace('restitution: ' + (restitution));
-		trace('friction: ' + (friction));
-		trace('fixedRotation: ' + (fixedRotation));
-		trace('userData: ' + (userData));
+	public function toString():String{
+		return key;
 	}
 
 	public function clone(clonedId:Int):View {
@@ -102,7 +98,7 @@ class View {
 		var view:View = Type.createInstance(viewClass, []);
 		var clonedUserData:UserData = userData.clone();
 		cloneChild(view);
-		view.initialize(materialId, mcHeadName, id, bodyType, bullet, restitution, friction, density, fixedRotation, clonedUserData, groupIndex, categoryBits, maskBits, firstVisible, clonedId);
+		view.initialize(chunkSetId, mcHeadName, id, bodyType, bullet, restitution, friction, density, fixedRotation, clonedUserData, groupIndex, categoryBits, maskBits, firstVisible, clonedId);
 		return view;
 	}
 	private function cloneChild(view:View){
@@ -123,8 +119,8 @@ class View {
 	}
 	private function setBodyDefPosition(scale:Float) {
 
-		bodyDefPosX = baseShape.getCenterX() / scale;
-		bodyDefPosY = baseShape.getCenterY() / scale;
+		bodyDefPosX = baseShape.centerX / scale;
+		bodyDefPosY = baseShape.centerY / scale;
 	}
 	private function createBodyDef() {
 
@@ -174,45 +170,33 @@ class View {
 	/**
 	 *
 	 */
-	public function applyImpulse(vec:B2Vec2, pos:B2Vec2 = null) {
-
-		if(pos == null)
-			pos = body.getPosition();
-
-		body.applyImpulse(vec, pos);
+	public function applyImpulseToBodyCenter(impulseX:Float, impulseY:Float) {
+		body.applyImpulse(new B2Vec2(impulseX, impulseY), body.getLocalCenter());
 	}
-	public function setLinearVelocity(vec:B2Vec2) {
-
-		if(!body.isAwake())
-			body.setAwake(true);
-
-		body.setLinearVelocity(vec);
+	public function setPosition(x:Float, y:Float) {
+		body.setPosition(new B2Vec2(x, y));
+	}
+	public function setLinearVelocity(x:Float = 0, y:Float = 0) {
+		body.setLinearVelocity(new B2Vec2(x, y));
 	}
 	public function applyImpulseForAntiGravity(gravityY:Float) {
-
-		body.applyForce(new B2Vec2(0, body.getMass() * -gravityY), body.getPosition());
+		body.applyForce(new B2Vec2(0, body.getMass() * -gravityY), body.getLocalCenter());
 	}
 
 	/**
 	 *
 	 */
-	public function getBody():B2Body {
-		return body;
-	}
-
-	public function getKey():String {
-		return key;
-	}
-
 	public function getAngle():Float {
 		return angle;
 	}
-
 	public function setAngle(angle:Float) {
 		this.angle = angle;
 	}
-
-	public function getFixtureDef():B2FixtureDef {
-		return fixtureDef;
+	public function getBaseShapeWidth():Float{
+		return 0;
 	}
+	public function getBaseShapeHeight():Float{
+		return 0;
+	}
+
 }

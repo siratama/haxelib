@@ -24,7 +24,7 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 		super(chunkMap);
 	}
 
-	override private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, materialId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int) {
+	override private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int) {
 
 		var chunkSprite = chunk.chunkSprite;
 		for (i in 0...chunkSprite.getNumChildren()) {
@@ -61,7 +61,7 @@ class FlashToBox2dConverterForJS extends FlashToBox2dConverter{
 			var view:View = Type.createInstance(viewClass, []);
 			cast(view, ViewForJS).createBaseShape(childSprite);
 			view.initialize(
-				materialId, mcHeadName, viewId,
+				chunkSetId, mcHeadName, viewId,
 				chunk.bodyType, chunk.bullet, chunk.restitution, chunk.friction, chunk.density,
 				chunk.fixedRotation, userData, chunk.groupIndex, chunk.categoryBits, chunk.maskBits, chunk.firstVisible
 			);

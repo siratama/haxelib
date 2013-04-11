@@ -7,7 +7,7 @@ import createjs.easeljs.MovieClip;
 
 class ViewForJS extends View{
 
-	private var chunkSprite:MovieClip;
+	public var chunkSprite(default, null):MovieClip;
 
 	public function createBaseShape(chunkSprite:MovieClip) {
 
@@ -18,10 +18,9 @@ class ViewForJS extends View{
 		angle = MathUtil.degToRad(chunkSprite.rotation);
 	}
 
-	override public function toString() {
+	override public function toString():String {
 
-		trace("------", chunkSprite.name);
-		super.toString();
+		return [chunkSprite.name, super.toString()].join(",");
 	}
 
 	override private function cloneChild(view:View) {
@@ -29,7 +28,10 @@ class ViewForJS extends View{
 		cast(view, ViewForJS).createBaseShape(chunkSprite);
 	}
 
-	public function getChunkSprite():MovieClip {
-		return chunkSprite;
+	override public function getBaseShapeWidth():Float{
+		return cast(baseShape, BaseShapeForJS).bounds.width;
+	}
+	override public function getBaseShapeHeight():Float{
+		return cast(baseShape, BaseShapeForJS).bounds.height;
 	}
 }

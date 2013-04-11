@@ -22,9 +22,9 @@ class FlashToBox2dConverter {
 		circleMap = new Hash();
 		polygonMap = new Hash();
 
-		parse(chunkMap.getBoxSet(), boxMap, boxClass);
-		parse(chunkMap.getCircleSet(), circleMap, circleClass);
-		parse(chunkMap.getPolygonSet(), polygonMap, polygonClass);
+		parse(chunkMap.boxSet, boxMap, boxClass);
+		parse(chunkMap.circleSet, circleMap, circleClass);
+		parse(chunkMap.polygonSet, polygonMap, polygonClass);
 	}
 	private function parse(chunkSet:Array<Chunk>, map:Hash<Hash<Hash<View>>>, viewClass:Class<View>){
 
@@ -32,7 +32,7 @@ class FlashToBox2dConverter {
 		for (i in 0...len)
 			map.set(cast i, createViewMap(chunkSet[i], viewClass, i));
 	}
-	private function createViewMap(chunk:Chunk, viewClass:Class<View>, materialId:Int):Hash<Hash<View>> {
+	private function createViewMap(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int):Hash<Hash<View>> {
 
 		var viewMap:Hash<Hash<View>> = new Hash();
 		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL, new Hash());
@@ -40,11 +40,11 @@ class FlashToBox2dConverter {
 
 		var userDataSetLength:Int = chunk.getUserDataSetLength();
 
-		createViewMapChild(chunk, viewClass, materialId, viewMap, userDataSetLength);
+		createViewMapChild(chunk, viewClass, chunkSetId, viewMap, userDataSetLength);
 
 		return viewMap;
 	}
-	private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, materialId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int){
+	private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int){
 	}
 
 	/**
@@ -70,20 +70,20 @@ class FlashToBox2dConverter {
 	/**
 	*
 	**/
-	public function getBox(materialId:Int, viewId:Int):View {
+	public function getBox(chunkSetId:Int, viewId:Int):View {
 
-		return getView(materialId, viewId, boxMap);
+		return getView(chunkSetId, viewId, boxMap);
 	}
-	public function getCircle(materialId:Int, viewId:Int):View {
+	public function getCircle(chunkSetId:Int, viewId:Int):View {
 
-		return getView(materialId, viewId, circleMap);
+		return getView(chunkSetId, viewId, circleMap);
 	}
-	public function getPolygon(materialId:Int, viewId:Int):View {
+	public function getPolygon(chunkSetId:Int, viewId:Int):View {
 
-		return getView(materialId, viewId, polygonMap);
+		return getView(chunkSetId, viewId, polygonMap);
 	}
-	private function getView(materialId:Int, viewId:Int, map:Hash<Hash<Hash<View>>>):View {
+	private function getView(chunkSetId:Int, viewId:Int, map:Hash<Hash<Hash<View>>>):View {
 
-		return map.get(cast materialId).get(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL).get(cast viewId);
+		return map.get(cast chunkSetId).get(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL).get(cast viewId);
 	}
 }

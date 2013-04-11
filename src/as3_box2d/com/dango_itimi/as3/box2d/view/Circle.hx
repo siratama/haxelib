@@ -4,7 +4,7 @@ class Circle extends ViewForFlash{
 
 	override private function createShape(scale:Float) {
 
-		var bounds = cast(baseShape, BaseShapeForFlash).getBounds();
+		var bounds = cast(baseShape, BaseShapeForFlash).bounds;
 		shape = new B2CircleShape(bounds.width / 2 / scale);
 	}
 }

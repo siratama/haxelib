@@ -4,7 +4,7 @@ class Circle extends ViewForJS{
 
 	override private function createShape(scale:Float) {
 
-		var bounds = cast(baseShape, BaseShapeForJS).getBounds();
+		var bounds = cast(baseShape, BaseShapeForJS).bounds;
 		shape = new B2CircleShape(bounds.width / 2 / scale);
 	}
 }

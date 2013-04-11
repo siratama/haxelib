@@ -6,7 +6,7 @@ import com.dango_itimi.box2d.view.BaseShape;
 
 class BaseShapeForFlash extends BaseShape{
 
-	private var bounds:Rectangle;
+	public var bounds(default, null):Rectangle;
 
 	public function setShapeSprite(shapeSprite:MovieClip) {
 
@@ -14,12 +14,9 @@ class BaseShapeForFlash extends BaseShape{
 		shapeSprite.rotation = 0;
 
 		bounds = shapeSprite.getBounds(shapeSprite.parent);
+
 		centerX = shapeSprite.x;
 		centerY = shapeSprite.y;
 		shapeSprite.rotation = rotation;
-	}
-
-	public function getBounds():Rectangle {
-		return bounds;
 	}
 }

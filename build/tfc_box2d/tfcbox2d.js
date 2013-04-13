@@ -10182,12 +10182,12 @@ com.dango_itimi.box2d.view.View.prototype = {
 	,applyImpulseToBodyCenter: function(impulseX,impulseY) {
 		this.body.applyImpulse(new box2D.common.math.B2Vec2(impulseX,impulseY),this.body.getLocalCenter());
 	}
-	,destroyB2Body: function(world) {
-		world.destroyBody(this.body);
+	,destroyB2Body: function(b2World) {
+		b2World.destroyBody(this.body);
 		this.body = null;
 	}
-	,createB2Body: function(world) {
-		this.body = world.createBody(this.bodyDef);
+	,createB2Body: function(b2World) {
+		this.body = b2World.createBody(this.bodyDef);
 		this.body.createFixture(this.fixtureDef);
 	}
 	,createFixtureDef: function() {
@@ -10219,12 +10219,12 @@ com.dango_itimi.box2d.view.View.prototype = {
 		this.bodyDefPosX = this.baseShape.centerX / scale;
 		this.bodyDefPosY = this.baseShape.centerY / scale;
 	}
-	,createBox2D: function(world,scale) {
+	,createBox2D: function(b2World,scale) {
 		this.setBodyDefPosition(scale);
 		this.createBodyDef();
 		this.createShape(scale);
 		this.createFixtureDef();
-		if(this.firstVisible) this.createB2Body(world);
+		if(this.firstVisible) this.createB2Body(b2World);
 	}
 	,cloneChild: function(view) {
 	}

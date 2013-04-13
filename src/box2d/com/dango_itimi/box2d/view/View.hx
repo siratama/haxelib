@@ -107,7 +107,7 @@ class View {
 	/**
 	 *
 	 */
-	public function createBox2D(world:B2World, scale:Float) {
+	public function createBox2D(b2World:B2World, scale:Float) {
 
 		setBodyDefPosition(scale);
 		createBodyDef();
@@ -115,7 +115,7 @@ class View {
 		createFixtureDef();
 
 		if(firstVisible)
-			createB2Body(world);
+			createB2Body(b2World);
 	}
 	private function setBodyDefPosition(scale:Float) {
 
@@ -155,14 +155,14 @@ class View {
 		filter.maskBits = maskBits;
 		fixtureDef.filter = filter;
 	}
-	public function createB2Body(world:B2World) {
+	public function createB2Body(b2World:B2World) {
 
-		body = world.createBody(bodyDef);
+		body = b2World.createBody(bodyDef);
 		body.createFixture(fixtureDef);
 	}
-	public function destroyB2Body(world:B2World) {
+	public function destroyB2Body(b2World:B2World) {
 
-		world.destroyBody(body);
+		b2World.destroyBody(body);
 		body = null;
 	}
 

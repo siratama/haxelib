@@ -6,7 +6,7 @@ import com.dango_itimi.createjs.sound.SoundEffectMap;
 
 class SoundPlayer {
 
-	private static var soundEffectMap:SoundEffectMap;
+	private static var soundEffectMap(default, null):SoundEffectMap;
 
 	public static function initialize(){
 
@@ -18,8 +18,5 @@ class SoundPlayer {
 	private static function playForFrameSound(soundId:String, ?loop:Int = 0){
 
 		soundEffectMap.play(soundId, Sound.INTERRUPT_EARLY, 0, 0, loop);
-	}
-	public static function getSoundEffectMap():SoundEffectMap{
-		return soundEffectMap;
 	}
 }

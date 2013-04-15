@@ -8,10 +8,12 @@ class SoundEffectMapForFlash extends SoundEffectMap{
 
 		super();
 	}
-	public function register(cls:Class<Sound>, ?intervalFrame:Int = 5, ?volume:Int = 1.0):SoundEffectForFlash {
+	public function register(cls:Class<Sound>, ?intervalFrame:Int = 5, ?volume:Float = 1.0, ?pan:Float = 0):SoundEffectForFlash {
 
-		var soundEffect:SoundEffectForFlash = new SoundEffectForFlash(cls, intervalFrame, volume);
-		soundEffectSet.push(soundEffect);
+		var id = Type.getClassName(cls);
+
+		var soundEffect:SoundEffectForFlash = new SoundEffectForFlash(cls, id, intervalFrame, volume, pan);
+		soundEffectMap.set(id, soundEffect);
 		return soundEffect;
 	}
 }

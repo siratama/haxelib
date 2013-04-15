@@ -167,22 +167,34 @@ Tookit for CreateJS で出力されたサウンドファイルをそのまま利
 
 有効化されるだけであり、まだこの段階で音が再生されるわけではありません。 
 
+###サウンド再生ライブラリ処理呼び出し
+
+サウンド再生を正常に行うためには、SoundEffectMap.run メソッドをフレームごとに呼び出す必要があります。今回の例では deploy/js/Index.js 内 Index.play メソッド内で定期的に呼び出しています。
+
+    com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.run();
+
 ###MovieClip 生成とタイムラインサウンドの再生
 
 deploy/js/Index.js 内 Player クラスにて、 fla ファイルで設定した shooting.player.View クラスに対する MovieClip (lib.shootingplayerView) の生成を行なっています。 この MovieClip を再生すると、 タイムラインに配置したサウンドファイル shooting.se.Shot の再生も行われます。 
 
 ###任意のタイミングでのサウンド再生
 
-deploy/js/Index.js 内 SoundMixer クラスにて、 fla ファイルで設定した shooting.se.Bgm の再生を行なっています。 
+deploy/js/Index.js 内 SoundMixer クラスにて、fla ファイルで設定した shooting.se.Bgm の再生を行なっています。 
 
-SoundPlayer.getSoundEffectMap().play メソッド経由でサウンドを再生する事により、 SoundJS の Sound.play メソッドから生成される SoundInstance の 再利用化が自動的になされる仕組みになっています。 
+SoundPlayer.soundEffectMap.play メソッド経由でサウンドを再生する事により、 SoundJS の Sound.play メソッドから生成される SoundInstance の 再利用化が自動的になされる仕組みになっています。
 
 ###サウンド追加
 
-Bgm の他、例えば fla/view.fla ファイル内に Test というサウンドファイルを追加した場合、 SoundMixer クラス内に以下の playForTest メソッドを追加します。 
+Bgm の他、例えば fla/view.fla ファイル内に Test というサウンドファイルを追加した場合、 SoundMixer.initialize メソッド内で testSoundEffect インスタンスを作成後、 playForTest メソッドを追加します。 
 
+    SoundMixer.initialize = function(){
+
+    	SoundMixer.SOUND_PACKAGE = ["shooting", "se"].join("");
+    	SoundMixer.bgmSoundEffect = SoundMixer.register("Bgm", 1, 0, 0, -1);
+    	SoundMixer.testSoundEffect = SoundMixer.register("Test"); //追加
+    };
     SoundMixer.playForTest = function(){
-        SoundMixer.play("Test");
+        com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(SoundMixer.testSoundEffect);
     };
 
 以上で、javascript による利用手順の説明は完了です。

@@ -47,6 +47,9 @@ Index.prototype.play = function(){
 
     this.player.run();
     this.stage.update();
+
+    com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.run();
+
 };
 
 /**
@@ -82,15 +85,16 @@ function SoundMixer(){
 SoundMixer.initialize = function(){
 
     SoundMixer.SOUND_PACKAGE = ["shooting", "se"].join("");
+    SoundMixer.bgmSoundEffect = SoundMixer.register("Bgm", 1, 0, 0, -1);
 };
-SoundMixer.play = function(soundClassName, volume, delay, offset, loop){
+SoundMixer.register = function(soundClassName, volume, delay, offset, loop){
 
-    com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap().play(
+    return com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.register(
         SoundMixer.SOUND_PACKAGE + soundClassName,
-        createjs.Sound.INTERRUPT_EARLY, delay, offset, loop, volume
+        0, createjs.Sound.INTERRUPT_EARLY, delay, offset, loop, volume
     );
 };
 SoundMixer.playForBgm = function(){
-    SoundMixer.play("Bgm", 1, 0, 0, -1);
+    com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(SoundMixer.bgmSoundEffect);
 };
 

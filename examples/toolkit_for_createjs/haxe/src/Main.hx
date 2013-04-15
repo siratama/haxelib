@@ -65,6 +65,7 @@ class Main {
 	private function runForGameScene(){
 
 		player.run();
+		SoundPlayer.soundEffectMap.run();
 		stage.update();
 	}
 }

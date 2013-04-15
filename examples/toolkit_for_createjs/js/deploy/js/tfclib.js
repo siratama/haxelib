@@ -1,4 +1,9 @@
 var $hxClasses = $hxClasses || {},$estr = function() { return js.Boot.__string_rec(this,''); };
+function $extend(from, fields) {
+	function inherit() {}; inherit.prototype = from; var proto = new inherit();
+	for (var name in fields) proto[name] = fields[name];
+	return proto;
+}
 var Hash = $hxClasses["Hash"] = function() {
 	this.h = { };
 };
@@ -436,6 +441,72 @@ Type.allEnums = function(e) {
 }
 var com = com || {}
 if(!com.dango_itimi) com.dango_itimi = {}
+if(!com.dango_itimi.as3_and_createjs) com.dango_itimi.as3_and_createjs = {}
+if(!com.dango_itimi.as3_and_createjs.sound) com.dango_itimi.as3_and_createjs.sound = {}
+com.dango_itimi.as3_and_createjs.sound.SoundEffect = $hxClasses["com.dango_itimi.as3_and_createjs.sound.SoundEffect"] = function(id,intervalFrame,volume,pan) {
+	this.id = id;
+	this.intervalFrame = intervalFrame;
+	this.volume = volume;
+	this.pan = pan;
+	this.interval = 0;
+	this.mainFunction = $bind(this,this.finish);
+};
+com.dango_itimi.as3_and_createjs.sound.SoundEffect.__name__ = ["com","dango_itimi","as3_and_createjs","sound","SoundEffect"];
+com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype = {
+	decrementInterval: function() {
+		if(this.interval > 0) this.interval--; else this.mainFunction = $bind(this,this.finish);
+	}
+	,playChild: function() {
+	}
+	,play: function() {
+		if(this.interval > 0) return;
+		this.playChild();
+		this.interval = this.intervalFrame;
+		this.mainFunction = $bind(this,this.decrementInterval);
+	}
+	,isFinished: function() {
+		return Reflect.compareMethods(this.mainFunction,$bind(this,this.finish));
+	}
+	,finish: function() {
+	}
+	,run: function() {
+		this.mainFunction();
+	}
+	,id: null
+	,pan: null
+	,volume: null
+	,intervalFrame: null
+	,interval: null
+	,mainFunction: null
+	,__class__: com.dango_itimi.as3_and_createjs.sound.SoundEffect
+}
+com.dango_itimi.as3_and_createjs.sound.SoundEffectMap = $hxClasses["com.dango_itimi.as3_and_createjs.sound.SoundEffectMap"] = function() {
+	this.playingSoundEffectMap = new Hash();
+	this.soundEffectMap = new Hash();
+	this.mute = false;
+};
+com.dango_itimi.as3_and_createjs.sound.SoundEffectMap.__name__ = ["com","dango_itimi","as3_and_createjs","sound","SoundEffectMap"];
+com.dango_itimi.as3_and_createjs.sound.SoundEffectMap.prototype = {
+	play: function(soundEffect) {
+		if(this.mute) return;
+		if(this.playingSoundEffectMap.exists(soundEffect.id)) return;
+		soundEffect.play();
+		this.playingSoundEffectMap.set(soundEffect.id,soundEffect);
+	}
+	,run: function() {
+		var $it0 = this.playingSoundEffectMap.keys();
+		while( $it0.hasNext() ) {
+			var key = $it0.next();
+			var soundEffect = this.playingSoundEffectMap.get(key);
+			soundEffect.run();
+			if(soundEffect.isFinished()) this.playingSoundEffectMap.remove(key);
+		}
+	}
+	,playingSoundEffectMap: null
+	,soundEffectMap: null
+	,mute: null
+	,__class__: com.dango_itimi.as3_and_createjs.sound.SoundEffectMap
+}
 if(!com.dango_itimi.createjs) com.dango_itimi.createjs = {}
 if(!com.dango_itimi.createjs.net) com.dango_itimi.createjs.net = {}
 com.dango_itimi.createjs.net.LoaderWithLoadQueue = $hxClasses["com.dango_itimi.createjs.net.LoaderWithLoadQueue"] = function(useXHR,plugin) {
@@ -524,28 +595,53 @@ com.dango_itimi.createjs.net.manifest.ManifestItemSet.prototype = {
 	,__class__: com.dango_itimi.createjs.net.manifest.ManifestItemSet
 }
 if(!com.dango_itimi.createjs.sound) com.dango_itimi.createjs.sound = {}
-com.dango_itimi.createjs.sound.SoundEffectMap = $hxClasses["com.dango_itimi.createjs.sound.SoundEffectMap"] = function() {
-	this.map = new Hash();
+com.dango_itimi.createjs.sound.SoundEffectForJS = $hxClasses["com.dango_itimi.createjs.sound.SoundEffectForJS"] = function(id,intervalFrame,interrupt,delay,offset,loop,volume,pan) {
+	this.interrupt = interrupt;
+	this.delay = delay;
+	this.offset = offset;
+	this.loop = loop;
+	com.dango_itimi.as3_and_createjs.sound.SoundEffect.call(this,id,intervalFrame,volume,pan);
 };
-com.dango_itimi.createjs.sound.SoundEffectMap.__name__ = ["com","dango_itimi","createjs","sound","SoundEffectMap"];
-com.dango_itimi.createjs.sound.SoundEffectMap.prototype = {
-	play: function(soundId,interrupt,delay,offset,loop,volume,pan) {
+com.dango_itimi.createjs.sound.SoundEffectForJS.__name__ = ["com","dango_itimi","createjs","sound","SoundEffectForJS"];
+com.dango_itimi.createjs.sound.SoundEffectForJS.__super__ = com.dango_itimi.as3_and_createjs.sound.SoundEffect;
+com.dango_itimi.createjs.sound.SoundEffectForJS.prototype = $extend(com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype,{
+	playChild: function() {
+		if(this.soundInstance == null) this.soundInstance = createjs.Sound.play(this.id,this.interrupt,this.delay,this.offset,this.loop); else this.soundInstance.play();
+		this.soundInstance.setVolume(this.volume);
+		this.soundInstance.setPan(this.pan);
+	}
+	,loop: null
+	,offset: null
+	,delay: null
+	,interrupt: null
+	,soundInstance: null
+	,__class__: com.dango_itimi.createjs.sound.SoundEffectForJS
+});
+com.dango_itimi.createjs.sound.SoundEffectMapForJS = $hxClasses["com.dango_itimi.createjs.sound.SoundEffectMapForJS"] = function() {
+	com.dango_itimi.as3_and_createjs.sound.SoundEffectMap.call(this);
+};
+com.dango_itimi.createjs.sound.SoundEffectMapForJS.__name__ = ["com","dango_itimi","createjs","sound","SoundEffectMapForJS"];
+com.dango_itimi.createjs.sound.SoundEffectMapForJS.__super__ = com.dango_itimi.as3_and_createjs.sound.SoundEffectMap;
+com.dango_itimi.createjs.sound.SoundEffectMapForJS.prototype = $extend(com.dango_itimi.as3_and_createjs.sound.SoundEffectMap.prototype,{
+	playForFrameSound: function(id,loop) {
+		if(loop == null) loop = 0;
+		var soundEffect = this.soundEffectMap.exists(id)?this.soundEffectMap.get(id):this.register(id,0,"early",0,0,loop);
+		soundEffect.play();
+	}
+	,register: function(id,intervalFrame,interrupt,delay,offset,loop,volume,pan) {
 		if(pan == null) pan = 0;
-		if(volume == null) volume = 1;
+		if(volume == null) volume = 1.0;
 		if(loop == null) loop = 0;
 		if(offset == null) offset = 0;
 		if(delay == null) delay = 0;
-		var soundInstance = this.map.get(soundId);
-		if(soundInstance == null) {
-			soundInstance = createjs.Sound.play(soundId,interrupt,delay,offset,loop);
-			this.map.set(soundId,soundInstance);
-		} else soundInstance.play();
-		soundInstance.setVolume(volume);
-		soundInstance.setPan(pan);
+		if(interrupt == null) interrupt = "early";
+		if(intervalFrame == null) intervalFrame = 5;
+		var soundEffect = new com.dango_itimi.createjs.sound.SoundEffectForJS(id,intervalFrame,interrupt,delay,offset,loop,volume,pan);
+		this.soundEffectMap.set(id,soundEffect);
+		return soundEffect;
 	}
-	,map: null
-	,__class__: com.dango_itimi.createjs.sound.SoundEffectMap
-}
+	,__class__: com.dango_itimi.createjs.sound.SoundEffectMapForJS
+});
 if(!com.dango_itimi.toolkit_for_createjs) com.dango_itimi.toolkit_for_createjs = {}
 com.dango_itimi.toolkit_for_createjs.Instance = $hxClasses["com.dango_itimi.toolkit_for_createjs.Instance"] = function() { }
 com.dango_itimi.toolkit_for_createjs.Instance.__name__ = ["com","dango_itimi","toolkit_for_createjs","Instance"];
@@ -616,16 +712,13 @@ com.dango_itimi.toolkit_for_createjs.SoundPlayer = $hxClasses["com.dango_itimi.t
 com.dango_itimi.toolkit_for_createjs.SoundPlayer.__name__ = ["com","dango_itimi","toolkit_for_createjs","SoundPlayer"];
 com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap = null;
 com.dango_itimi.toolkit_for_createjs.SoundPlayer.initialize = function() {
-	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap = new com.dango_itimi.createjs.sound.SoundEffectMap();
+	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap = new com.dango_itimi.createjs.sound.SoundEffectMapForJS();
 	var className = Type.getClassName(com.dango_itimi.toolkit_for_createjs.SoundPlayer);
 	eval("window.playSound = function(name, loop){ " + className + ".playForFrameSound(name, loop); }");
 }
 com.dango_itimi.toolkit_for_createjs.SoundPlayer.playForFrameSound = function(soundId,loop) {
 	if(loop == null) loop = 0;
-	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(soundId,createjs.Sound.INTERRUPT_EARLY,0,0,loop);
-}
-com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap = function() {
-	return com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap;
+	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.playForFrameSound(soundId,loop);
 }
 com.dango_itimi.toolkit_for_createjs.TFCLoader = $hxClasses["com.dango_itimi.toolkit_for_createjs.TFCLoader"] = function(baseDirectoryName,baseSoundsDirectoryName,usedSoundOgg) {
 	if(usedSoundOgg == null) usedSoundOgg = false;

@@ -9,14 +9,14 @@ class SoundEffectForFlash extends SoundEffect {
 
 	private var sound:Sound;
 
-	public function new(soundClass:Class<Sound>, intervalFrame:Int, volume:Int) {
+	public function new(soundClass:Class<Sound>, id:String, intervalFrame:Int, volume:Float, pan:Float) {
 
 		sound = Type.createInstance(soundClass, []);
-		super(intervalFrame, volume);
+		super(id, intervalFrame, volume, pan);
 	}
 	override private function playChild() {
 
 		var soundChannel:SoundChannel = sound.play();
-		soundChannel.soundTransform = new SoundTransform(volume);
+		soundChannel.soundTransform = new SoundTransform(volume, pan);
 	}
 }

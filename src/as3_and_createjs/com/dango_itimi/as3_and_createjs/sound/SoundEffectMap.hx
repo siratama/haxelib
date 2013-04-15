@@ -2,16 +2,16 @@ package com.dango_itimi.as3_and_createjs.sound;
 class SoundEffectMap {
 
 	public var mute:Bool;
-	private var soundEffectSet:Array<SoundEffect>;
-	private var playingSoundEffectMap:Hash;
+	private var soundEffectMap:Hash<SoundEffect>;
+	private var playingSoundEffectMap:Hash<SoundEffect>;
 
 	public function new(){
 
 		playingSoundEffectMap = new Hash();
-		soundEffectSet = [];
+		soundEffectMap = new Hash();
 		mute = false;
 	}
-	public function run():void {
+	public function run() {
 
 		for(key in playingSoundEffectMap.keys()) {
 
@@ -25,11 +25,9 @@ class SoundEffectMap {
 	public function play(soundEffect:SoundEffect) {
 
 		if(mute) return;
-
-		var key = Type.getClassName(soundEffect);
-		if(playingSoundEffectMap.exists(key)) return;
+		if(playingSoundEffectMap.exists(soundEffect.id)) return;
 
 		soundEffect.play();
-		playingSoundEffectMap.set(key, soundEffect);
+		playingSoundEffectMap.set(soundEffect.id, soundEffect);
 	}
 }

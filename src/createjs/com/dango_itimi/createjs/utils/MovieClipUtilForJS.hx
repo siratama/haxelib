@@ -1,7 +1,9 @@
 package com.dango_itimi.createjs.utils;
+
+import com.dango_itimi.as3_and_createjs.utils.MovieClipUtil;
 import createjs.tweenjs.Timeline;
 import createjs.easeljs.MovieClip;
-class MovieClipUtil extends com.dango_itimi.as3_and_createjs.utils.MovieClipUtil{
+class MovieClipUtilForJS extends MovieClipUtil{
 
 	public var totalFrames(default, null):Int;
 	public var timeline(default, null):Timeline;

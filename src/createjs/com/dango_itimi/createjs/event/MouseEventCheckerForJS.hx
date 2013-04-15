@@ -1,10 +1,10 @@
 package com.dango_itimi.createjs.event;
 
-import createjs.easeljs.DisplayObject;
 import com.dango_itimi.as3_and_createjs.event.MouseEventChecker;
+import createjs.easeljs.DisplayObject;
 import createjs.easeljs.MouseEvent;
 
-class MouseEventChecker extends com.dango_itimi.as3_and_createjs.event.MouseEventChecker{
+class MouseEventCheckerForJS extends MouseEventChecker{
 
 	private var displayObject:DisplayObject;
 

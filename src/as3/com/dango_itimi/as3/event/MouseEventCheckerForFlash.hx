@@ -3,7 +3,7 @@ import com.dango_itimi.as3_and_createjs.event.MouseEventChecker;
 import flash.events.MouseEvent;
 import flash.display.DisplayObject;
 
-class MouseEventChecker extends com.dango_itimi.as3_and_createjs.event.MouseEventChecker{
+class MouseEventCheckerForFlash extends MouseEventChecker{
 
 	private var displayObject:DisplayObject;
 

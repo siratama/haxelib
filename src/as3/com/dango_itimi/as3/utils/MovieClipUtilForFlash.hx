@@ -1,8 +1,9 @@
 package com.dango_itimi.as3.utils;
 
+import com.dango_itimi.as3_and_createjs.utils.MovieClipUtil;
 import flash.display.MovieClip;
 
-class MovieClipUtil extends com.dango_itimi.as3_and_createjs.utils.MovieClipUtil{
+class MovieClipUtilForFlash extends MovieClipUtil{
 
 	public function new(mc:MovieClip){
 		super(mc);

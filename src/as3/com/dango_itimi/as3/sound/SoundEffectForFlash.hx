@@ -5,7 +5,7 @@ import flash.media.SoundTransform;
 import flash.media.SoundChannel;
 import flash.media.Sound;
 
-class SoundEffect extends com.dango_itimi.as3_and_createjs.sound.SoundEffect {
+class SoundEffectForFlash extends SoundEffect {
 
 	private var sound:Sound;
 

@@ -665,9 +665,6 @@ com.dango_itimi.toolkit_for_createjs.SoundPlayer.playForFrameSound = function(so
 	if(loop == null) loop = 0;
 	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(soundId,createjs.Sound.INTERRUPT_EARLY,0,0,loop);
 }
-com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap = function() {
-	return com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap;
-}
 com.dango_itimi.toolkit_for_createjs.TFCLoader = $hxClasses["com.dango_itimi.toolkit_for_createjs.TFCLoader"] = function(baseDirectoryName,baseSoundsDirectoryName,usedSoundOgg) {
 	if(usedSoundOgg == null) usedSoundOgg = false;
 	if(baseSoundsDirectoryName == null) baseSoundsDirectoryName = "";
@@ -1115,7 +1112,7 @@ shooting.se.SoundMixer.play = function(soundClassName,volume,delay,offset,loop) 
 	if(offset == null) offset = 0;
 	if(delay == null) delay = 0;
 	if(volume == null) volume = 1;
-	com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap().play(shooting.se.SoundMixer.SOUND_PACKAGE + soundClassName,createjs.Sound.INTERRUPT_EARLY,delay,offset,loop,volume);
+	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(shooting.se.SoundMixer.SOUND_PACKAGE + soundClassName,createjs.Sound.INTERRUPT_EARLY,delay,offset,loop,volume);
 }
 shooting.se.SoundMixer.playForBgm = function() {
 	shooting.se.SoundMixer.play("Bgm",1,0,0,-1);

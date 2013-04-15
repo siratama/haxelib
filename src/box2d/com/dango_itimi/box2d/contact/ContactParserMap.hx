@@ -47,6 +47,9 @@ class ContactParserMap {
 	}
 	public function run(){
 
+		for(key in map.keys())
+			map.get(key).initialize();
+
 		var b2Contact = b2world.getContactList();
 		while(b2Contact != null){
 

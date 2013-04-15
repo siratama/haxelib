@@ -19,11 +19,13 @@ class ContactParser {
 
 		targetContactDataMap.set(targetViewKey, new ContactData());
 	}
-	public function run(b2Contact:B2Contact){
+	public function initialize(){
 
 		allContactData = [];
 		for(key in targetContactDataMap.keys())
 			targetContactDataMap.get(key).initialize();
+	}
+	public function run(b2Contact:B2Contact){
 
 		var manifold = b2Contact.getManifold();
 		if(manifold.m_pointCount == 0) return;
@@ -39,6 +41,7 @@ class ContactParser {
 
 		var contactData = new ContactData();
 		contactData.setData(b2Contact, baseViewIsFixtureA);
+
 		allContactData.push(contactData);
 
 		var contactCheckViewKey:String = (baseViewIsFixtureA) ? keyB: keyA;

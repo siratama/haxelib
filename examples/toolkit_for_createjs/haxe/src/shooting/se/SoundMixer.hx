@@ -17,7 +17,7 @@ class SoundMixer {
 	private static function play(
 		soundClassName:String, ?volume:Float = 1, ?delay:Int = 0, ?offset:Int = 0, ?loop:Int = 0){
 
-		SoundPlayer.getSoundEffectMap().play(SOUND_PACKAGE + soundClassName, Sound.INTERRUPT_EARLY, delay, offset, loop, volume);
+		SoundPlayer.soundEffectMap.play(SOUND_PACKAGE + soundClassName, Sound.INTERRUPT_EARLY, delay, offset, loop, volume);
 	}
 	public static function playForBgm(){
 		play("Bgm", 1, 0, 0, -1);

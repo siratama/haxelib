@@ -624,9 +624,6 @@ com.dango_itimi.toolkit_for_createjs.SoundPlayer.playForFrameSound = function(so
 	if(loop == null) loop = 0;
 	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(soundId,createjs.Sound.INTERRUPT_EARLY,0,0,loop);
 }
-com.dango_itimi.toolkit_for_createjs.SoundPlayer.getSoundEffectMap = function() {
-	return com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap;
-}
 com.dango_itimi.toolkit_for_createjs.TFCLoader = $hxClasses["com.dango_itimi.toolkit_for_createjs.TFCLoader"] = function(baseDirectoryName,baseSoundsDirectoryName,usedSoundOgg) {
 	if(usedSoundOgg == null) usedSoundOgg = false;
 	if(baseSoundsDirectoryName == null) baseSoundsDirectoryName = "";

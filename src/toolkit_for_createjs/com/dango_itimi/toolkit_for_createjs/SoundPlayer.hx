@@ -6,7 +6,7 @@ import com.dango_itimi.createjs.sound.SoundEffectMap;
 
 class SoundPlayer {
 
-	private static var soundEffectMap(default, null):SoundEffectMap;
+	public static var soundEffectMap(default, null):SoundEffectMap;
 
 	public static function initialize(){
 

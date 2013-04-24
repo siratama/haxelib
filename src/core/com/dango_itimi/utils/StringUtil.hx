@@ -13,4 +13,12 @@ class StringUtil {
 		}
 		return after;
 	}
+
+	public static function addZeroToHeadOfNumber(number:Int, addedNum:Int):String{
+
+		var numStr:String = cast number;
+		var len:Int = addedNum - numStr.length;
+		for(i in 0...len) numStr = "0" + numStr;
+		return numStr;
+	}
 }

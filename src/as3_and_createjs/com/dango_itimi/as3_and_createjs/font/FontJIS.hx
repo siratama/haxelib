@@ -29,7 +29,6 @@ class FontJIS {
 		var indexSet = jis.getIndexSet(StringUtil.convertOneByteToTwoByte(text));
 
 		var fontSet = new Array<Bitmap>();
-		var px:Int = 0;
 		for(index in indexSet){
 
 			var cropPoint = fontSpriteSheet.getCropPoint(index);

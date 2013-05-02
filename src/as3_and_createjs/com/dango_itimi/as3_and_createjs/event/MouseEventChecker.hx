@@ -12,15 +12,15 @@ import flash.events.MouseEvent;
 
 class MouseEventChecker {
 
-	private var clickedEvent:MouseEvent;
-	private var downedEvent:MouseEvent;
-	private var uppedEvent:MouseEvent;
-	private var movedEvent:MouseEvent;
+	public var clickedEvent(default, null):MouseEvent;
+	public var downedEvent(default, null):MouseEvent;
+	public var uppedEvent(default, null):MouseEvent;
+	public var movedEvent(default, null):MouseEvent;
 
-	private var clicked:Bool;
-	private var downed:Bool;
-	private var upped:Bool;
-	private var moved:Bool;
+	public var clicked(default, null):Bool;
+	public var downed(default, null):Bool;
+	public var upped(default, null):Bool;
+	public var moved(default, null):Bool;
 
 	public function new(){
 		addEventListener();
@@ -52,18 +52,6 @@ class MouseEventChecker {
 		upped = false;
 		moved = false;
 	}
-	public function isClicked():Bool{
-		return clicked;
-	}
-	public function isDowned():Bool{
-		return downed;
-	}
-	public function isUpped():Bool{
-		return upped;
-	}
-	public function isMoved():Bool{
-		return moved;
-	}
 
 	public function getClickedStagePoint():Point {
 		return {x:clickedEvent.stageX, y:clickedEvent.stageY};
@@ -78,6 +66,18 @@ class MouseEventChecker {
 		return {x:movedEvent.stageX, y:movedEvent.stageY};
 	}
 
+	public function isClicked():Bool{
+		return clicked;
+	}
+	public function isDowned():Bool{
+		return downed;
+	}
+	public function isUpped():Bool{
+		return upped;
+	}
+	public function isMoved():Bool{
+		return moved;
+	}
 	public function getClickedEvent():MouseEvent{
 		return clickedEvent;
 	}
@@ -90,4 +90,28 @@ class MouseEventChecker {
 	public function getMovedEvent():MouseEvent{
 		return movedEvent;
 	}
+
+	/*
+	public function removeClicked():Bool{
+		var n = clicked;
+		clicked = false;
+		return n;
+	}
+	public function removeDowned():Bool{
+		var n = downed;
+		downed = false;
+		return n;
+	}
+	public function removeUpped():Bool{
+		var n = upped;
+		upped = false;
+		return n;
+	}
+	public function removeMoved():Bool{
+		var n = moved;
+		moved = false;
+		return n;
+	}
+	*/
+
 }

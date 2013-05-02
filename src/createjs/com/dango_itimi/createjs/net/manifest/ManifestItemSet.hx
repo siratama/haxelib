@@ -2,7 +2,7 @@ package com.dango_itimi.createjs.net.manifest;
 
 class ManifestItemSet {
 
-	private var itemSet:Array<ManifestItem>;
+	public var itemSet(default, null):Array<ManifestItem>;
 
 	public function new(){
 		

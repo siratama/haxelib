@@ -7,6 +7,12 @@ import createjs.easeljs.MouseEvent;
 class MouseEventCheckerForJS extends MouseEventChecker{
 
 	private var displayObject:DisplayObject;
+	public var startedTouchEvent(default, null):MouseEvent;
+	public var startedTouch(default, null):Bool;
+	public var endedTouchEvent(default, null):MouseEvent;
+	public var endedTouch(default, null):Bool;
+	public var movedTouchEvent(default, null):MouseEvent;
+	public var movedTouch(default, null):Bool;
 
 	public function new(displayObject:DisplayObject){
 
@@ -22,13 +28,66 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 		displayObject.removeEventListener("mousedown", onMouseDown);
 	}
 	override private function onMouseDown(event:MouseEvent){
-		super.onMouseDown(event);
+
+		if(event.nativeEvent.type == "touchstart"){
+			startedTouchEvent = event;
+			startedTouch = true;
+			downed = true;
+		}
+		else
+			super.onMouseDown(event);
+
 		event.addEventListener("mouseup", onMouseUp);
 		event.addEventListener("mousemove", onMouseMove);
 	}
-	override private function onMouseUp(event:MouseEvent){
-		super.onMouseUp(event);
-		downedEvent.addEventListener("mouseup", onMouseUp);
-		downedEvent.addEventListener("mousemove", onMouseMove);
+	override private function onMouseMove(event:MouseEvent){
+
+		if(event.nativeEvent.type == "touchmove"){
+			movedTouchEvent = event;
+			movedTouch = true;
+			moved = true;
+		}
+		else
+			super.onMouseMove(event);
 	}
+	override private function onMouseUp(event:MouseEvent){
+
+		if(event.nativeEvent.type == "touchend"){
+			endedTouchEvent = event;
+			endedTouch = true;
+			upped = true;
+			startedTouchEvent.removeEventListener("mouseup", onMouseUp);
+			startedTouchEvent.removeEventListener("mousemove", onMouseMove);
+		}
+		else{
+			super.onMouseUp(event);
+			downedEvent.removeEventListener("mouseup", onMouseUp);
+			downedEvent.removeEventListener("mousemove", onMouseMove);
+		}
+	}
+	override public function reset(){
+
+		super.reset();
+		movedTouch = false;
+		startedTouch = false;
+		endedTouch = false;
+	}
+
+	/*
+	public function removeStartedTouch():Bool{
+		var n = startedTouch;
+		startedTouch = false;
+		return n;
+	}
+	public function removeMovedTouch():Bool{
+		var n = movedTouch;
+		movedTouch = false;
+		return n;
+	}
+	public function removeEndedTouch():Bool{
+		var n = endedTouch;
+		endedTouch = false;
+		return n;
+	}
+	*/
 }

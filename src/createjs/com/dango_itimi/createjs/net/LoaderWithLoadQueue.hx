@@ -3,11 +3,13 @@ package com.dango_itimi.createjs.net;
 import createjs.preloadjs.LoadQueue;
 class LoaderWithLoadQueue {
 	
-	private var loadQueue:LoadQueue;
+	public var loadQueue(default, null):LoadQueue;
+	public var loadedEventSet(default, null):Array<Dynamic>;
 	private var error:Bool;
 
 	public function new(?useXHR:Bool = false, ?plugin:Dynamic = null){
-		
+
+		loadedEventSet = [];
 		initialize(useXHR, plugin);
 	}
 	public function initialize(?useXHR:Bool = false, ?plugin:Dynamic = null){
@@ -32,7 +34,7 @@ class LoaderWithLoadQueue {
 		loadQueue.loadManifest(manifest);
 	}
 	private function onFileLoad(event){
-		//trace(event);
+		loadedEventSet.push(event);
 	}
 	private function onFileError(event){
 		//trace("error", event);

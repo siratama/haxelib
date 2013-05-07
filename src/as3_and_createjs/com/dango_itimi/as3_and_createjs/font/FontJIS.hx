@@ -19,9 +19,9 @@ class FontJIS {
 	public var fontSpriteSheet(default, null):FontSpriteSheet;
 	private var jis:JIS0208;
 
-	public function new(fontSpriteSheetClass:Class<FontSpriteSheet>){
+	public function new(fontSpriteSheetClass:Class<FontSpriteSheet>, scale:Int){
 
-		fontSpriteSheet = Type.createInstance(fontSpriteSheetClass, []);
+		fontSpriteSheet = Type.createInstance(fontSpriteSheetClass, [scale]);
 		jis = new JIS0208();
 	}
 	public function createFontSet(text:String):Array<Bitmap> {

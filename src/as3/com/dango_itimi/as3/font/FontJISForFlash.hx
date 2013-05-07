@@ -11,11 +11,11 @@ class FontJISForFlash extends FontJIS{
 
 	private var baseFontBitmapData:BitmapData;
 
-	public function new(fontSpriteSheetClass:Class<FontSpriteSheet>, fontBitmapDataClass:Class<BitmapData>){
+	public function new(fontSpriteSheetClass:Class<FontSpriteSheet>, fontSpriteSheetScale:Int, fontBitmapDataClass:Class<BitmapData>){
 
 		baseFontBitmapData = Type.createInstance(fontBitmapDataClass, []);
 
-		super(fontSpriteSheetClass);
+		super(fontSpriteSheetClass, fontSpriteSheetScale);
 	}
 	override private function createFont(cropRectangle:Rectangle):Bitmap {
 

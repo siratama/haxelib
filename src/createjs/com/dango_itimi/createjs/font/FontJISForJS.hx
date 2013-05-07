@@ -8,11 +8,11 @@ class FontJISForJS extends FontJIS{
 
 	private var fontBitmapClass:Class<Bitmap>;
 
-	public function new(fontSpriteSheetClass:Class<FontSpriteSheet>, fontBitmapClass:Class<Bitmap>){
+	public function new(fontSpriteSheetClass:Class<FontSpriteSheet>, fontSpriteSheetScale:Int, fontBitmapClass:Class<Bitmap>){
 
 		this.fontBitmapClass = fontBitmapClass;
 
-		super(fontSpriteSheetClass);
+		super(fontSpriteSheetClass, fontSpriteSheetScale);
 	}
 	override private function createFont(cropRectangle:Rectangle):Bitmap {
 

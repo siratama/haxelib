@@ -8,6 +8,7 @@ import flash.media.Sound;
 class SoundEffectForFlash extends SoundEffect {
 
 	private var sound:Sound;
+	private var soundChannel:SoundChannel;
 
 	public function new(soundClass:Class<Sound>, id:String, intervalFrame:Int, volume:Float, pan:Float) {
 
@@ -16,7 +17,11 @@ class SoundEffectForFlash extends SoundEffect {
 	}
 	override private function playChild() {
 
-		var soundChannel:SoundChannel = sound.play();
+		soundChannel = sound.play();
 		soundChannel.soundTransform = new SoundTransform(volume, pan);
+	}
+	override public function stop(){
+
+		soundChannel.stop();
 	}
 }

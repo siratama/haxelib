@@ -31,4 +31,9 @@ class SoundEffectForJS extends SoundEffect{
 		soundInstance.setVolume(volume);
 		soundInstance.setPan(pan);
 	}
+
+	override public function stop(){
+		if(soundInstance != null)
+			soundInstance.stop();
+	}
 }

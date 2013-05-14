@@ -37,4 +37,8 @@ class ClickChecker {
 		clicked = false;
 		return n;
 	}
+	public function reset(){
+
+		clicked = false;
+	}
 }

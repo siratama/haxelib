@@ -12,4 +12,5 @@ interface IDisplayObjectContainer implements IDisplayObject{
 
 	public function addChild(child:DisplayObject):DisplayObject;
 	public function removeChild(child:DisplayObject):#if js Bool #elseif flash DisplayObject #end;
+	public function contains(child:DisplayObject):Bool;
 }

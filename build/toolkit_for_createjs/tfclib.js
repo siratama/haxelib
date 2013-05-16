@@ -12,7 +12,9 @@ if(!com.dango_itimi.as3_and_createjs) com.dango_itimi.as3_and_createjs = {}
 if(!com.dango_itimi.as3_and_createjs.sound) com.dango_itimi.as3_and_createjs.sound = {}
 com.dango_itimi.as3_and_createjs.sound.SoundEffect = function() { }
 com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype = {
-	playChild: function() {
+	stop: function() {
+	}
+	,playChild: function() {
 	}
 }
 if(!com.dango_itimi.createjs) com.dango_itimi.createjs = {}
@@ -20,7 +22,10 @@ if(!com.dango_itimi.createjs.sound) com.dango_itimi.createjs.sound = {}
 com.dango_itimi.createjs.sound.SoundEffectForJS = function() { }
 com.dango_itimi.createjs.sound.SoundEffectForJS.__super__ = com.dango_itimi.as3_and_createjs.sound.SoundEffect;
 com.dango_itimi.createjs.sound.SoundEffectForJS.prototype = $extend(com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype,{
-	playChild: function() {
+	stop: function() {
+		if(this.soundInstance != null) this.soundInstance.stop();
+	}
+	,playChild: function() {
 		if(this.soundInstance == null) this.soundInstance = createjs.Sound.play(this.id,this.interrupt,this.delay,this.offset,this.loop); else this.soundInstance.play();
 		this.soundInstance.setVolume(this.volume);
 		this.soundInstance.setPan(this.pan);

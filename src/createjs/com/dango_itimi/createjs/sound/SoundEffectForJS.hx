@@ -26,7 +26,7 @@ class SoundEffectForJS extends SoundEffect{
 		if(soundInstance == null)
 			soundInstance = Sound.play(id, interrupt, delay, offset, loop);
 		else
-			soundInstance.play();
+			soundInstance.play(interrupt, delay, offset, loop);
 
 		soundInstance.setVolume(volume);
 		soundInstance.setPan(pan);

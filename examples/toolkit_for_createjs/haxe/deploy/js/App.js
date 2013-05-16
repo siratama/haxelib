@@ -495,7 +495,9 @@ com.dango_itimi.as3_and_createjs.sound.SoundEffect = $hxClasses["com.dango_itimi
 };
 com.dango_itimi.as3_and_createjs.sound.SoundEffect.__name__ = ["com","dango_itimi","as3_and_createjs","sound","SoundEffect"];
 com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype = {
-	decrementInterval: function() {
+	stop: function() {
+	}
+	,decrementInterval: function() {
 		if(this.interval > 0) this.interval--; else this.mainFunction = $bind(this,this.finish);
 	}
 	,playChild: function() {
@@ -650,7 +652,10 @@ com.dango_itimi.createjs.sound.SoundEffectForJS = $hxClasses["com.dango_itimi.cr
 com.dango_itimi.createjs.sound.SoundEffectForJS.__name__ = ["com","dango_itimi","createjs","sound","SoundEffectForJS"];
 com.dango_itimi.createjs.sound.SoundEffectForJS.__super__ = com.dango_itimi.as3_and_createjs.sound.SoundEffect;
 com.dango_itimi.createjs.sound.SoundEffectForJS.prototype = $extend(com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype,{
-	playChild: function() {
+	stop: function() {
+		if(this.soundInstance != null) this.soundInstance.stop();
+	}
+	,playChild: function() {
 		if(this.soundInstance == null) this.soundInstance = createjs.Sound.play(this.id,this.interrupt,this.delay,this.offset,this.loop); else this.soundInstance.play();
 		this.soundInstance.setVolume(this.volume);
 		this.soundInstance.setPan(this.pan);

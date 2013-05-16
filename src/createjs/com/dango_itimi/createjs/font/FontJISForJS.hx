@@ -19,6 +19,7 @@ class FontJISForJS extends FontJIS{
 		var fontBitmap = Type.createInstance(fontBitmapClass, []);
 		fontBitmap.sourceRect = cropRectangle;
 		fontBitmap.cache(0, 0, fontSpriteSheet.fontWidth, fontSpriteSheet.fontHeight);
+
 		return fontBitmap;
 	}
 }

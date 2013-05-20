@@ -5,7 +5,7 @@ import box2D.dynamics.B2DebugDraw;
 import flash.events.Event;
 import flash.display.Sprite;
 
-class MainForFlash extends Main{
+class MainForFlash extends Authorizer{
 
 	private var stage:Sprite;
 

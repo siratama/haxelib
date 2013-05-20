@@ -5,7 +5,7 @@ import box2D.dynamics.B2DebugDraw;
 import createjs.easeljs.Stage;
 import createjs.easeljs.Ticker;
 
-class MainForJS extends Main{
+class MainForJS extends Authorizer{
 
 	private var stage:Stage;
 
@@ -24,7 +24,7 @@ class MainForJS extends Main{
 		stage = new Stage(js.Lib.document.getElementById("canvas"));
 
 		Ticker.useRAF = true;
-		Ticker.setFPS(Main.FRAME_RATE);
+		Ticker.setFPS(Authorizer.FRAME_RATE);
 		Ticker.addEventListener("tick", run);
 
 		super.initialize(event);

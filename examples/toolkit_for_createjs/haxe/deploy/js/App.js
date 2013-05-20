@@ -656,7 +656,7 @@ com.dango_itimi.createjs.sound.SoundEffectForJS.prototype = $extend(com.dango_it
 		if(this.soundInstance != null) this.soundInstance.stop();
 	}
 	,playChild: function() {
-		if(this.soundInstance == null) this.soundInstance = createjs.Sound.play(this.id,this.interrupt,this.delay,this.offset,this.loop); else this.soundInstance.play();
+		if(this.soundInstance == null) this.soundInstance = createjs.Sound.play(this.id,this.interrupt,this.delay,this.offset,this.loop); else this.soundInstance.play(this.interrupt,this.delay,this.offset,this.loop);
 		this.soundInstance.setVolume(this.volume);
 		this.soundInstance.setPan(this.pan);
 	}

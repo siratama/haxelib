@@ -18,7 +18,7 @@ class Main {
 	private var player:Player;
 
 	public static function main() {
-		new Main();
+		new Authorizer();
 	}
 	public function new(){
 		

@@ -25,7 +25,7 @@ class FlashToBox2dConverterForFlash extends FlashToBox2dConverter{
 		super(chunkMap);
 	}
 
-	override private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int) {
+	override private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int, viewMap:Map<String, Map<String, View>>, userDataSetLength:Int) {
 
 		var chunkSprite:Sprite = chunk.chunkSprite;
 

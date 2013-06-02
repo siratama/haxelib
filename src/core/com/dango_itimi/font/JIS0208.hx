@@ -1,7 +1,7 @@
 package com.dango_itimi.font;
 class JIS0208 {
 
-	private var map:Hash<Int>;
+	private var map:Map<String, Int>;
 
 	public function new(?mapCreation:Bool = true){
 
@@ -10,7 +10,7 @@ class JIS0208 {
 	}
 	public function createMap(){
 
-		map = new Hash();
+		map = new Map();
 		for(i in 0...TEXT.length)
 			map.set(TEXT.charAt(i), i);
 	}

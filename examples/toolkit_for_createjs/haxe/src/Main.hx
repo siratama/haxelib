@@ -5,7 +5,7 @@ import shooting.player.Player;
 import createjs.easeljs.Stage;
 import createjs.easeljs.Ticker;
 import createjs.easeljs.Container;
-import js.Lib;
+import js.Browser;
 import com.dango_itimi.toolkit_for_createjs.Instance;
 import com.dango_itimi.toolkit_for_createjs.TFCLoader;
 import com.dango_itimi.toolkit_for_createjs.SoundPlayer;
@@ -18,11 +18,11 @@ class Main {
 	private var player:Player;
 
 	public static function main() {
-		new Authorizer();
+		new Main();
 	}
 	public function new(){
 		
-		Lib.window.onload = initialize;
+		Browser.window.onload = initialize;
 	}
 	private function initialize(event){
 
@@ -30,7 +30,7 @@ class Main {
 		Ticker.setFPS(24);
 		Ticker.addEventListener("tick", run);
 
-		stage = new Stage(js.Lib.document.getElementById("canvas"));
+		stage = new Stage(Browser.document.getElementById("canvas"));
 
 		initializeToLoadTFC();
 	}

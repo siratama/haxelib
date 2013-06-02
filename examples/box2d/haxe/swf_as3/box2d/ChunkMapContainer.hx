@@ -1,5 +1,5 @@
 package box2d;
-extern class ChunkMapContainer extends flash.display.MovieClip, implements Dynamic{
+extern class ChunkMapContainer extends flash.display.Sprite{
 	var flipper : flash.display.MovieClip;
 	var circleTest2 : flash.display.MovieClip;
 	var circleTest : flash.display.MovieClip;

@@ -5,14 +5,14 @@ import com.dango_itimi.box2d.contact.ContactParser;
 
 class ContactParserMap {
 
-	private var map:Hash<ContactParser>;
+	private var map:Map<String, ContactParser>;
 	private var b2world:B2World;
 	private var latestAddedBaseViewKey:String;
 
 	public function new(b2world:B2World){
 
 		this.b2world = b2world;
-		map = new Hash();
+		map = new Map();
 	}
 	public function add(baseViewKey:String):ContactParser{
 

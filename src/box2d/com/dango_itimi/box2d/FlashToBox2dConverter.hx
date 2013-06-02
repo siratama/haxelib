@@ -12,31 +12,31 @@ class FlashToBox2dConverter {
 	private var circleClass:Class<View>;
 	private var polygonClass:Class<View>;
 
-	private var boxMap:Hash<Hash<Hash<View>>>;
-	private var circleMap:Hash<Hash<Hash<View>>>;
-	private var polygonMap:Hash<Hash<Hash<View>>>;
+	private var boxMap:Map<String, Map<String, Map<String, View>>>;
+	private var circleMap:Map<String, Map<String, Map<String, View>>>;
+	private var polygonMap:Map<String, Map<String, Map<String, View>>>;
 
 	public function new(chunkMap:ChunkMap) {
 
-		boxMap = new Hash();
-		circleMap = new Hash();
-		polygonMap = new Hash();
+		boxMap = new Map();
+		circleMap = new Map();
+		polygonMap = new Map();
 
 		parse(chunkMap.boxSet, boxMap, boxClass);
 		parse(chunkMap.circleSet, circleMap, circleClass);
 		parse(chunkMap.polygonSet, polygonMap, polygonClass);
 	}
-	private function parse(chunkSet:Array<Chunk>, map:Hash<Hash<Hash<View>>>, viewClass:Class<View>){
+	private function parse(chunkSet:Array<Chunk>, map:Map<String, Map<String, Map<String, View>>>, viewClass:Class<View>){
 
 		var len:Int = chunkSet.length;
 		for (i in 0...len)
 			map.set(cast i, createViewMap(chunkSet[i], viewClass, i));
 	}
-	private function createViewMap(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int):Hash<Hash<View>> {
+	private function createViewMap(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int):Map<String, Map<String, View>> {
 
-		var viewMap:Hash<Hash<View>> = new Hash();
-		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL, new Hash());
-		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO, new Hash());
+		var viewMap:Map<String, Map<String, View>> = new Map();
+		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL, new Map());
+		viewMap.set(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO, new Map());
 
 		var userDataSetLength:Int = chunk.getUserDataSetLength();
 
@@ -44,7 +44,7 @@ class FlashToBox2dConverter {
 
 		return viewMap;
 	}
-	private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int, viewMap:Hash<Hash<View>>, userDataSetLength:Int){
+	private function createViewMapChild(chunk:Chunk, viewClass:Class<View>, chunkSetId:Int, viewMap:Map<String, Map<String, View>>, userDataSetLength:Int){
 	}
 
 	/**
@@ -56,7 +56,7 @@ class FlashToBox2dConverter {
 		executeForMap(circleMap, world, BOX2D_SCALE);
 		executeForMap(polygonMap, world, BOX2D_SCALE);
 	}
-	private function executeForMap(map:Hash<Hash<Hash<View>>>, world:B2World,  BOX2D_SCALE:Float) {
+	private function executeForMap(map:Map<String, Map<String, Map<String, View>>>, world:B2World,  BOX2D_SCALE:Float) {
 
 		for (kindMap in map){
 			for (viewMap in kindMap){
@@ -82,7 +82,7 @@ class FlashToBox2dConverter {
 
 		return getView(chunkSetId, viewId, polygonMap);
 	}
-	private function getView(chunkSetId:Int, viewId:Int, map:Hash<Hash<Hash<View>>>):View {
+	private function getView(chunkSetId:Int, viewId:Int, map:Map<String, Map<String, Map<String, View>>>):View {
 
 		return map.get(cast chunkSetId).get(Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL).get(cast viewId);
 	}

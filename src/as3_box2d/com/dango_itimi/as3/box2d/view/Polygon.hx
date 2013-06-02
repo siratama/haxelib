@@ -7,12 +7,12 @@ import box2D.common.math.B2Vec2;
 
 class Polygon extends ViewForFlash{
 
-	private var verticesMap:Hash<BaseShapeForFlash>;
+	private var verticesMap:Map<String, BaseShapeForFlash>;
 	private var verticesTotal:Int;
 
 	override private function initializeChild(){
 
-		verticesMap = new Hash();
+		verticesMap = new Map();
 		verticesTotal = 0;
 
 		var fields = Reflect.fields(chunkSprite);

@@ -8,7 +8,7 @@ import flash.display.DisplayObject;
 
 #end
 
-interface IDisplayObjectContainer implements IDisplayObject{
+interface IDisplayObjectContainer extends IDisplayObject{
 
 	public function addChild(child:DisplayObject):DisplayObject;
 	public function removeChild(child:DisplayObject):#if js Bool #elseif flash DisplayObject #end;

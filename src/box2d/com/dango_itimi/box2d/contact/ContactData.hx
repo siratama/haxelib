@@ -1,4 +1,5 @@
 package com.dango_itimi.box2d.contact;
+import box2D.collision.B2ManifoldType;
 import box2D.dynamics.contacts.B2Contact;
 class ContactData {
 
@@ -27,7 +28,8 @@ class ContactData {
 	public function isOnBoxOrCircle():Bool{
 
 		var manifold = b2Contact.getManifold();
-		if(manifold.m_type == 2){
+		//if(manifold.m_type == 2){
+		if(manifold.m_type == B2ManifoldType.FACE_A){
 
 			return (
 				(baseViewIsFixtureA && manifold.m_localPlaneNormal.y > 0) ||

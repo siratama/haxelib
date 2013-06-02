@@ -6,12 +6,17 @@ import js.Lib;
 class KeyCheckerForJS extends KeyChecker{
 
 	//event == null : for ie
-	public function new(){
+	public function new(preventDownEvent:Bool = false){
 
-		Lib.window.document.onkeydown = function(event){
+		Lib.window.document.onkeydown = function(event:Dynamic){
 			if(event == null)
 				untyped event = window.event;
 			down(event.keyCode);
+
+			if(preventDownEvent){
+				event.preventDefault();
+				event.stopPropagation();
+			}
 		};
 
 		Lib.window.document.onkeyup = function(event){

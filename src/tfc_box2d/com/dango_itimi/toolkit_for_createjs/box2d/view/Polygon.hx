@@ -6,12 +6,12 @@ import box2D.collision.shapes.B2PolygonShape;
 import box2D.common.math.B2Vec2;
 class Polygon extends ViewForJS{
 
-	private var verticesMap:Hash<BaseShapeForJS>;
+	private var verticesMap:Map<String, BaseShapeForJS>;
 	private var verticesTotal:Int;
 
 	override private function initializeChild(){
 
-		verticesMap = new Hash();
+		verticesMap = new Map();
 		verticesTotal = 0;
 
 		var fields = Reflect.fields(chunkSprite);

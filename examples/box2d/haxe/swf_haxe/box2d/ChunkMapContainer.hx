@@ -1,6 +1,6 @@
 package box2d;
 @:native("lib.box2dChunkMapContainer")
-extern class ChunkMapContainer extends createjs.easeljs.MovieClip, implements Dynamic{
+extern class ChunkMapContainer extends createjs.easeljs.Container{
 	var flipper : createjs.easeljs.MovieClip;
 	var circleTest2 : createjs.easeljs.MovieClip;
 	var circleTest : createjs.easeljs.MovieClip;

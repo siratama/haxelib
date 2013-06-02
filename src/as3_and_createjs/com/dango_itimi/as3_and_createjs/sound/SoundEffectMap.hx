@@ -2,13 +2,13 @@ package com.dango_itimi.as3_and_createjs.sound;
 class SoundEffectMap {
 
 	public var mute:Bool;
-	private var soundEffectMap:Hash<SoundEffect>;
-	private var playingSoundEffectMap:Hash<SoundEffect>;
+	private var soundEffectMap:Map<String, SoundEffect>;
+	private var playingSoundEffectMap:Map<String, SoundEffect>;
 
 	public function new(){
 
-		playingSoundEffectMap = new Hash();
-		soundEffectMap = new Hash();
+		playingSoundEffectMap = new Map();
+		soundEffectMap = new Map();
 		mute = false;
 	}
 	public function run() {

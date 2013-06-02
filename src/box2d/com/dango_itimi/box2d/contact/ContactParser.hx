@@ -6,13 +6,13 @@ import box2D.dynamics.contacts.B2Contact;
 class ContactParser {
 
 	private var viewKey:String;
-	private var targetContactDataMap:Hash<ContactData>;
+	private var targetContactDataMap:Map<String, ContactData>;
 	public var allContactData(default, null):Array<ContactData>;
 
 	public function new(viewKey:String){
 
 		this.viewKey = viewKey;
-		targetContactDataMap = new Hash();
+		targetContactDataMap = new Map();
 		allContactData = [];
 	}
 	public function registerTargetView(targetViewKey:String){

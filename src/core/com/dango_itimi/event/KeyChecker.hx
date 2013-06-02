@@ -1,16 +1,16 @@
 package com.dango_itimi.event;
 class KeyChecker {
 
-	private var downedKeyMap:Hash<Bool>;
-	private var uppedKeyMap:Hash<Bool>;
+	private var downedKeyMap:Map<String, Bool>;
+	private var uppedKeyMap:Map<String, Bool>;
 
 	public function new(){
 
 		initialize();
 	}
 	public function initialize(){
-		downedKeyMap = new Hash();
-		uppedKeyMap = new Hash();
+		downedKeyMap = new Map();
+		uppedKeyMap = new Map();
 	}
 	private function down(keyCode:Int){
 		downedKeyMap.set(cast keyCode, true);

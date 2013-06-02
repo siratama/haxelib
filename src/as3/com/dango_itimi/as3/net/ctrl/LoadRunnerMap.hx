@@ -6,7 +6,7 @@ import flash.errors.Error;
 class LoadRunnerMap {
 
 	private var mainFunction:Void->Void;
-	private var loadRunnerMap:Hash<LoadRunner>;
+	private var loadRunnerMap:Map<String, LoadRunner>;
 	private var loadRunnerSet:Array<LoadRunner>;
 	private var loadingRunner:LoadRunner;
 	private var unloadRunner:LoadRunner;
@@ -18,7 +18,7 @@ class LoadRunnerMap {
 	public function new() {
 
 		loadCompleteCount = 0;
-		loadRunnerMap = new Hash();
+		loadRunnerMap = new Map();
 		loadRunnerSet = new Array<LoadRunner>();
 	}
 	public function add(loadRunner:LoadRunner, url:String){

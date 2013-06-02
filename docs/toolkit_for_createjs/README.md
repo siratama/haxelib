@@ -315,11 +315,11 @@ TFCLib は MIT ライセンスです。
 TFCLib はそれぞれ以下のバージョンに対応しています。
 
 * Toolkit for CreateJS 1.2
-* EaselJS 0.6.0
-* TweenJS 0.4.0
-* SoundJS 0.4.0
-* PreloadJS 0.3.0
-* Haxe 2.10
+* EaselJS 0.6.1
+* TweenJS 0.4.1
+* SoundJS 0.4.1
+* PreloadJS 0.3.1
+* Haxe 3
 
 TFCLib は、 Toolkit for CreateJS からパブリッシュされる 雛形 html の読み込みと解析を行う事で、 パブリッシュデータ自動読み込み処理を実現しています。 
 

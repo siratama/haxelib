@@ -1,14 +1,14 @@
 package com.dango_itimi.js.event;
 
 import com.dango_itimi.event.KeyChecker;
-import js.Lib;
+import js.Browser;
 
 class KeyCheckerForJS extends KeyChecker{
 
 	//event == null : for ie
 	public function new(preventDownEvent:Bool = false){
 
-		Lib.window.document.onkeydown = function(event:Dynamic){
+		Browser.window.document.onkeydown = function(event:Dynamic){
 			if(event == null)
 				untyped event = window.event;
 			down(event.keyCode);
@@ -19,7 +19,7 @@ class KeyCheckerForJS extends KeyChecker{
 			}
 		};
 
-		Lib.window.document.onkeyup = function(event){
+		Browser.window.document.onkeyup = function(event){
 			if(event == null)
 				untyped event = window.event;
 			up(event.keyCode);

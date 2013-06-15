@@ -32,10 +32,8 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 		if(event.nativeEvent.type == "touchstart"){
 			startedTouchEvent = event;
 			startedTouch = true;
-			downed = true;
 		}
-		else
-			super.onMouseDown(event);
+		super.onMouseDown(event);
 
 		event.addEventListener("mouseup", onMouseUp);
 		event.addEventListener("mousemove", onMouseMove);
@@ -45,25 +43,22 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 		if(event.nativeEvent.type == "touchmove"){
 			movedTouchEvent = event;
 			movedTouch = true;
-			moved = true;
 		}
-		else
-			super.onMouseMove(event);
+		super.onMouseMove(event);
 	}
 	override private function onMouseUp(event:MouseEvent){
 
 		if(event.nativeEvent.type == "touchend"){
 			endedTouchEvent = event;
 			endedTouch = true;
-			upped = true;
 			startedTouchEvent.removeEventListener("mouseup", onMouseUp);
 			startedTouchEvent.removeEventListener("mousemove", onMouseMove);
 		}
 		else{
-			super.onMouseUp(event);
 			downedEvent.removeEventListener("mouseup", onMouseUp);
 			downedEvent.removeEventListener("mousemove", onMouseMove);
 		}
+		super.onMouseUp(event);
 	}
 	override public function reset(){
 

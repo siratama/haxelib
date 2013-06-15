@@ -10,7 +10,7 @@ class LoginButton {
 
 	public function new(elementId:String, clientId:String, scope:String, cookiePolicy:String, requestVisibleActions:String){
 
-		element = new JQuery();
+		element = new JQuery(elementId);
 
 		parameters = {
 			clientid: clientId,

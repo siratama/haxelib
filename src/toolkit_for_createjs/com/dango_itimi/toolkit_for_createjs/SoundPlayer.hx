@@ -8,12 +8,14 @@ class SoundPlayer {
 
 	public static var soundEffectMap(default, null):SoundEffectMapForJS;
 
-	public static function initialize(){
+	public static function initialize():SoundEffectMapForJS{
 
 		soundEffectMap = new SoundEffectMapForJS();
 
 		var className = Type.getClassName(SoundPlayer);
 		js.Lib.eval("window.playSound = function(name, loop){ " + className + ".playForFrameSound(name, loop); }");
+
+		return soundEffectMap;
 	}
 	private static function playForFrameSound(soundId:String, ?loop:Int = 0){
 

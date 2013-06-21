@@ -6,7 +6,7 @@ class ScoreGetter {
 	public var score(default, null):Dynamic;
 	private var parameters:Dynamic;
 
-	public function new(playerId:String, leaderBoardId:String, timeSpan:String = "ALL", includeRankType:String = "ALL"){
+	public function new(leaderBoardId:String, playerId:String = "me", timeSpan:String = "ALL", includeRankType:String = "ALL"){
 
 		parameters = {
 			path: [

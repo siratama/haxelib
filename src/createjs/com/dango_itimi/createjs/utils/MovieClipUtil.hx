@@ -19,6 +19,9 @@ class MovieClipUtil implements IMovieClipUtil{
 	public function gotoFirstFrame(){
 		mc.gotoAndStop(0);
 	}
+	public function gotoAndStop(frame:Int){
+		mc.gotoAndStop(frame-1);
+	}
 	public function nextFrame(){
 		mc.gotoAndStop(timeline.position + 1);
 	}
@@ -27,12 +30,24 @@ class MovieClipUtil implements IMovieClipUtil{
 	}
 	public function loopFrame(){
 
-		if(timeline.position < totalFrames)
+		if(mc.currentFrame < totalFrames)
 			nextFrame();
 		else
 			gotoFirstFrame();
 	}
+	public function getCurrentFrame():Int{
+		return mc.currentFrame + 1;
+	}
 	public function getCurrentFrameBaseCreateJS():Int{
-		return timeline.position;
+		return mc.currentFrame;
+	}
+	public function getTotalFrames():Int{
+		return totalFrames + 1;
+	}
+	public function isCurrentLabel(label:String):Bool{
+		return timeline.resolve(label) == mc.currentFrame;
+	}
+	public function isLastFrame():Bool{
+		return mc.currentFrame == totalFrames;
 	}
 }

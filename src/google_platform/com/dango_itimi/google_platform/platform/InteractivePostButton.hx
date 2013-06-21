@@ -17,9 +17,9 @@ class InteractivePostButton {
 		};
 		untyped parameters["class"] = "g-interactivepost";
 	}
-	public function render(score:Int){
+	public function render(text:String){
 
-		parameters.prefilltext = score + " point get!";
+		parameters.prefilltext = text;
 		untyped gapi.interactivepost.render("googleplus_button", parameters);
 	}
 }

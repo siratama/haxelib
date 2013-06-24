@@ -10,11 +10,6 @@ class SoundEffectMapForJS extends SoundEffectMap{
 	public function new(){
 		super();
 	}
-	override public function registerDynamic(
-		soundClass:Dynamic, ?intervalFrame:Int = 5, ?volume:Float = 1.0, ?pan:Float = 0, ?interrupt:String = Sound.INTERRUPT_EARLY, ?delay:Int = 0, ?offset:Int = 0, ?loop:Int = 0):String{
-
-		return register(soundClass.manifestId, intervalFrame, interrupt, delay, offset, loop, volume, pan);
-	}
 	public function register(
 		id:String, ?intervalFrame:Int = 5, ?interrupt:String = Sound.INTERRUPT_EARLY, ?delay:Int = 0, ?offset:Int = 0, ?loop:Int = 0, ?volume:Float = 1.0, ?pan:Float = 0):String{
 

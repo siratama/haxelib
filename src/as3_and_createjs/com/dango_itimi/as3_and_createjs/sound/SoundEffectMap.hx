@@ -11,9 +11,6 @@ class SoundEffectMap {
 		soundEffectMap = new Map();
 		mute = false;
 	}
-	public function registerDynamic(soundClass:Dynamic, ?intervalFrame:Int = 5, ?volume:Float = 1.0, ?pan:Float = 0, ?interrupt:String = "", ?delay:Int = 0, ?offset:Int = 0, ?loop:Int = 0):String{
-		return null;
-	}
 	public function run() {
 
 		for(key in playingSoundEffectMap.keys()) {
@@ -35,14 +32,4 @@ class SoundEffectMap {
 		soundEffect.play();
 		playingSoundEffectMap.set(soundEffectId, soundEffect);
 	}
-	/*
-	public function play(soundEffect:SoundEffect) {
-
-		if(mute) return;
-		if(playingSoundEffectMap.exists(soundEffect.id)) return;
-
-		soundEffect.play();
-		playingSoundEffectMap.set(soundEffect.id, soundEffect);
-	}
-	*/
 }

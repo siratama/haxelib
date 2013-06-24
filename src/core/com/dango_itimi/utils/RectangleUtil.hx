@@ -12,13 +12,9 @@ class RectangleUtil {
 
     public function new(x:Float, y:Float, width:Float, height:Float):Void{
 		
-		this.x = x;
-		this.y = y;
 		this.width = width;
 		this.height = height;
-		
-		right = x + width;
-		bottom = y + height;
+		setPosition(x, y);
 	}
 	public static function convert(rect:Dynamic):RectangleUtil{
 		return new RectangleUtil(rect.x, rect.y, rect.width, rect.height);
@@ -29,7 +25,19 @@ class RectangleUtil {
 	public function toString():String{
 		return "w:" + width + ", h:" + height + ", x:" + x + ", y:" + y;
 	}
-	
+
+	public function setPosition(x:Float, y:Float){
+		setX(x);
+		setY(y);
+	}
+	public function setX(x:Float){
+		this.x = x;
+		right = x + width;
+	}
+	public function setY(y:Float){
+		this.y = y;
+		bottom = y + height;
+	}
 	public function addX(addedX:Float){
 		
 		this.x += addedX;

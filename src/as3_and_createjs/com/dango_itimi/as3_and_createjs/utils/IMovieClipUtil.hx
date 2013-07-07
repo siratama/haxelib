@@ -3,7 +3,7 @@ package com.dango_itimi.as3_and_createjs.utils;
 #if js
 import createjs.easeljs.MovieClip;
 
-#elseif flash
+#else
 import flash.display.MovieClip;
 
 #end

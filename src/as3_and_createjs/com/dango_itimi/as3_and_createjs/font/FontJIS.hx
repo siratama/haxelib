@@ -4,7 +4,7 @@ package com.dango_itimi.as3_and_createjs.font;
 import createjs.easeljs.Bitmap;
 import createjs.easeljs.Rectangle;
 
-#elseif flash
+#else
 import flash.display.Bitmap;
 import flash.geom.Rectangle;
 

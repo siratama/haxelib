@@ -15,21 +15,16 @@ class Polygon extends ViewForFlash{
 		verticesMap = new Map();
 		verticesTotal = 0;
 
-		var fields = Reflect.fields(chunkSprite);
-		for (prop in fields) {
+		for(i in 0...chunkSprite.numChildren){
 
-			if(prop.charAt(0) != View.POINT_MC_HEAD_NAME) continue;
+			var property:MovieClip = cast chunkSprite.getChildByName(View.POINT_MC_HEAD_NAME + i);
+			if(property == null) continue;
 
-			var id = prop.substring(View.POINT_MC_HEAD_NAME.length).split("_")[0];
-			if(Math.isNaN(cast id)) continue;
-
-			var property:MovieClip = Reflect.field(chunkSprite, prop);
 			var baseShape = new BaseShapeForFlash();
 			baseShape.setShapeSprite(property);
-			verticesMap.set(id, baseShape);
+			verticesMap.set(Std.string(i), baseShape);
 
-			var n:Int = cast id;
-			if(n > verticesTotal) verticesTotal = n;
+			if(i > verticesTotal) verticesTotal = i;
 		}
 		verticesTotal++;
 	}

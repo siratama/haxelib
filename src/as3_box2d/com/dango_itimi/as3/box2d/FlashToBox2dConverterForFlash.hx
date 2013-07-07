@@ -38,7 +38,9 @@ class FlashToBox2dConverterForFlash extends FlashToBox2dConverter{
 				(mcName.indexOf(Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO) == -1) ?
 					Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL : Chunk.CHUNK_MC_HEAD_NAME_FOR_AUTO;
 
-			var viewId:Int = cast mcName.substring(mcHeadName.length);
+			//var viewId:Int = cast mcName.substring(mcHeadName.length);
+			var viewIdStr = mcName.substring(mcHeadName.length);
+			var viewId:Int = Std.parseInt(viewIdStr);
 
 			var userData:UserData = (
 				mcHeadName == Chunk.CHUNK_MC_HEAD_NAME_FOR_OPTIONAL &&
@@ -54,7 +56,7 @@ class FlashToBox2dConverterForFlash extends FlashToBox2dConverter{
 				chunk.fixedRotation, userData, chunk.groupIndex, chunk.categoryBits, chunk.maskBits, chunk.firstVisible
 			);
 
-			viewMap.get(mcHeadName).set(cast viewId, view);
+			viewMap.get(mcHeadName).set(viewIdStr, view);
 		}
 	}
 

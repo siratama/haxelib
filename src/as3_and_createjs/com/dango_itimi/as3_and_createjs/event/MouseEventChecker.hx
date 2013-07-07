@@ -5,7 +5,7 @@ import com.dango_itimi.utils.PointUtil;
 #if js
 import createjs.easeljs.MouseEvent;
 
-#elseif flash
+#else
 import flash.events.MouseEvent;
 
 #end

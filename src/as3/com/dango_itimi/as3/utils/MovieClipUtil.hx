@@ -39,7 +39,7 @@ class MovieClipUtil implements IMovieClipUtil{
 		return mc.totalFrames;
 	}
 	public function isCurrentLabel(label:String):Bool{
-		return mc.currentLabel == label;
+		return #if flash mc.currentLabel == label #else false #end;
 	}
 	public function isLastFrame():Bool{
 		return mc.currentFrame == mc.totalFrames;

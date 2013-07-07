@@ -5,7 +5,7 @@ import createjs.easeljs.DisplayObject;
 import createjs.easeljs.Container;
 import createjs.easeljs.MovieClip;
 
-#elseif flash
+#else
 import flash.display.DisplayObject;
 import flash.display.DisplayObjectContainer;
 import flash.display.MovieClip;
@@ -27,7 +27,7 @@ class CommonClassSet {
 	public static function createLayer():IDisplayObjectContainer{
 		return Type.createInstance(defaultLayerClass, []);
 	}
-	public static function createContainerClipUtil(container:#if js Container #elseif flash DisplayObjectContainer #end):IContainerUtil{
+	public static function createContainerClipUtil(container:#if js Container #else DisplayObjectContainer #end):IContainerUtil{
 		return Type.createInstance(containerUtilClass, [container]);
 	}
 	public static function createMovieClipUtil(mc:MovieClip):IMovieClipUtil{

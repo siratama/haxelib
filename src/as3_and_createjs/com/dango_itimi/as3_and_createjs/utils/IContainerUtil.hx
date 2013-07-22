@@ -11,4 +11,5 @@ import flash.display.DisplayObject;
 import com.dango_itimi.as3_and_createjs.display.IDisplayObjectContainer;
 interface IContainerUtil {
 	public function addChild(child:IDisplayObjectContainer):DisplayObject;
+	public function removeChild(child:IDisplayObjectContainer):#if js Bool #else DisplayObject #end;
 }

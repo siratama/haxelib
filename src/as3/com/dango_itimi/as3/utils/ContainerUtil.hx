@@ -13,4 +13,7 @@ class ContainerUtil implements IContainerUtil{
 	public function addChild(child:IDisplayObjectContainer):DisplayObject{
 		return displayObjectContainer.addChild(cast child);
 	}
+	public function removeChild(child:IDisplayObjectContainer):DisplayObject{
+		return displayObjectContainer.removeChild(cast child);
+	}
 }

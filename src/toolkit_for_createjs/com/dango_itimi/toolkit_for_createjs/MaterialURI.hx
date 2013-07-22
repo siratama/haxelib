@@ -19,7 +19,7 @@ class MaterialURI {
 		this.usedSoundOgg = usedSoundOgg;
 	}
 	public function getTemplateHtmlUri(materialDirectoryName:String){
-		
+
 		return baseDirectory + materialDirectoryName + "/" + materialDirectoryName + EXT_HTML;
 	}
 	private function getMaterialDirectory(materialDirectoryName:String):String{

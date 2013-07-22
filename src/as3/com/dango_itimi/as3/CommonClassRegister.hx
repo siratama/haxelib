@@ -6,7 +6,7 @@ import com.dango_itimi.as3.utils.MovieClipUtil;
 import com.dango_itimi.as3.event.MouseEventCheckerForFlash;
 import com.dango_itimi.as3_and_createjs.display.as3.Sprite;
 
-class CommonClassSetter {
+class CommonClassRegister {
 
 	public static function initialize(){
 

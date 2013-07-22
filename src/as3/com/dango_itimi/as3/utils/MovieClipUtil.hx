@@ -13,6 +13,9 @@ class MovieClipUtil implements IMovieClipUtil{
 	public function gotoFirstFrame(){
 		mc.gotoAndStop(1);
 	}
+	public function gotoLastFrame(){
+		mc.gotoAndStop(mc.totalFrames);
+	}
 	public function gotoAndStop(frame:Int){
 		mc.gotoAndStop(frame);
 	}

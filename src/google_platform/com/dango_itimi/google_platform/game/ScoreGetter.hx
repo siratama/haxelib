@@ -3,7 +3,7 @@ package com.dango_itimi.google_platform.game;
 class ScoreGetter {
 
 	public var loadedData(default, null):Dynamic;
-	public var score(default, null):Dynamic;
+	public var score(default, null):Score;
 	private var parameters:Dynamic;
 
 	public function new(leaderBoardId:String, playerId:String = "me", timeSpan:String = "ALL", includeRankType:String = "ALL"){

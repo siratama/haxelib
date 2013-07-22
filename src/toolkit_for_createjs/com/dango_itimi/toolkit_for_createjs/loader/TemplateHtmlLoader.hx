@@ -25,7 +25,7 @@ class TemplateHtmlLoader {
 		mainFunction();
 	}
 	public function load(){
-		
+
 		loader.loadManifest(manifestItemSet.createManifest());
 		mainFunction = waitToFinishLoaded;
 	}

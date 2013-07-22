@@ -13,6 +13,7 @@ interface IMovieClipUtil {
 	public var mc(default, null):MovieClip;
 
 	public function gotoFirstFrame():Void;
+	public function gotoLastFrame():Void;
 	public function gotoAndStop(frame:Int):Void;
 	public function nextFrame():Void;
 	public function prevFrame():Void;

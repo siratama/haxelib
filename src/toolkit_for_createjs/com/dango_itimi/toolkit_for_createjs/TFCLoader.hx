@@ -24,11 +24,11 @@ class TFCLoader {
 	){
 		materialURI = new MaterialURI(baseDirectoryName, baseSoundsDirectoryName, usedSoundOgg);
 		materialDirectorySet = [];
-		
+
 		mainFunction = initializeToLoadTemplateHtml;
 	}
 	public function addMaterialDirectory(materialDirectoryName:String){
-		
+
 		materialDirectorySet.push(materialDirectoryName);
 	}
 	public function run(){

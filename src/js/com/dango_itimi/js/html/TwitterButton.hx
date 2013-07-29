@@ -4,9 +4,9 @@ class TwitterButton {
 
 	private var element:JQuery;
 
-	public function new(){
+	public function new(elementId:String){
 
-		element = new JQuery("#twitter_button");
+		element = new JQuery("#" + elementId);
 	}
 	public function show(
 		url:String,

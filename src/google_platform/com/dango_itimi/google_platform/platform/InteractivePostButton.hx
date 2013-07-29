@@ -3,10 +3,11 @@ import jQuery.JQuery;
 class InteractivePostButton {
 
 	private var parameters:Dynamic;
+	private var elementId:String;
 
 	public function new(elementId:String, clientId:String, contentUrl:String, cookiePolicy:String, callToActionLabel:String, callToActionUrl:String){
 
-		new JQuery("#googleplus_button").css("display", "block");
+		this.elementId = elementId;
 
 		parameters = {
 			clientid: clientId,
@@ -20,6 +21,6 @@ class InteractivePostButton {
 	public function render(text:String){
 
 		parameters.prefilltext = text;
-		untyped gapi.interactivepost.render("googleplus_button", parameters);
+		untyped gapi.interactivepost.render(elementId, parameters);
 	}
 }

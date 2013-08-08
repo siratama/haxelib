@@ -27,7 +27,7 @@ class CommonClassSet {
 	public static function createLayer():IDisplayObjectContainer{
 		return Type.createInstance(defaultLayerClass, []);
 	}
-	public static function createContainerClipUtil(container:#if js Container #else DisplayObjectContainer #end):IContainerUtil{
+	public static function createContainerUtil(container:#if js Container #else DisplayObjectContainer #end):IContainerUtil{
 		return Type.createInstance(containerUtilClass, [container]);
 	}
 	public static function createMovieClipUtil(mc:MovieClip):IMovieClipUtil{

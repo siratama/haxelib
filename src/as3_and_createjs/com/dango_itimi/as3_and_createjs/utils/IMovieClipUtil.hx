@@ -23,4 +23,5 @@ interface IMovieClipUtil {
 	public function getTotalFrames():Int;
 	public function isCurrentLabel(label:String):Bool;
 	public function isLastFrame():Bool;
+	public function setPosition(position:MovieClip):Void;
 }

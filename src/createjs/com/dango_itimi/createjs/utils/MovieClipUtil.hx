@@ -53,4 +53,8 @@ class MovieClipUtil implements IMovieClipUtil{
 	public function isLastFrame():Bool{
 		return mc.currentFrame == totalFrames;
 	}
+	public function setPosition(position:MovieClip){
+		mc.x = position.x;
+		mc.y = position.y;
+	}
 }

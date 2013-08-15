@@ -37,7 +37,7 @@ class NumericLine {
 
 		graphicsSet = [];
 	}
-	public function create(number:Int) {
+	public function create(number:Float) {
 
 		graphicsSet = [];
 
@@ -49,8 +49,14 @@ class NumericLine {
 			var graphics:MovieClip = Type.createInstance(baseClass, []);
 			var movieClipUtil:IMovieClipUtil = Type.createInstance(movieClipUtilClass, [graphics]);
 
-			var num:Int = Std.parseInt(numberStr.charAt(i));
-			movieClipUtil.gotoAndStop(num + 1);
+			var character = numberStr.charAt(i);
+			if(character == "."){
+				movieClipUtil.gotoAndStop(movieClipUtil.getTotalFrames());
+			}
+			else{
+				var num:Int = Std.parseInt(numberStr.charAt(i));
+				movieClipUtil.gotoAndStop(num + 1);
+			}
 
 			graphics.x = px;
 			graphics.y = positionY;

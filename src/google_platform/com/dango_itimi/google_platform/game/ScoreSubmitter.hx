@@ -10,7 +10,7 @@ class ScoreSubmitter {
 
 		this.leaderBoardId = leaderBoardId;
 	}
-	public function execute(score:Float){
+	public function execute(score:Int){
 
         loadedData = null;
 

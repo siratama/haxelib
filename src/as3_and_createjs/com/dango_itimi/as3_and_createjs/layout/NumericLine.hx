@@ -20,12 +20,14 @@ class NumericLine {
 	private var positionX:Float;
 	private var positionY:Float;
 	private var baseWidth:Int;
+	private var textAlignToRight:Bool;
 
 	public function new(
 		movieClipUtilClass:Class<IMovieClipUtil>,
 		layer:IDisplayObjectContainer,
 		baseClass:Class<MovieClip>,
-		positionX:Float, positionY:Float, intervalPixel:Int, baseWidth:Int
+		positionX:Float, positionY:Float, intervalPixel:Int, baseWidth:Int,
+		textAlignToRight:Bool = false
 	) {
 		this.movieClipUtilClass = movieClipUtilClass;
 		this.positionY = positionY;
@@ -34,6 +36,7 @@ class NumericLine {
 		this.intervalPixel = intervalPixel;
 		this.layer = layer;
 		this.baseWidth = baseWidth;
+		this.textAlignToRight = textAlignToRight;
 
 		graphicsSet = [];
 	}
@@ -42,8 +45,9 @@ class NumericLine {
 		graphicsSet = [];
 
 		var numberStr:String = '$number';
-		var px = positionX;
 		var length:Int = numberStr.length;
+		var px:Float = (!textAlignToRight) ? positionX : positionX - (numberStr.length * baseWidth);
+
 		for (i in 0...length){
 
 			var graphics:MovieClip = Type.createInstance(baseClass, []);
@@ -74,5 +78,13 @@ class NumericLine {
 
 		for(graphics in graphicsSet)
 			layer.removeChild(graphics);
+	}
+	public function alignRight(positionX:Float){
+
+		var px = positionX - (graphicsSet.length * baseWidth);
+		for(graphics in graphicsSet){
+			graphics.x = px;
+			px += baseWidth;
+		}
 	}
 }

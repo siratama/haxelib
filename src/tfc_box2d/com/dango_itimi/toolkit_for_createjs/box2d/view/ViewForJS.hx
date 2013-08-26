@@ -15,7 +15,7 @@ class ViewForJS extends View{
 
 		baseShape = new BaseShapeForJS();
 		cast(baseShape, BaseShapeForJS).setShapeSprite(chunkSprite);
-		angle = MathUtil.degToRad(chunkSprite.rotation);
+		angle = MathUtil.changeDegreeToRadian(chunkSprite.rotation);
 	}
 
 	override public function toString():String {

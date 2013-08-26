@@ -12,6 +12,7 @@ import flash.display.MovieClip;
 
 #end
 
+import com.dango_itimi.event.KeyChecker;
 import com.dango_itimi.as3_and_createjs.utils.IContainerUtil;
 import com.dango_itimi.as3_and_createjs.display.IDisplayObjectContainer;
 import com.dango_itimi.as3_and_createjs.utils.IMovieClipUtil;
@@ -19,6 +20,7 @@ import com.dango_itimi.as3_and_createjs.event.MouseEventChecker;
 
 class CommonClassSet {
 
+	public static var keyCheckerClass:Class<KeyChecker>;
 	public static var mouseEventCheckerClass:Class<MouseEventChecker>;
 	public static var movieClipUtilClass:Class<IMovieClipUtil>;
 	public static var containerUtilClass:Class<IContainerUtil>;
@@ -35,5 +37,8 @@ class CommonClassSet {
 	}
 	public static function createMouseEventChecker(displayObject:DisplayObject){
 		return Type.createInstance(mouseEventCheckerClass, [displayObject]);
+	}
+	public static function createKeyChecker(param:#if js Bool = false #else DisplayObject #end):KeyChecker{
+		return Type.createInstance(keyCheckerClass, [param]);
 	}
 }

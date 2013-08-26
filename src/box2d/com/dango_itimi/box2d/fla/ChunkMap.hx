@@ -24,6 +24,7 @@ class ChunkMap {
 	private function initializeForPolygon() {
 	}
 
+	/*
 	private function createBox(
 		chunkSetId:Int,
 		chunkSpriteClass:Dynamic,
@@ -72,8 +73,10 @@ class ChunkMap {
 	):Chunk {
 		return createChunkFromClass(polygonSet, chunkSetId, chunkSpriteClass, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 	}
+	*/
 	private function createChunkFromClass(
-		chunkSet:Array<Chunk>,
+		//chunkSet:Array<Chunk>,
+		chunkSetKind:ChunkSetKind,
 		chunkSetId:Int,
 		chunkSpriteClass:Dynamic,
 		?bodyType:Bool = false,
@@ -89,10 +92,11 @@ class ChunkMap {
 	):Chunk {
 
 		var chunkSprite = Type.createInstance(chunkSpriteClass, []);
-		return createChunk(chunkSet, chunkSetId, chunkSprite, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
+		return createChunk(chunkSetKind, chunkSetId, chunkSprite, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 	}
 	private function createChunk(
-		chunkSet:Array<Chunk>,
+		//chunkSet:Array<Chunk>,
+		chunkSetKind:ChunkSetKind,
 		chunkSetId:Int,
 		chunkSprite:Dynamic,
 		?bodyType:Bool = false,
@@ -107,8 +111,24 @@ class ChunkMap {
 		?firstVisible:Bool = true
 	):Chunk {
 
+		var chunkSet = getChunkSet(chunkSetKind);
 		var chunk:Chunk = new Chunk(chunkSprite, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 		chunkSet[chunkSetId] = chunk;
 		return chunk;
 	}
+
+	private function getChunkSet(chunkSet:ChunkSetKind):Array<Chunk>{
+
+		return switch(chunkSet){
+			case ChunkSetKind.BOX: boxSet;
+			case ChunkSetKind.CIRCLE: circleSet;
+			case ChunkSetKind.POLYGON: polygonSet;
+		}
+	}
+}
+
+enum ChunkSetKind{
+	BOX;
+	CIRCLE;
+	POLYGON;
 }

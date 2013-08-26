@@ -15,7 +15,7 @@ class ViewForFlash extends View{
 
 		baseShape = new BaseShapeForFlash();
 		cast(baseShape, BaseShapeForFlash).setShapeSprite(chunkSprite);
-		angle = MathUtil.degToRad(chunkSprite.rotation);
+		angle = MathUtil.changeDegreeToRadian(chunkSprite.rotation);
 	}
 
 	override public function toString():String{

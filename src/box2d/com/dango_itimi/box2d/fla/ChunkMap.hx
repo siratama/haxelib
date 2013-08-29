@@ -95,7 +95,6 @@ class ChunkMap {
 		return createChunk(chunkSetKind, chunkSetId, chunkSprite, bodyType, bullet, restitution, friction, density, fixedRotation, groupIndex, categoryBits, maskBits, firstVisible);
 	}
 	private function createChunk(
-		//chunkSet:Array<Chunk>,
 		chunkSetKind:ChunkSetKind,
 		chunkSetId:Int,
 		chunkSprite:Dynamic,

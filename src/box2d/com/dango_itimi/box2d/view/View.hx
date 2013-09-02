@@ -182,6 +182,9 @@ class View {
 	public function applyImpulseForAntiGravity(gravityY:Float) {
 		body.applyForce(new B2Vec2(0, body.getMass() * -gravityY), body.getLocalCenter());
 	}
+	public function getFreeFallSpeed():B2Vec2{
+		return body.getLinearVelocity();
+	}
 
 	/**
 	 *

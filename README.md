@@ -1,6 +1,12 @@
-﻿dango-itimi haxelib
+dango-itimi haxelib
 =======
 licence: MIT
+
+##ALL
+
+Haxe から利用可能な言語汎用ライブラリ
+
+* src/*
 
 ##TFCLib
 
@@ -20,9 +26,9 @@ Toolkit For CreateJS のパブリッシュデータを スクリプトから利�
 * examples/toolkit\_for\_createjs/
 * build/toolkit\_for\_createjs/
 
-##FlashCS To CanvasBox2D Converter
+##FlashCC To CanvasBox2D Converter
 
-Flash CS のステージ上に配置したシンボルを html5 canvas Box2D オブジェクトに変換する Haxe/js ライブラリ
+Flash Professional CC のステージ上に配置したシンボルを html5 canvas Box2D オブジェクトに変換する Haxe/js ライブラリ
 
 ###ディレクトリ
 * src/box2d/
@@ -30,9 +36,9 @@ Flash CS のステージ上に配置したシンボルを html5 canvas Box2D オ
 * examples/box2d/
 * build/tfc\_box2d/
 
-##FlashCS To FlashBox2D Converter
+##FlashCC To FlashBox2D Converter
 
-Flash CS のステージ上に配置したシンボルを flash Box2D オブジェクトに変換する Haxe ライブラリ
+Flash Professional CS のステージ上に配置したシンボルを flash Box2D オブジェクトに変換する Haxe ライブラリ
 
 ###ディレクトリ
 * src/box2d/

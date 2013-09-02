@@ -14,7 +14,6 @@ class FontJISForFlash extends FontJIS{
 	public function new(fontSpriteSheetClass:Class<FontSpriteSheet>, fontSpriteSheetScale:Int, fontBitmapDataClass:Class<BitmapData>){
 
 		baseFontBitmapData = Type.createInstance(fontBitmapDataClass, []);
-
 		super(fontSpriteSheetClass, fontSpriteSheetScale);
 	}
 	override private function createFont(cropRectangle:Rectangle):Bitmap {

@@ -1,4 +1,5 @@
 package com.dango_itimi.createjs;
+import com.dango_itimi.createjs.font.FontJISForJS;
 import com.dango_itimi.createjs.utils.ContainerUtil;
 import com.dango_itimi.as3_and_createjs.display.createjs.Container;
 import com.dango_itimi.as3_and_createjs.CommonClassSet;
@@ -11,5 +12,6 @@ class CommonClassRegister {
 		CommonClassSet.movieClipUtilClass = MovieClipUtil;
 		CommonClassSet.containerUtilClass = ContainerUtil;
 		CommonClassSet.defaultLayerClass = Container;
+		CommonClassSet.fontJisClass = FontJISForJS;
 	}
 }

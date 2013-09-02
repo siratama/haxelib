@@ -1,5 +1,6 @@
 package com.dango_itimi.as3;
 
+import com.dango_itimi.as3.font.FontJISForFlash;
 import com.dango_itimi.as3.event.KeyCheckerForFlash;
 import com.dango_itimi.as3.utils.ContainerUtil;
 import com.dango_itimi.as3_and_createjs.CommonClassSet;
@@ -16,5 +17,6 @@ class CommonClassRegister {
 		CommonClassSet.containerUtilClass = ContainerUtil;
 		CommonClassSet.defaultLayerClass = Sprite;
 		CommonClassSet.keyCheckerClass = KeyCheckerForFlash;
+		CommonClassSet.fontJisClass = FontJISForFlash;
 	}
 }

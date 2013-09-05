@@ -1,5 +1,5 @@
 package com.dango_itimi.font;
-class MisakiFontSpriteSheet extends FontSpriteSheet{
+class Misaki8x8FontSpriteSheet extends FontSpriteSheet{
 
 	public function new(?scale:Int = 1){
 

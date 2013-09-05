@@ -4,13 +4,6 @@ interface IDisplayObject {
 	public var x:Float;
 	public var y:Float;
 	public var alpha:Float;
-	/*
-	public var visible:Bool;
-	*/
-
-	/*
-	@:isVar var x(get, set):Float;
-	function get_x() { return x; }
-	function set_x(i){ return x = i; }
-	*/
+	public var scaleX:Float;
+	public var scaleY:Float;
 }

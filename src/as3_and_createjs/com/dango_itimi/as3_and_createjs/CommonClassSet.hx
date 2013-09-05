@@ -16,11 +16,11 @@ import flash.display.BitmapData;
 
 import com.dango_itimi.event.KeyChecker;
 import com.dango_itimi.font.FontSpriteSheet;
-import com.dango_itimi.as3_and_createjs.font.FontJIS;
 import com.dango_itimi.as3_and_createjs.utils.IContainerUtil;
 import com.dango_itimi.as3_and_createjs.utils.IMovieClipUtil;
 import com.dango_itimi.as3_and_createjs.display.IDisplayObjectContainer;
 import com.dango_itimi.as3_and_createjs.event.MouseEventChecker;
+import com.dango_itimi.as3_and_createjs.font.TextToBitmapFontConverter;
 
 class CommonClassSet {
 
@@ -29,7 +29,7 @@ class CommonClassSet {
 	public static var movieClipUtilClass:Class<IMovieClipUtil>;
 	public static var containerUtilClass:Class<IContainerUtil>;
 	public static var defaultLayerClass:Class<IDisplayObjectContainer>;
-	public static var fontJisClass:Class<FontJIS>;
+	public static var textToBitmapFontConverterClass:Class<TextToBitmapFontConverter>;
 
 	public static function createLayer():IDisplayObjectContainer{
 		return Type.createInstance(defaultLayerClass, []);
@@ -46,7 +46,11 @@ class CommonClassSet {
 	public static function createKeyChecker(param:#if js Bool = false #else DisplayObject #end):KeyChecker{
 		return Type.createInstance(keyCheckerClass, [param]);
 	}
-	public static function createFontJIS(fontSpriteSheetClass:Class<FontSpriteSheet>, fontSpriteSheetScale:Int, fontBitmapClass:Class<#if js Bitmap #else BitmapData #end>):FontJIS{
-		return Type.createInstance(fontJisClass, [fontSpriteSheetClass, fontSpriteSheetScale, fontBitmapClass]);
+	public static function createTextToBitmapFontConverter(
+		fontSpriteSheetScale:Int,
+		twoByteFontSpriteSheetClass:Class<FontSpriteSheet>, twoByteFontBitmapClass:Class<#if js Bitmap #else BitmapData #end>,
+		oneByteFontSpriteSheetClass:Class<FontSpriteSheet> = null, oneByteFontBitmapClass:Class<#if js Bitmap #else BitmapData #end> = null
+	):TextToBitmapFontConverter{
+		return Type.createInstance(textToBitmapFontConverterClass, [fontSpriteSheetScale, twoByteFontSpriteSheetClass, twoByteFontBitmapClass, oneByteFontSpriteSheetClass, oneByteFontBitmapClass]);
 	}
 }

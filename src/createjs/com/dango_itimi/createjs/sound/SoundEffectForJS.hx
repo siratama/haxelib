@@ -9,7 +9,6 @@ class SoundEffectForJS extends SoundEffect{
 	private var interrupt:String;
 	private var delay:Int;
 	private var offset:Int;
-	private var loop:Int;
 
 	public function new(
 		id:String, intervalFrame:Int, interrupt:String, delay:Int, offset:Int, loop:Int, volume:Float, pan:Float){
@@ -17,9 +16,8 @@ class SoundEffectForJS extends SoundEffect{
 		this.interrupt = interrupt;
 		this.delay = delay;
 		this.offset = offset;
-		this.loop = loop;
 
-		super(id, intervalFrame, volume, pan);
+		super(id, intervalFrame, volume, pan, loop);
 	}
 	override private function playChild() {
 

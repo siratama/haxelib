@@ -202,4 +202,40 @@ class View {
 		return 0;
 	}
 
+	public function createShapeRectangle(box2dScale:Float):ShapeRectangle{
+
+		var position = body.getPosition();
+		var centerPositionX = position.x * box2dScale;
+		var centerPositionY = position.y * box2dScale;
+
+		var halfWidth = getBaseShapeWidth() / 2;
+		var halfHeight = getBaseShapeHeight() / 2;
+
+		return new ShapeRectangle(
+			centerPositionX, centerPositionY,
+			centerPositionX - halfWidth,
+			centerPositionX + halfWidth,
+			centerPositionY - halfHeight,
+			centerPositionY + halfHeight
+		);
+	}
+}
+
+class ShapeRectangle{
+
+	public var x(default, null):Float;
+	public var y(default, null):Float;
+	public var left(default, null):Float;
+	public var right(default, null):Float;
+	public var top(default, null):Float;
+	public var bottom(default, null):Float;
+
+	public function new(x:Float, y:Float, left:Float, right:Float, top:Float, bottom:Float){
+		this.x = x;
+		this.y = y;
+		this.left = left;
+		this.right = right;
+		this.top = top;
+		this.bottom = bottom;
+	}
 }

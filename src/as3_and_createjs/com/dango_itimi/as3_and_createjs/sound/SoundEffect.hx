@@ -6,14 +6,16 @@ class SoundEffect {
 	private var intervalFrame:Int;
 	private var volume:Float;
 	private var pan:Float;
+	private var loop:Int;
 	public var id(default, null):String;
 
-	public function new(id:String, intervalFrame:Int, volume:Float, pan:Float){
+	public function new(id:String, intervalFrame:Int, volume:Float, pan:Float, loop:Int){
 
 		this.id = id;
 		this.intervalFrame = intervalFrame;
 		this.volume = volume;
 		this.pan = pan;
+		this.loop = loop;
 
 		interval = 0;
 		mainFunction = finish;

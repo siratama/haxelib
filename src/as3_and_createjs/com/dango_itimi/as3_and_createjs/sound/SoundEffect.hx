@@ -47,5 +47,7 @@ class SoundEffect {
 	}
 
 	public function stop(){
+		interval = 0;
+		mainFunction = finish;
 	}
 }

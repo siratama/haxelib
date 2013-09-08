@@ -32,4 +32,12 @@ class SoundEffectMap {
 		soundEffect.play();
 		playingSoundEffectMap.set(soundEffectId, soundEffect);
 	}
+	public function stop(soundEffectId:String) {
+
+		var soundEffect = soundEffectMap.get(soundEffectId);
+		soundEffect.stop();
+
+		if(playingSoundEffectMap.exists(soundEffectId))
+			playingSoundEffectMap.remove(soundEffectId);
+	}
 }

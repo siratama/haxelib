@@ -33,5 +33,7 @@ class SoundEffectForJS extends SoundEffect{
 	override public function stop(){
 		if(soundInstance != null)
 			soundInstance.stop();
+
+		super.stop();
 	}
 }

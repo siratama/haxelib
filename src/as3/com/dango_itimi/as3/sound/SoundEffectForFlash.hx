@@ -23,5 +23,6 @@ class SoundEffectForFlash extends SoundEffect {
 	override public function stop(){
 
 		soundChannel.stop();
+		super.stop();
 	}
 }

@@ -22,6 +22,18 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 	override public function removeEventListener(){
 		displayObject.removeEventListener("click", onClick);
 		displayObject.removeEventListener("mousedown", onMouseDown);
+
+		for(key in touchEventMap.keys()){
+			if(touchEventMap[key] == null) continue;
+			switch(touchEventMap[key]){
+				case Touch.DOWN(touchEvent): removeEventListenerCommon(touchEvent);
+				case Touch.MOVE(touchEvent): removeEventListenerCommon(touchEvent);
+				case Touch.UP(touchEvent): removeEventListenerCommon(touchEvent);
+			}
+		}
+	}
+	private function removeEventListenerCommon(touchEvent:MouseEvent){
+		if(touchEvent != null)	touchEvent.removeAllEventListeners();
 	}
 	override private function onMouseDown(event:MouseEvent){
 
@@ -49,8 +61,13 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 				case Touch.MOVE(touchEvent): touchEvent;
 				case Touch.UP(touchEvent): null;
 			}
-			touchEvent.removeEventListener("mouseup", onMouseUp);
-			touchEvent.removeEventListener("mousemove", onMouseMove);
+			if(touchEvent != null){
+				if(touchEvent.hasEventListener("mouseup"))
+					touchEvent.removeEventListener("mouseup", onMouseUp);
+
+				if(touchEvent.hasEventListener("mousemove"))
+					touchEvent.removeEventListener("mousemove", onMouseMove);
+			}
 
 			touchEventMap[event.pointerID] = Touch.UP(event);
 		}
@@ -65,6 +82,8 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 		super.reset();
 
 		for(key in touchEventMap.keys()){
+
+			if(touchEventMap[key] == null) continue;
 
 			switch(touchEventMap[key]){
 				case Touch.DOWN(touchEvent): continue;

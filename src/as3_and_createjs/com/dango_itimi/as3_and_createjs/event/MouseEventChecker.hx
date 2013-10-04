@@ -114,4 +114,6 @@ class MouseEventChecker {
 	}
 	*/
 
+	public function destroy(){
+	}
 }

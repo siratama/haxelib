@@ -24,4 +24,5 @@ interface IMovieClipUtil {
 	public function isCurrentLabel(label:String):Bool;
 	public function isLastFrame():Bool;
 	public function setPosition(position:MovieClip):Void;
+	public function contains(objectString:String):Bool;
 }

@@ -14,7 +14,10 @@ class MovieClipUtil implements IMovieClipUtil{
 
 		this.mc = mc;
 		timeline = mc.timeline;
-		totalFrames = timeline.duration - 1;
+		if(timeline != null)
+			totalFrames = timeline.duration - 1;
+		else
+			totalFrames = 0;
 	}
 	public function gotoFirstFrame(){
 		mc.gotoAndStop(0);
@@ -56,5 +59,11 @@ class MovieClipUtil implements IMovieClipUtil{
 	public function setPosition(position:MovieClip){
 		mc.x = position.x;
 		mc.y = position.y;
+	}
+
+	//can't use text object
+	public function contains(objectString:String):Bool{
+
+		return untyped mc[objectString]._off != true;
 	}
 }

@@ -18,10 +18,14 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 	override public function addEventListener(){
 		displayObject.addEventListener("click", onClick);
 		displayObject.addEventListener("mousedown", onMouseDown);
+		displayObject.addEventListener("pressup", onMouseUp);
+		displayObject.addEventListener("pressmove", onMouseMove);
 	}
 	override public function removeEventListener(){
 		displayObject.removeEventListener("click", onClick);
 		displayObject.removeEventListener("mousedown", onMouseDown);
+		displayObject.removeEventListener("pressup", onMouseUp);
+		displayObject.removeEventListener("pressmove", onMouseMove);
 
 		for(key in touchEventMap.keys()){
 			if(touchEventMap[key] == null) continue;
@@ -42,8 +46,10 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 		}
 		super.onMouseDown(event);
 
+		/*
 		event.addEventListener("mouseup", onMouseUp);
 		event.addEventListener("mousemove", onMouseMove);
+		*/
 	}
 	override private function onMouseMove(event:MouseEvent){
 
@@ -56,6 +62,7 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 
 		if(event.nativeEvent.type == "touchend" || event.nativeEvent.type == "touchcancel"){
 
+			/*
 			var touchEvent = switch(touchEventMap[event.pointerID]){
 				case Touch.DOWN(touchEvent): touchEvent;
 				case Touch.MOVE(touchEvent): touchEvent;
@@ -68,12 +75,15 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 				if(touchEvent.hasEventListener("mousemove"))
 					touchEvent.removeEventListener("mousemove", onMouseMove);
 			}
+			*/
 
 			touchEventMap[event.pointerID] = Touch.UP(event);
 		}
 		else{
+			/*
 			downedEvent.removeEventListener("mouseup", onMouseUp);
 			downedEvent.removeEventListener("mousemove", onMouseMove);
+			*/
 		}
 		super.onMouseUp(event);
 	}
@@ -91,6 +101,10 @@ class MouseEventCheckerForJS extends MouseEventChecker{
 				case Touch.UP(touchEvent): touchEventMap.remove(key);
 			}
 		}
+	}
+	override public function destroy(){
+
+		touchEventMap = new Map();
 	}
 }
 

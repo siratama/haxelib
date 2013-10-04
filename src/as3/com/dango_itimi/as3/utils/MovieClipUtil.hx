@@ -51,4 +51,7 @@ class MovieClipUtil implements IMovieClipUtil{
 		mc.x = position.x;
 		mc.y = position.y;
 	}
+	public function contains(objectString:String):Bool{
+		return mc.getChildByName(objectString) != null;
+	}
 }

@@ -41,13 +41,12 @@ class ContactParser {
 
 		var contactData = new ContactData();
 		contactData.setData(b2Contact, baseViewIsFixtureA);
-
 		allContactData.push(contactData);
 
-		var contactCheckViewKey:String = (baseViewIsFixtureA) ? keyB: keyA;
-		var contactData:ContactData = targetContactDataMap.get(contactCheckViewKey);
-		if(contactData != null)
-			contactData.setData(b2Contact, baseViewIsFixtureA);
+		var targetKey:String = (baseViewIsFixtureA) ? keyB: keyA;
+		var targetContactData:ContactData = targetContactDataMap.get(targetKey);
+		if(targetContactData != null)
+			targetContactData.setData(b2Contact, baseViewIsFixtureA);
 	}
 	public function isContactedSomething():Bool{
 		return allContactData.length > 0;

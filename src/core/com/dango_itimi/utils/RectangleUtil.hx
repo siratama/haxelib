@@ -49,7 +49,7 @@ class RectangleUtil {
 		bottom += addedY;
 	}
 	public function hitTestPoint(nx:Float, ny:Float):Bool{
-		
+
 		return (x <= nx && y <= ny && right >= nx && bottom >= ny);
 	}
 	public function hitTestObject(checkedRectangle:RectangleUtil):Bool{

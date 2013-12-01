@@ -13,4 +13,21 @@ class UserAgent {
 	public function isAu():Bool{
 		return ~/^UP.Browser|^KDDI/.match(userAgentString);
 	}
+
+	public function isAndroid():Bool{
+		return ~/Android/.match(userAgentString);
+	}
+	public function isIPhone():Bool{
+		return ~/iPhone/.match(userAgentString);
+	}
+	public function isIPod():Bool{
+		return ~/iPod/.match(userAgentString);
+	}
+	public function isIPad():Bool{
+		return ~/iPad/.match(userAgentString);
+	}
+
+	public function isSmartPhone():Bool{
+		return isAndroid() || isIPhone() || isIPod();
+	}
 }

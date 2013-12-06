@@ -36,7 +36,7 @@ Flash Professional CC のステージ上に配置したシンボルを html5 can
 
 ##FlashCC To FlashBox2D Converter
 
-Flash Professional CS のステージ上に配置したシンボルを flash Box2D オブジェクトに変換する Haxe ライブラリ
+Flash Professional CC のステージ上に配置したシンボルを flash Box2D オブジェクトに変換する Haxe ライブラリ
 
 ###関連ディレクトリ
 * src/box2d/

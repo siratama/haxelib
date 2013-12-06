@@ -86,7 +86,6 @@ MainForJS.prototype = $extend(Main.prototype,{
 	}
 	,initialize: function(event) {
 		this.stage = new createjs.Stage(js.Browser.document.getElementById("canvas"));
-		createjs.Ticker.useRAF = true;
 		createjs.Ticker.setFPS(24);
 		createjs.Ticker.addEventListener("tick",$bind(this,this.run));
 		Main.prototype.initialize.call(this,event);
@@ -9121,7 +9120,40 @@ com.dango_itimi.box2d.fla.ChunkMap = function() {
 };
 com.dango_itimi.box2d.fla.ChunkMap.__name__ = ["com","dango_itimi","box2d","fla","ChunkMap"];
 com.dango_itimi.box2d.fla.ChunkMap.prototype = {
-	createChunk: function(chunkSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
+	getChunkSet: function(chunkSet) {
+		return (function($this) {
+			var $r;
+			switch( (chunkSet)[1] ) {
+			case 0:
+				$r = $this.boxSet;
+				break;
+			case 1:
+				$r = $this.circleSet;
+				break;
+			case 2:
+				$r = $this.polygonSet;
+				break;
+			}
+			return $r;
+		}(this));
+	}
+	,createChunk: function(chunkSetKind,chunkSetId,chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
+		if(firstVisible == null) firstVisible = true;
+		if(maskBits == null) maskBits = 65535;
+		if(categoryBits == null) categoryBits = 1;
+		if(groupIndex == null) groupIndex = 0;
+		if(fixedRotation == null) fixedRotation = false;
+		if(density == null) density = 1.0;
+		if(friction == null) friction = 1.0;
+		if(restitution == null) restitution = 0;
+		if(bullet == null) bullet = false;
+		if(bodyType == null) bodyType = false;
+		var chunkSet = this.getChunkSet(chunkSetKind);
+		var chunk = new com.dango_itimi.box2d.fla.Chunk(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
+		chunkSet[chunkSetId] = chunk;
+		return chunk;
+	}
+	,createChunkFromClass: function(chunkSetKind,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
 		if(firstVisible == null) firstVisible = true;
 		if(maskBits == null) maskBits = 65535;
 		if(categoryBits == null) categoryBits = 1;
@@ -9133,48 +9165,7 @@ com.dango_itimi.box2d.fla.ChunkMap.prototype = {
 		if(bullet == null) bullet = false;
 		if(bodyType == null) bodyType = false;
 		var chunkSprite = Type.createInstance(chunkSpriteClass,[]);
-		var chunk = new com.dango_itimi.box2d.fla.Chunk(chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
-		chunkSet[chunkSetId] = chunk;
-		return chunk;
-	}
-	,createPolygon: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
-		if(firstVisible == null) firstVisible = true;
-		if(maskBits == null) maskBits = 65535;
-		if(categoryBits == null) categoryBits = 1;
-		if(groupIndex == null) groupIndex = 0;
-		if(fixedRotation == null) fixedRotation = false;
-		if(density == null) density = 1.0;
-		if(friction == null) friction = 1.0;
-		if(restitution == null) restitution = 0;
-		if(bullet == null) bullet = false;
-		if(bodyType == null) bodyType = false;
-		return this.createChunk(this.polygonSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
-	}
-	,createCircle: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
-		if(firstVisible == null) firstVisible = true;
-		if(maskBits == null) maskBits = 65535;
-		if(categoryBits == null) categoryBits = 1;
-		if(groupIndex == null) groupIndex = 0;
-		if(fixedRotation == null) fixedRotation = false;
-		if(density == null) density = 1.0;
-		if(friction == null) friction = 1.0;
-		if(restitution == null) restitution = 0;
-		if(bullet == null) bullet = false;
-		if(bodyType == null) bodyType = false;
-		return this.createChunk(this.circleSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
-	}
-	,createBox: function(chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible) {
-		if(firstVisible == null) firstVisible = true;
-		if(maskBits == null) maskBits = 65535;
-		if(categoryBits == null) categoryBits = 1;
-		if(groupIndex == null) groupIndex = 0;
-		if(fixedRotation == null) fixedRotation = false;
-		if(density == null) density = 1.0;
-		if(friction == null) friction = 1.0;
-		if(restitution == null) restitution = 0;
-		if(bullet == null) bullet = false;
-		if(bodyType == null) bodyType = false;
-		return this.createChunk(this.boxSet,chunkSetId,chunkSpriteClass,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
+		return this.createChunk(chunkSetKind,chunkSetId,chunkSprite,bodyType,bullet,restitution,friction,density,fixedRotation,groupIndex,categoryBits,maskBits,firstVisible);
 	}
 	,initializeForPolygon: function() {
 	}
@@ -9192,15 +9183,15 @@ box2d.MyChunkMap.__name__ = ["box2d","MyChunkMap"];
 box2d.MyChunkMap.__super__ = com.dango_itimi.box2d.fla.ChunkMap;
 box2d.MyChunkMap.prototype = $extend(com.dango_itimi.box2d.fla.ChunkMap.prototype,{
 	initializeForPolygon: function() {
-		this.createPolygon(0,lib.box2dpolygonFlipper,true,true,1,0,1,false);
+		this.createChunk(com.dango_itimi.box2d.fla.ChunkSetKind.POLYGON,0,lib.box2dpolygonFlipper,true,true,1,0,1,false);
 	}
 	,initializeForCircle: function() {
-		this.createCircle(0,lib.box2dcircleCircleTest,false,true,1,0,1,false,-1);
-		this.createCircle(1,lib.box2dcircleCircleTest2,true,true,1,0.5,1,false,-1);
+		this.createChunk(com.dango_itimi.box2d.fla.ChunkSetKind.CIRCLE,0,lib.box2dcircleCircleTest,false,true,1,0,1,false,-1);
+		this.createChunk(com.dango_itimi.box2d.fla.ChunkSetKind.CIRCLE,1,lib.box2dcircleCircleTest2,true,true,1,0.5,1,false,-1);
 	}
 	,initializeForBox: function() {
-		this.createBox(0,lib.box2dboxBoxBackground,false,false,0,1);
-		this.createBox(1,lib.box2dboxCharacter,true,false,1,1,1,false);
+		this.createChunk(com.dango_itimi.box2d.fla.ChunkSetKind.BOX,0,lib.box2dboxBoxBackground,false,false,0,1);
+		this.createChunk(com.dango_itimi.box2d.fla.ChunkSetKind.BOX,1,lib.box2dboxCharacter,true,false,1,1,1,false);
 	}
 	,__class__: box2d.MyChunkMap
 });
@@ -9315,6 +9306,16 @@ com.dango_itimi.box2d.fla.Chunk.prototype = {
 	}
 	,__class__: com.dango_itimi.box2d.fla.Chunk
 }
+com.dango_itimi.box2d.fla.ChunkSetKind = { __ename__ : true, __constructs__ : ["BOX","CIRCLE","POLYGON"] }
+com.dango_itimi.box2d.fla.ChunkSetKind.BOX = ["BOX",0];
+com.dango_itimi.box2d.fla.ChunkSetKind.BOX.toString = $estr;
+com.dango_itimi.box2d.fla.ChunkSetKind.BOX.__enum__ = com.dango_itimi.box2d.fla.ChunkSetKind;
+com.dango_itimi.box2d.fla.ChunkSetKind.CIRCLE = ["CIRCLE",1];
+com.dango_itimi.box2d.fla.ChunkSetKind.CIRCLE.toString = $estr;
+com.dango_itimi.box2d.fla.ChunkSetKind.CIRCLE.__enum__ = com.dango_itimi.box2d.fla.ChunkSetKind;
+com.dango_itimi.box2d.fla.ChunkSetKind.POLYGON = ["POLYGON",2];
+com.dango_itimi.box2d.fla.ChunkSetKind.POLYGON.toString = $estr;
+com.dango_itimi.box2d.fla.ChunkSetKind.POLYGON.__enum__ = com.dango_itimi.box2d.fla.ChunkSetKind;
 com.dango_itimi.box2d.userdata = {}
 com.dango_itimi.box2d.userdata.UserData = function() {
 };
@@ -9342,7 +9343,15 @@ com.dango_itimi.box2d.view.BaseShape.prototype = {
 com.dango_itimi.box2d.view.View = function() { }
 com.dango_itimi.box2d.view.View.__name__ = ["com","dango_itimi","box2d","view","View"];
 com.dango_itimi.box2d.view.View.prototype = {
-	getBaseShapeHeight: function() {
+	createShapeRectangle: function(box2dScale) {
+		var position = this.body.getPosition();
+		var centerPositionX = position.x * box2dScale;
+		var centerPositionY = position.y * box2dScale;
+		var halfWidth = this.getBaseShapeWidth() / 2;
+		var halfHeight = this.getBaseShapeHeight() / 2;
+		return new com.dango_itimi.box2d.view.ShapeRectangle(centerPositionX,centerPositionY,centerPositionX - halfWidth,centerPositionX + halfWidth,centerPositionY - halfHeight,centerPositionY + halfHeight);
+	}
+	,getBaseShapeHeight: function() {
 		return 0;
 	}
 	,getBaseShapeWidth: function() {
@@ -9353,6 +9362,9 @@ com.dango_itimi.box2d.view.View.prototype = {
 	}
 	,getAngle: function() {
 		return this.angle;
+	}
+	,getFreeFallSpeed: function() {
+		return this.body.getLinearVelocity();
 	}
 	,applyImpulseForAntiGravity: function(gravityY) {
 		this.body.applyForce(new box2D.common.math.B2Vec2(0,this.body.getMass() * -gravityY),this.body.getLocalCenter());
@@ -9450,6 +9462,18 @@ com.dango_itimi.box2d.view.View.prototype = {
 		this.initializeChild();
 	}
 	,__class__: com.dango_itimi.box2d.view.View
+}
+com.dango_itimi.box2d.view.ShapeRectangle = function(x,y,left,right,top,bottom) {
+	this.x = x;
+	this.y = y;
+	this.left = left;
+	this.right = right;
+	this.top = top;
+	this.bottom = bottom;
+};
+com.dango_itimi.box2d.view.ShapeRectangle.__name__ = ["com","dango_itimi","box2d","view","ShapeRectangle"];
+com.dango_itimi.box2d.view.ShapeRectangle.prototype = {
+	__class__: com.dango_itimi.box2d.view.ShapeRectangle
 }
 com.dango_itimi.toolkit_for_createjs = {}
 com.dango_itimi.toolkit_for_createjs.box2d = {}
@@ -9620,22 +9644,19 @@ com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.getProperty = function(
 com.dango_itimi.utils = {}
 com.dango_itimi.utils.MathUtil = function() { }
 com.dango_itimi.utils.MathUtil.__name__ = ["com","dango_itimi","utils","MathUtil"];
-com.dango_itimi.utils.MathUtil.radToDeg = function(rad) {
-	return 180 / Math.PI * rad;
+com.dango_itimi.utils.MathUtil.changeRadianToDegree = function(radian) {
+	return 180 / Math.PI * radian;
 }
-com.dango_itimi.utils.MathUtil.degToRad = function(deg) {
-	return Math.PI / 180 * deg;
+com.dango_itimi.utils.MathUtil.changeDegreeToRadian = function(degree) {
+	return Math.PI / 180 * degree;
 }
 com.dango_itimi.utils.MathUtil.clamp = function(value,min,max) {
 	if(value < min) return min; else if(value > max) return max; else return value;
 }
 com.dango_itimi.utils.RectangleUtil = function(x,y,width,height) {
-	this.x = x;
-	this.y = y;
 	this.width = width;
 	this.height = height;
-	this.right = x + width;
-	this.bottom = y + height;
+	this.setPosition(x,y);
 };
 com.dango_itimi.utils.RectangleUtil.__name__ = ["com","dango_itimi","utils","RectangleUtil"];
 com.dango_itimi.utils.RectangleUtil.convert = function(rect) {
@@ -9659,6 +9680,18 @@ com.dango_itimi.utils.RectangleUtil.prototype = {
 	,addX: function(addedX) {
 		this.x += addedX;
 		this.right += addedX;
+	}
+	,setY: function(y) {
+		this.y = y;
+		this.bottom = y + this.height;
+	}
+	,setX: function(x) {
+		this.x = x;
+		this.right = x + this.width;
+	}
+	,setPosition: function(x,y) {
+		this.setX(x);
+		this.setY(y);
 	}
 	,toString: function() {
 		return "w:" + this.width + ", h:" + this.height + ", x:" + this.x + ", y:" + this.y;

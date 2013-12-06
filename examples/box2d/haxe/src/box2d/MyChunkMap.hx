@@ -24,16 +24,16 @@ class MyChunkMap extends ChunkMap{
 
 	override private function initializeForBox() {
 
-		createBox(ID_BOX_BACKGROUND, BoxBackground, false, false, 0, 1);
-		createBox(ID_CHARACTER, Character, true, false, 1, 1, 1, false);
+		createChunk(ChunkSetKind.BOX, ID_BOX_BACKGROUND, BoxBackground, false, false, 0, 1);
+		createChunk(ChunkSetKind.BOX, ID_CHARACTER, Character, true, false, 1, 1, 1, false);
 	}
 	override private function initializeForCircle() {
 
-		createCircle(ID_CIRCLE, CircleTest, false, true, 1, 0, 1, false, GROUP_CIRCLE);
-		createCircle(ID_CIRCLE2, CircleTest2, true, true, 1, 0.5, 1, false, GROUP_CIRCLE);
+		createChunk(ChunkSetKind.CIRCLE, ID_CIRCLE, CircleTest, false, true, 1, 0, 1, false, GROUP_CIRCLE);
+		createChunk(ChunkSetKind.CIRCLE, ID_CIRCLE2, CircleTest2, true, true, 1, 0.5, 1, false, GROUP_CIRCLE);
 	}
 	override private function initializeForPolygon() {
 
-		createPolygon(ID_FLIPPER, Flipper, true, true, 1, 0, 1, false);
+		createChunk(ChunkSetKind.POLYGON, ID_FLIPPER, Flipper, true, true, 1, 0, 1, false);
 	}
 }

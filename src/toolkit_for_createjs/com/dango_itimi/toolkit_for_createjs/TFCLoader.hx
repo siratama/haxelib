@@ -1,69 +1,53 @@
 package com.dango_itimi.toolkit_for_createjs;
 
-import com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader;
 import com.dango_itimi.toolkit_for_createjs.loader.MaterialLoader;
-import com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser;
 
 /**
  * TFC: Toolkit For CreateJS
  */
 class TFCLoader {
+
+	private var propertiesSet:Array<Dynamic>;
 	
 	private var mainFunction:Void->Void;
 	private var materialURI:MaterialURI;
 	private var materialDirectorySet:Array<String>;
-	
-	private var templateHtmlLoader:TemplateHtmlLoader;
-	private var templateHtmlParser:TemplateHtmlParser;
+
 	private var materialLoader:MaterialLoader;
 	
 	public function new(
-		baseDirectoryName:String, 
+		baseDirectoryName:String,
 		?baseSoundsDirectoryName:String = "",
 		?usedSoundOgg:Bool = false
 	){
 		materialURI = new MaterialURI(baseDirectoryName, baseSoundsDirectoryName, usedSoundOgg);
 		materialDirectorySet = [];
+		propertiesSet = [];
 
-		mainFunction = initializeToLoadTemplateHtml;
+		mainFunction = parseManifest;
 	}
-	public function addMaterialDirectory(materialDirectoryName:String){
+	public function addMaterialDirectory(symbolNameSpace:String, materialDirectoryName:String){
 
+		var properties = js.Lib.eval('window.$symbolNameSpace.properties');
+		propertiesSet.push(properties);
 		materialDirectorySet.push(materialDirectoryName);
 	}
+	public function getFps(elementIndex:Int = 0):Int{
+		return propertiesSet[elementIndex].fps;
+	}
 	public function run(){
-		
 		mainFunction();
 	}
-	private function initializeToLoadTemplateHtml(){
-
-		templateHtmlLoader = new TemplateHtmlLoader(materialDirectorySet, materialURI);
-		templateHtmlLoader.load();
-		mainFunction = loadTemplateHtml;
-	}
-	private function loadTemplateHtml(){
-		
-		templateHtmlLoader.run();
-		if(templateHtmlLoader.isFinished())
-			parseTemplateHtml();
-
-		else if(templateHtmlLoader.getLoader().isError())
-			mainFunction = error;
-	}
-	private function parseTemplateHtml(){
-		
-		var loader = templateHtmlLoader.getLoader();
+	private function parseManifest(){
 
 		var manifest:Array<Dynamic> = [];
 		for(i in 0...materialDirectorySet.length){
-			
-			var materialDirectoryName = materialDirectorySet[i];
-			var templateHtmlUri = materialURI.getTemplateHtmlUri(materialDirectoryName);
-			var loadedHtml = loader.getLoadQueue().getResult(templateHtmlUri);
 
-			var m:Array<Dynamic> = TemplateHtmlParser.execute(loadedHtml);
-			materialURI.addUri(m, materialDirectoryName);
-			manifest = manifest.concat(m);
+			var materialDirectoryName = materialDirectorySet[i];
+			var properties = propertiesSet[i];
+
+			materialURI.addUri(properties.manifest, materialDirectoryName);
+			manifest = manifest.concat(properties.manifest);
 		}
 		initializeToLoadMaterial(manifest);
 	}

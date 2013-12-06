@@ -35,24 +35,22 @@ Main.prototype = {
 		shooting.se.SoundMixer.playForBgm();
 		this.mainFunction = $bind(this,this.runForGameScene);
 	}
+	,test: function() {
+	}
 	,loadTFC: function() {
 		this.tfcLoader.run();
 		if(this.tfcLoader.isFinished()) this.mainFunction = $bind(this,this.initializeToGameScene);
-	}
-	,initializeToLoadTFC: function() {
-		this.tfcLoader = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc","tfc_sounds",true);
-		this.tfcLoader.addMaterialDirectory("view");
-		this.mainFunction = $bind(this,this.loadTFC);
 	}
 	,run: function() {
 		this.mainFunction();
 	}
 	,initialize: function(event) {
-		createjs.Ticker.useRAF = true;
-		createjs.Ticker.setFPS(24);
-		createjs.Ticker.addEventListener("tick",$bind(this,this.run));
 		this.stage = new createjs.Stage(js.Browser.document.getElementById("canvas"));
-		this.initializeToLoadTFC();
+		this.tfcLoader = new com.dango_itimi.toolkit_for_createjs.TFCLoader("tfc","tfc_sounds",true);
+		this.tfcLoader.addMaterialDirectory("lib","view");
+		createjs.Ticker.setFPS(this.tfcLoader.getFps());
+		createjs.Ticker.addEventListener("tick",$bind(this,this.run));
+		this.mainFunction = $bind(this,this.loadTFC);
 	}
 	,__class__: Main
 }
@@ -100,17 +98,20 @@ var com = {}
 com.dango_itimi = {}
 com.dango_itimi.as3_and_createjs = {}
 com.dango_itimi.as3_and_createjs.sound = {}
-com.dango_itimi.as3_and_createjs.sound.SoundEffect = function(id,intervalFrame,volume,pan) {
+com.dango_itimi.as3_and_createjs.sound.SoundEffect = function(id,intervalFrame,volume,pan,loop) {
 	this.id = id;
 	this.intervalFrame = intervalFrame;
 	this.volume = volume;
 	this.pan = pan;
+	this.loop = loop;
 	this.interval = 0;
 	this.mainFunction = $bind(this,this.finish);
 };
 com.dango_itimi.as3_and_createjs.sound.SoundEffect.__name__ = ["com","dango_itimi","as3_and_createjs","sound","SoundEffect"];
 com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype = {
 	stop: function() {
+		this.interval = 0;
+		this.mainFunction = $bind(this,this.finish);
 	}
 	,decrementInterval: function() {
 		if(this.interval > 0) this.interval--; else this.mainFunction = $bind(this,this.finish);
@@ -140,11 +141,17 @@ com.dango_itimi.as3_and_createjs.sound.SoundEffectMap = function() {
 };
 com.dango_itimi.as3_and_createjs.sound.SoundEffectMap.__name__ = ["com","dango_itimi","as3_and_createjs","sound","SoundEffectMap"];
 com.dango_itimi.as3_and_createjs.sound.SoundEffectMap.prototype = {
-	play: function(soundEffect) {
+	stop: function(soundEffectId) {
+		var soundEffect = this.soundEffectMap.get(soundEffectId);
+		soundEffect.stop();
+		if(this.playingSoundEffectMap.exists(soundEffectId)) this.playingSoundEffectMap.remove(soundEffectId);
+	}
+	,play: function(soundEffectId) {
 		if(this.mute) return;
-		if(this.playingSoundEffectMap.exists(soundEffect.id)) return;
+		if(this.playingSoundEffectMap.exists(soundEffectId)) return;
+		var soundEffect = this.soundEffectMap.get(soundEffectId);
 		soundEffect.play();
-		this.playingSoundEffectMap.set(soundEffect.id,soundEffect);
+		this.playingSoundEffectMap.set(soundEffectId,soundEffect);
 	}
 	,run: function() {
 		var $it0 = this.playingSoundEffectMap.keys();
@@ -204,56 +211,19 @@ com.dango_itimi.createjs.net.LoaderWithLoadQueue.prototype = {
 	}
 	,__class__: com.dango_itimi.createjs.net.LoaderWithLoadQueue
 }
-com.dango_itimi.createjs.net.manifest = {}
-com.dango_itimi.createjs.net.manifest.ManifestItem = function(src,id) {
-	this.src = src;
-	this.id = id;
-};
-com.dango_itimi.createjs.net.manifest.ManifestItem.__name__ = ["com","dango_itimi","createjs","net","manifest","ManifestItem"];
-com.dango_itimi.createjs.net.manifest.ManifestItem.prototype = {
-	getManifestItem: function() {
-		if(this.id != null) return { src : this.src, id : this.id}; else return { src : this.src};
-	}
-	,getId: function() {
-		return this.id;
-	}
-	,getSrc: function() {
-		return this.src;
-	}
-	,__class__: com.dango_itimi.createjs.net.manifest.ManifestItem
-}
-com.dango_itimi.createjs.net.manifest.ManifestItemSet = function() {
-	this.itemSet = [];
-};
-com.dango_itimi.createjs.net.manifest.ManifestItemSet.__name__ = ["com","dango_itimi","createjs","net","manifest","ManifestItemSet"];
-com.dango_itimi.createjs.net.manifest.ManifestItemSet.prototype = {
-	createManifest: function() {
-		var manifest = [];
-		var _g1 = 0, _g = this.itemSet.length;
-		while(_g1 < _g) {
-			var i = _g1++;
-			manifest.push(this.itemSet[i].getManifestItem());
-		}
-		return manifest;
-	}
-	,add: function(src,id) {
-		this.itemSet.push(new com.dango_itimi.createjs.net.manifest.ManifestItem(src,id));
-	}
-	,__class__: com.dango_itimi.createjs.net.manifest.ManifestItemSet
-}
 com.dango_itimi.createjs.sound = {}
 com.dango_itimi.createjs.sound.SoundEffectForJS = function(id,intervalFrame,interrupt,delay,offset,loop,volume,pan) {
 	this.interrupt = interrupt;
 	this.delay = delay;
 	this.offset = offset;
-	this.loop = loop;
-	com.dango_itimi.as3_and_createjs.sound.SoundEffect.call(this,id,intervalFrame,volume,pan);
+	com.dango_itimi.as3_and_createjs.sound.SoundEffect.call(this,id,intervalFrame,volume,pan,loop);
 };
 com.dango_itimi.createjs.sound.SoundEffectForJS.__name__ = ["com","dango_itimi","createjs","sound","SoundEffectForJS"];
 com.dango_itimi.createjs.sound.SoundEffectForJS.__super__ = com.dango_itimi.as3_and_createjs.sound.SoundEffect;
 com.dango_itimi.createjs.sound.SoundEffectForJS.prototype = $extend(com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype,{
 	stop: function() {
 		if(this.soundInstance != null) this.soundInstance.stop();
+		com.dango_itimi.as3_and_createjs.sound.SoundEffect.prototype.stop.call(this);
 	}
 	,playChild: function() {
 		if(this.soundInstance == null) this.soundInstance = createjs.Sound.play(this.id,this.interrupt,this.delay,this.offset,this.loop); else this.soundInstance.play(this.interrupt,this.delay,this.offset,this.loop);
@@ -270,7 +240,8 @@ com.dango_itimi.createjs.sound.SoundEffectMapForJS.__super__ = com.dango_itimi.a
 com.dango_itimi.createjs.sound.SoundEffectMapForJS.prototype = $extend(com.dango_itimi.as3_and_createjs.sound.SoundEffectMap.prototype,{
 	playForFrameSound: function(id,loop) {
 		if(loop == null) loop = 0;
-		var soundEffect = this.soundEffectMap.exists(id)?this.soundEffectMap.get(id):this.register(id,0,"early",0,0,loop);
+		if(!this.soundEffectMap.exists(id)) this.register(id,0,"early",0,0,loop);
+		var soundEffect = this.soundEffectMap.get(id);
 		soundEffect.play();
 	}
 	,register: function(id,intervalFrame,interrupt,delay,offset,loop,volume,pan) {
@@ -283,7 +254,7 @@ com.dango_itimi.createjs.sound.SoundEffectMapForJS.prototype = $extend(com.dango
 		if(intervalFrame == null) intervalFrame = 5;
 		var soundEffect = new com.dango_itimi.createjs.sound.SoundEffectForJS(id,intervalFrame,interrupt,delay,offset,loop,volume,pan);
 		this.soundEffectMap.set(id,soundEffect);
-		return soundEffect;
+		return id;
 	}
 	,__class__: com.dango_itimi.createjs.sound.SoundEffectMapForJS
 });
@@ -356,6 +327,7 @@ com.dango_itimi.toolkit_for_createjs.SoundPlayer.initialize = function() {
 	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap = new com.dango_itimi.createjs.sound.SoundEffectMapForJS();
 	var className = Type.getClassName(com.dango_itimi.toolkit_for_createjs.SoundPlayer);
 	eval("window.playSound = function(name, loop){ " + className + ".playForFrameSound(name, loop); }");
+	return com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap;
 }
 com.dango_itimi.toolkit_for_createjs.SoundPlayer.playForFrameSound = function(soundId,loop) {
 	if(loop == null) loop = 0;
@@ -366,7 +338,8 @@ com.dango_itimi.toolkit_for_createjs.TFCLoader = function(baseDirectoryName,base
 	if(baseSoundsDirectoryName == null) baseSoundsDirectoryName = "";
 	this.materialURI = new com.dango_itimi.toolkit_for_createjs.MaterialURI(baseDirectoryName,baseSoundsDirectoryName,usedSoundOgg);
 	this.materialDirectorySet = [];
-	this.mainFunction = $bind(this,this.initializeToLoadTemplateHtml);
+	this.propertiesSet = [];
+	this.mainFunction = $bind(this,this.parseManifest);
 };
 com.dango_itimi.toolkit_for_createjs.TFCLoader.__name__ = ["com","dango_itimi","toolkit_for_createjs","TFCLoader"];
 com.dango_itimi.toolkit_for_createjs.TFCLoader.prototype = {
@@ -389,34 +362,28 @@ com.dango_itimi.toolkit_for_createjs.TFCLoader.prototype = {
 		this.materialLoader.load();
 		this.mainFunction = $bind(this,this.loadMaterial);
 	}
-	,parseTemplateHtml: function() {
-		var loader = this.templateHtmlLoader.getLoader();
+	,parseManifest: function() {
 		var manifest = [];
 		var _g1 = 0, _g = this.materialDirectorySet.length;
 		while(_g1 < _g) {
 			var i = _g1++;
 			var materialDirectoryName = this.materialDirectorySet[i];
-			var templateHtmlUri = this.materialURI.getTemplateHtmlUri(materialDirectoryName);
-			var loadedHtml = loader.getLoadQueue().getResult(templateHtmlUri);
-			var m = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.execute(loadedHtml);
-			this.materialURI.addUri(m,materialDirectoryName);
-			manifest = manifest.concat(m);
+			var properties = this.propertiesSet[i];
+			this.materialURI.addUri(properties.manifest,materialDirectoryName);
+			manifest = manifest.concat(properties.manifest);
 		}
 		this.initializeToLoadMaterial(manifest);
-	}
-	,loadTemplateHtml: function() {
-		this.templateHtmlLoader.run();
-		if(this.templateHtmlLoader.isFinished()) this.parseTemplateHtml(); else if(this.templateHtmlLoader.getLoader().isError()) this.mainFunction = $bind(this,this.error);
-	}
-	,initializeToLoadTemplateHtml: function() {
-		this.templateHtmlLoader = new com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader(this.materialDirectorySet,this.materialURI);
-		this.templateHtmlLoader.load();
-		this.mainFunction = $bind(this,this.loadTemplateHtml);
 	}
 	,run: function() {
 		this.mainFunction();
 	}
-	,addMaterialDirectory: function(materialDirectoryName) {
+	,getFps: function(elementIndex) {
+		if(elementIndex == null) elementIndex = 0;
+		return this.propertiesSet[elementIndex].fps;
+	}
+	,addMaterialDirectory: function(symbolNameSpace,materialDirectoryName) {
+		var properties = eval("window." + symbolNameSpace + ".properties");
+		this.propertiesSet.push(properties);
 		this.materialDirectorySet.push(materialDirectoryName);
 	}
 	,__class__: com.dango_itimi.toolkit_for_createjs.TFCLoader
@@ -457,80 +424,6 @@ com.dango_itimi.toolkit_for_createjs.loader.MaterialLoader.prototype = {
 	}
 	,__class__: com.dango_itimi.toolkit_for_createjs.loader.MaterialLoader
 }
-com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader = function(materialDirectorySet,materialURI) {
-	this.manifestItemSet = new com.dango_itimi.createjs.net.manifest.ManifestItemSet();
-	var _g1 = 0, _g = materialDirectorySet.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		this.manifestItemSet.add(materialURI.getTemplateHtmlUri(materialDirectorySet[i]));
-	}
-	this.loader = new com.dango_itimi.createjs.net.LoaderWithLoadQueue();
-};
-com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader.__name__ = ["com","dango_itimi","toolkit_for_createjs","loader","TemplateHtmlLoader"];
-com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader.prototype = {
-	getLoader: function() {
-		return this.loader;
-	}
-	,isFinished: function() {
-		return Reflect.compareMethods(this.mainFunction,$bind(this,this.finish));
-	}
-	,finish: function() {
-	}
-	,waitToFinishLoaded: function() {
-		if(this.loader.isFinished()) this.mainFunction = $bind(this,this.finish);
-	}
-	,load: function() {
-		this.loader.loadManifest(this.manifestItemSet.createManifest());
-		this.mainFunction = $bind(this,this.waitToFinishLoaded);
-	}
-	,run: function() {
-		this.mainFunction();
-	}
-	,__class__: com.dango_itimi.toolkit_for_createjs.loader.TemplateHtmlLoader
-}
-com.dango_itimi.toolkit_for_createjs.parser = {}
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser = function() { }
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.__name__ = ["com","dango_itimi","toolkit_for_createjs","parser","TemplateHtmlParser"];
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.execute = function(loadedHtml) {
-	var lineSet = loadedHtml.split("\n");
-	var checkedFirstLineNum = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariablesLineNumber(lineSet) + 1;
-	var checkedEndLineNum = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariablesEndLineNumber(lineSet,checkedFirstLineNum);
-	var manifest = com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifest(lineSet,checkedFirstLineNum,checkedEndLineNum);
-	return manifest;
-}
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariablesLineNumber = function(lineSet) {
-	var _g1 = 0, _g = lineSet.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		if(lineSet[i].indexOf("manifest") != -1) return i;
-	}
-	return 0;
-}
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifestVariablesEndLineNumber = function(lineSet,checkedFirstLineNum) {
-	var _g1 = checkedFirstLineNum, _g = lineSet.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		if(lineSet[i].indexOf("];") != -1) return i;
-	}
-	return 0;
-}
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.getManifest = function(lineSet,checkedFirstLineNum,checkedEndLineNum) {
-	var list = [];
-	var _g1 = checkedFirstLineNum, _g = lineSet.length;
-	while(_g1 < _g) {
-		var i = _g1++;
-		if(i == checkedEndLineNum) break;
-		var line = lineSet[i];
-		var arr = line.split("\"");
-		var src = arr[1];
-		var id = arr[3];
-		var data = { };
-		data.src = src;
-		data.id = id;
-		list.push(data);
-	}
-	return list;
-}
 com.dango_itimi.toolkit_for_createjs.utils = {}
 com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil = function() { }
 com.dango_itimi.toolkit_for_createjs.utils.ContainerUtil.__name__ = ["com","dango_itimi","toolkit_for_createjs","utils","ContainerUtil"];
@@ -567,12 +460,9 @@ com.dango_itimi.utils.ClassUtil.getPackageNamesWithClass = function(cls) {
 	return packageNames;
 }
 com.dango_itimi.utils.RectangleUtil = function(x,y,width,height) {
-	this.x = x;
-	this.y = y;
 	this.width = width;
 	this.height = height;
-	this.right = x + width;
-	this.bottom = y + height;
+	this.setPosition(x,y);
 };
 com.dango_itimi.utils.RectangleUtil.__name__ = ["com","dango_itimi","utils","RectangleUtil"];
 com.dango_itimi.utils.RectangleUtil.convert = function(rect) {
@@ -596,6 +486,18 @@ com.dango_itimi.utils.RectangleUtil.prototype = {
 	,addX: function(addedX) {
 		this.x += addedX;
 		this.right += addedX;
+	}
+	,setY: function(y) {
+		this.y = y;
+		this.bottom = y + this.height;
+	}
+	,setX: function(x) {
+		this.x = x;
+		this.right = x + this.width;
+	}
+	,setPosition: function(x,y) {
+		this.setX(x);
+		this.setY(y);
 	}
 	,toString: function() {
 		return "w:" + this.width + ", h:" + this.height + ", x:" + this.x + ", y:" + this.y;
@@ -707,7 +609,7 @@ shooting.se.SoundMixer = function() { }
 shooting.se.SoundMixer.__name__ = ["shooting","se","SoundMixer"];
 shooting.se.SoundMixer.initialize = function() {
 	shooting.se.SoundMixer.SOUND_PACKAGE = com.dango_itimi.utils.ClassUtil.getPackageNamesWithClass(shooting.se.SoundMixer).join("");
-	shooting.se.SoundMixer.bgmSoundEffect = shooting.se.SoundMixer.register("Bgm",1,0,0,-1);
+	shooting.se.SoundMixer.bgmId = shooting.se.SoundMixer.register("Bgm",1,0,0,-1);
 }
 shooting.se.SoundMixer.register = function(soundClassName,volume,delay,offset,loop) {
 	if(loop == null) loop = 0;
@@ -717,7 +619,7 @@ shooting.se.SoundMixer.register = function(soundClassName,volume,delay,offset,lo
 	return com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.register(shooting.se.SoundMixer.SOUND_PACKAGE + soundClassName,0,"early",delay,offset,loop,volume);
 }
 shooting.se.SoundMixer.playForBgm = function() {
-	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(shooting.se.SoundMixer.bgmSoundEffect);
+	com.dango_itimi.toolkit_for_createjs.SoundPlayer.soundEffectMap.play(shooting.se.SoundMixer.bgmId);
 }
 var $_, $fid = 0;
 function $bind(o,m) { if( m == null ) return null; if( m.__id__ == null ) m.__id__ = $fid++; var f; if( o.hx__closures__ == null ) o.hx__closures__ = {}; else f = o.hx__closures__[m.__id__]; if( f == null ) { f = function(){ return f.method.apply(f.scope, arguments); }; f.scope = o; f.method = m; o.hx__closures__[m.__id__] = f; } return f; };
@@ -747,7 +649,6 @@ com.dango_itimi.toolkit_for_createjs.Instance.NAMESPACE_SYMBOL = "lib";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_HTML = ".html";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_MP3 = ".mp3";
 com.dango_itimi.toolkit_for_createjs.MaterialURI.EXT_OGG = ".ogg";
-com.dango_itimi.toolkit_for_createjs.parser.TemplateHtmlParser.QUOTATION = "\"";
 js.Browser.window = typeof window != "undefined" ? window : null;
 js.Browser.document = typeof window != "undefined" ? window.document : null;
 Main.main();

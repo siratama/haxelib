@@ -1,0 +1,10 @@
+-js deploy/js/App.js
+-main Main
+-cp haxelib/src/core
+-cp haxelib/src/as3_and_createjs
+-cp haxelib/src/createjs
+-cp haxelib/src/toolkit_for_createjs
+-cp haxelib/examples/toolkit_for_createjs/haxe/src
+-lib createjs
+-debug
+

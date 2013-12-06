@@ -1,7 +1,5 @@
 package;
 
-import shooting.se.SoundMixer;
-import shooting.player.Player;
 import createjs.easeljs.Stage;
 import createjs.easeljs.Ticker;
 import createjs.easeljs.Container;
@@ -9,6 +7,8 @@ import js.Browser;
 import com.dango_itimi.toolkit_for_createjs.Instance;
 import com.dango_itimi.toolkit_for_createjs.TFCLoader;
 import com.dango_itimi.toolkit_for_createjs.SoundPlayer;
+import shooting.player.Player;
+import shooting.se.SoundMixer;
 
 class Main {
 	
@@ -26,23 +26,19 @@ class Main {
 	}
 	private function initialize(event){
 
-		Ticker.useRAF = true;
-		Ticker.setFPS(24);
-		Ticker.addEventListener("tick", run);
-
 		stage = new Stage(Browser.document.getElementById("canvas"));
 
-		initializeToLoadTFC();
+		tfcLoader = new TFCLoader("tfc", "tfc_sounds", true);
+		tfcLoader.addMaterialDirectory("lib", "view");
+
+		Ticker.setFPS(tfcLoader.getFps());
+		Ticker.addEventListener("tick", run);
+
+		mainFunction = loadTFC;
 	}
 	private function run(){
 
 		mainFunction();
-	}
-	private function initializeToLoadTFC(){
-
-		tfcLoader = new TFCLoader("tfc", "tfc_sounds", true);
-		tfcLoader.addMaterialDirectory("view");
-		mainFunction = loadTFC;
 	}
 	private function loadTFC(){
 
@@ -50,6 +46,10 @@ class Main {
 		if(tfcLoader.isFinished())
 			mainFunction = initializeToGameScene;
 	}
+	private function test(){
+	}
+
+
 	private function initializeToGameScene(){
 
 		SoundPlayer.initialize();

@@ -10,12 +10,12 @@ import js.Lib;
 class SoundMixer {
 
 	private static var SOUND_PACKAGE:String;
-	private static var bgmSoundEffect:SoundEffect;
+	private static var bgmId:String;
 
 	public static function initialize(){
 
 		SOUND_PACKAGE = ClassUtil.getPackageNamesWithClass(SoundMixer).join("");
-		bgmSoundEffect = register("Bgm", 1, 0, 0, -1);
+		bgmId = register("Bgm", 1, 0, 0, -1);
 	}
 	private static function register(
 		soundClassName:String, ?volume:Float = 1, ?delay:Int = 0, ?offset:Int = 0, ?loop:Int = 0){
@@ -23,6 +23,6 @@ class SoundMixer {
 		return SoundPlayer.soundEffectMap.register(SOUND_PACKAGE + soundClassName, 0, Sound.INTERRUPT_EARLY, delay, offset, loop, volume);
 	}
 	public static function playForBgm(){
-		SoundPlayer.soundEffectMap.play(bgmSoundEffect);
+		SoundPlayer.soundEffectMap.play(bgmId);
 	}
 }

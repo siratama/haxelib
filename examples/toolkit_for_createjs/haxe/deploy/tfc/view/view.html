@@ -2,13 +2,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>CreateJS export from view</title>
+<title>view</title>
 
-<script src="http://code.createjs.com/easeljs-0.5.0.min.js"></script>
-<script src="http://code.createjs.com/tweenjs-0.3.0.min.js"></script>
-<script src="http://code.createjs.com/movieclip-0.5.0.min.js"></script>
-<script src="http://code.createjs.com/preloadjs-0.2.0.min.js"></script>
-<script src="http://code.createjs.com/soundjs-0.3.0.min.js"></script>
+<script src="http://code.createjs.com/easeljs-0.7.0.min.js"></script>
+<script src="http://code.createjs.com/tweenjs-0.5.0.min.js"></script>
+<script src="http://code.createjs.com/movieclip-0.7.0.min.js"></script>
+<script src="http://code.createjs.com/preloadjs-0.4.0.min.js"></script>
+<script src="http://code.createjs.com/soundjs-0.5.0.min.js"></script>
 <script src="view.js"></script>
 
 <script>
@@ -18,44 +18,35 @@ function init() {
 	canvas = document.getElementById("canvas");
 	images = images||{};
 
-	var manifest = [
-		{src:"images/_0.png", id:"_0"},
-		{src:"images/_1.png", id:"_1"},
-		{src:"images/_2.png", id:"_2"},
-		{src:"images/_3.png", id:"_3"},
-		{src:"sounds/shootingseBgm.mp3", id:"shootingseBgm"},
-		{src:"sounds/shootingseShot.mp3", id:"shootingseShot"}
-	];
-
-	var loader = new createjs.PreloadJS(false);
-	loader.installPlugin(createjs.SoundJS);
-	loader.onFileLoad = handleFileLoad;
-	loader.onComplete = handleComplete;
-	loader.loadManifest(manifest);
+	var loader = new createjs.LoadQueue(false);
+	loader.installPlugin(createjs.Sound);
+	loader.addEventListener("fileload", handleFileLoad);
+	loader.addEventListener("complete", handleComplete);
+	loader.loadManifest(lib.properties.manifest);
 }
 
-function handleFileLoad(o) {
-	if (o.type == "image") { images[o.id] = o.result; }
+function handleFileLoad(evt) {
+	if (evt.item.type == "image") { images[evt.item.id] = evt.result; }
 }
 
 function handleComplete() {
-	exportRoot = new lib.view();
+	exportRoot = new lib.view_html5();
 
 	stage = new createjs.Stage(canvas);
 	stage.addChild(exportRoot);
 	stage.update();
 
-	createjs.Ticker.setFPS(24);
-	createjs.Ticker.addListener(stage);
+	createjs.Ticker.setFPS(lib.properties.fps);
+	createjs.Ticker.addEventListener("tick", stage);
 }
 
-function playSound(name, loop) {
-	createjs.SoundJS.play(name, createjs.SoundJS.INTERRUPT_EARLY, 0, 0, loop);
+function playSound(id, loop) {
+	createjs.Sound.play(id, createjs.Sound.INTERRUPT_EARLY, 0, 0, loop);
 }
 </script>
 </head>
 
 <body onload="init();" style="background-color:#D4D4D4">
-	<canvas id="canvas" width="550" height="400" style="background-color:#000000"></canvas>
+	<canvas id="canvas" width="650" height="450" style="background-color:#FFFFFF"></canvas>
 </body>
 </html>

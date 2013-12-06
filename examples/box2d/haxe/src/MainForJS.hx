@@ -24,7 +24,6 @@ class MainForJS extends Main{
 
 		stage = new Stage(Browser.document.getElementById("canvas"));
 
-		Ticker.useRAF = true;
 		Ticker.setFPS(Main.FRAME_RATE);
 		Ticker.addEventListener("tick", run);
 

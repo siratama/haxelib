@@ -1,6 +1,20 @@
 package com.dango_itimi.mobile;
 class UserAgent {
+
+	public static inline var ANDROID = "Android";
 	private var userAgentString:String;
+
+	public static function create(){
+
+		var userAgent = null;
+
+		#if js
+		userAgent = new UserAgent(js.Browser.navigator.userAgent);
+		#end
+
+		return userAgent;
+	}
+
 	public function new(userAgentString:String){
 		this.userAgentString = userAgentString;
 	}
@@ -17,6 +31,9 @@ class UserAgent {
 	public function isAndroid():Bool{
 		return ~/Android/.match(userAgentString);
 	}
+	public function isAndroidTablet():Bool{
+		return isAndroid() && ~/Mobile/.match(userAgentString);
+	}
 	public function isIPhone():Bool{
 		return ~/iPhone/.match(userAgentString);
 	}
@@ -29,5 +46,11 @@ class UserAgent {
 
 	public function isSmartPhone():Bool{
 		return isAndroid() || isIPhone() || isIPod();
+	}
+
+	public function getAndroidVersion():Float{
+
+		return Std.parseFloat(userAgentString.substr(
+			userAgentString.indexOf(ANDROID) + '$ANDROID '.length, "*.*".length));
 	}
 }

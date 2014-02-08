@@ -17,10 +17,9 @@ class TFCLoader {
 	
 	public function new(
 		baseDirectoryName:String,
-		?baseSoundsDirectoryName:String = "",
-		?usedSoundOgg:Bool = false
+		?baseSoundsDirectoryName:String = ""
 	){
-		materialURI = new MaterialURI(baseDirectoryName, baseSoundsDirectoryName, usedSoundOgg);
+		materialURI = new MaterialURI(baseDirectoryName, baseSoundsDirectoryName);
 		materialDirectorySet = [];
 		propertiesSet = [];
 

@@ -4,19 +4,17 @@ class MaterialURI {
 	
 	private var baseDirectory:String;
 	private var baseSoundsDirectory:String;
-	private var usedSoundOgg:Bool;
-	
+
 	public static inline var EXT_HTML = ".html";
 	public static inline var EXT_MP3 = ".mp3";
 	public static inline var EXT_OGG = ".ogg";
 
 	public function new (
-		baseDirectoryName:String, ?baseSoundsDirectoryName:String = "", ?usedSoundOgg:Bool = false){
+		baseDirectoryName:String, ?baseSoundsDirectoryName:String = ""){
 			
 		this.baseDirectory = baseDirectoryName + "/";
 		this.baseSoundsDirectory =
 			(baseSoundsDirectoryName != "") ? baseSoundsDirectoryName + "/" : "";
-		this.usedSoundOgg = usedSoundOgg;
 	}
 	public function getTemplateHtmlUri(materialDirectoryName:String){
 
@@ -53,17 +51,9 @@ class MaterialURI {
 	}
 	private function convertSrc(materialDirectory:String, soundsDirectory:String, src:String){
 
-		if(src.indexOf(MaterialURI.EXT_MP3) == -1){
-
+		if(src.indexOf(MaterialURI.EXT_MP3) == -1)
 			return materialDirectory + src;
-		}
-		else{
-
-			var oggSrc:String = (usedSoundOgg) ?
-				"|" + soundsDirectory + src.split(".")[0] + EXT_OGG :
-				"";
-
-			return soundsDirectory + src + oggSrc;
-		}
+		else
+			return soundsDirectory + src;
 	}
 }

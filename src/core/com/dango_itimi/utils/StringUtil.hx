@@ -21,4 +21,18 @@ class StringUtil {
 		for(i in 0...len) numStr = "0" + numStr;
 		return numStr;
 	}
+
+	public static inline var CR = String.fromCharCode(13);
+	public static inline var LF = String.fromCharCode(10);
+
+	public static function splitWithNewline(text:String):Array<String>{
+
+		text = replaceNewline(text, CR + LF, CR);
+		text = replaceNewline(text, LF, CR);
+		return text.split(CR);
+	}
+	public static function replaceNewline(original:String, fromText:String, toText:String):String{
+		var arr = original.split(fromText);
+		return arr.join(toText);
+	}
 }

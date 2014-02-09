@@ -32,7 +32,7 @@ class UserAgent {
 		return ~/Android/.match(userAgentString);
 	}
 	public function isAndroidTablet():Bool{
-		return isAndroid() && ~/Mobile/.match(userAgentString);
+		return isAndroid() && !~/Mobile/.match(userAgentString);
 	}
 	public function isIPhone():Bool{
 		return ~/iPhone/.match(userAgentString);

@@ -1,6 +1,6 @@
 package com.dango_itimi.toolkit_for_createjs;
 
-import createjs.soundjs.Sound;
+import js.Lib;
 import com.dango_itimi.utils.ClassUtil;
 import com.dango_itimi.createjs.sound.SoundEffectMapForJS;
 
@@ -13,7 +13,7 @@ class SoundPlayer {
 		soundEffectMap = new SoundEffectMapForJS();
 
 		var className = Type.getClassName(SoundPlayer);
-		js.Lib.eval("window.playSound = function(name, loop){ " + className + ".playForFrameSound(name, loop); }");
+		Lib.eval("window.playSound = function(name, loop){ " + className + ".playForFrameSound(name, loop); }");
 
 		return soundEffectMap;
 	}

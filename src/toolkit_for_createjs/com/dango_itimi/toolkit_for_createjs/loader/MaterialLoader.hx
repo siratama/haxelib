@@ -9,9 +9,9 @@ class MaterialLoader{
 	private var images:Dynamic;
 	private var loader:LoaderWithLoadQueue;
 	private var mainFunction:Dynamic;
-	private var manifest:Array<Dynamic>;
+	private var manifest:Array<ManifestItem>;
 	
-	public function new(manifest:Array<Dynamic>){
+	public function new(manifest:Array<ManifestItem>){
 		
 		this.manifest = manifest;	
 		

@@ -1,13 +1,14 @@
 package com.dango_itimi.toolkit_for_createjs;
 
 import com.dango_itimi.toolkit_for_createjs.loader.MaterialLoader;
+import js.Lib;
 
 /**
  * TFC: Toolkit For CreateJS
  */
 class TFCLoader {
 
-	private var propertiesSet:Array<Dynamic>;
+	public var propertiesSet(default, null):Array<Properties>;
 	
 	private var mainFunction:Void->Void;
 	private var materialURI:MaterialURI;
@@ -27,7 +28,7 @@ class TFCLoader {
 	}
 	public function addMaterialDirectory(symbolNameSpace:String, materialDirectoryName:String){
 
-		var properties = js.Lib.eval('window.$symbolNameSpace.properties');
+		var properties = Lib.eval('window.$symbolNameSpace.properties');
 		propertiesSet.push(properties);
 		materialDirectorySet.push(materialDirectoryName);
 	}
@@ -39,7 +40,7 @@ class TFCLoader {
 	}
 	private function parseManifest(){
 
-		var manifest:Array<Dynamic> = [];
+		var manifest:Array<ManifestItem> = [];
 		for(i in 0...materialDirectorySet.length){
 
 			var materialDirectoryName = materialDirectorySet[i];
@@ -50,7 +51,7 @@ class TFCLoader {
 		}
 		initializeToLoadMaterial(manifest);
 	}
-	private function initializeToLoadMaterial(manifest:Array<Dynamic>){
+	private function initializeToLoadMaterial(manifest:Array<ManifestItem>){
 
 		materialLoader = new MaterialLoader(manifest);
 		materialLoader.load();
@@ -73,3 +74,4 @@ class TFCLoader {
 		return Reflect.compareMethods(mainFunction, error);
 	}
 }
+

@@ -47,7 +47,8 @@ class PointUtil{
 	// calculate the angle between first point and the second
 	public static inline function angleBetween(p0:Point, p1:Point) : Float
 	{
-		return Math.atan2(p0.y, p0.x) - Math.atan2(p1.y, p1.x);
+		//return Math.atan2(p0.y, p0.x) - Math.atan2(p1.y, p1.x);
+		return Math.atan2(p0.y - p1.y, p0.x - p1.x);
 	}
 
 	// to get the distance squared between first point and second point

@@ -54,16 +54,16 @@ class MouseEventChecker {
 	}
 
 	public function getClickedStagePoint():Point {
-		return {x:clickedEvent.stageX, y:clickedEvent.stageY};
+		return PointUtil.create(clickedEvent.stageX, clickedEvent.stageY);
 	}
 	public function getDownedStagePoint():Point {
-		return {x:downedEvent.stageX, y:downedEvent.stageY};
+		return PointUtil.create(downedEvent.stageX, downedEvent.stageY);
 	}
 	public function getUppedStagePoint():Point {
-		return {x:uppedEvent.stageX, y:uppedEvent.stageY};
+		return PointUtil.create(uppedEvent.stageX, uppedEvent.stageY);
 	}
 	public function getMovedStagePoint():Point {
-		return {x:movedEvent.stageX, y:movedEvent.stageY};
+		return PointUtil.create(movedEvent.stageX, movedEvent.stageY);
 	}
 
 	public function isClicked():Bool{
@@ -90,29 +90,6 @@ class MouseEventChecker {
 	public function getMovedEvent():MouseEvent{
 		return movedEvent;
 	}
-
-	/*
-	public function removeClicked():Bool{
-		var n = clicked;
-		clicked = false;
-		return n;
-	}
-	public function removeDowned():Bool{
-		var n = downed;
-		downed = false;
-		return n;
-	}
-	public function removeUpped():Bool{
-		var n = upped;
-		upped = false;
-		return n;
-	}
-	public function removeMoved():Bool{
-		var n = moved;
-		moved = false;
-		return n;
-	}
-	*/
 
 	public function destroy(){
 	}

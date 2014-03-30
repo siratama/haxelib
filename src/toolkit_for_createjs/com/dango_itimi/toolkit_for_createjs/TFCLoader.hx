@@ -49,7 +49,10 @@ class TFCLoader {
 			materialURI.addUri(properties.manifest, materialDirectoryName);
 			manifest = manifest.concat(properties.manifest);
 		}
-		initializeToLoadMaterial(manifest);
+		if(manifest.length == 0)
+			mainFunction = finish;
+		else
+			initializeToLoadMaterial(manifest);
 	}
 	private function initializeToLoadMaterial(manifest:Array<ManifestItem>){
 

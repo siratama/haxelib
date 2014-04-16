@@ -1,15 +1,16 @@
 package com.dango_itimi.as3_and_createjs.layout;
 
-#if js
-import createjs.easeljs.MovieClip;
-
-#else
-import flash.display.MovieClip;
-
-#end
-
 import com.dango_itimi.as3_and_createjs.utils.IMovieClipUtil;
 import com.dango_itimi.as3_and_createjs.display.IDisplayObjectContainer;
+
+#if js
+import createjs.easeljs.MovieClip;
+import createjs.easeljs.DisplayObject;
+#else
+import flash.display.DisplayObject;
+import flash.display.MovieClip;
+#end
+
 class NumericLine {
 
 	private var movieClipUtilClass:Class<IMovieClipUtil>;
@@ -21,6 +22,10 @@ class NumericLine {
 	private var positionY:Float;
 	private var baseWidth:Int;
 	private var textAlignToRight:Bool;
+	private var testDisplayObject:DisplayObject;
+
+	//for OpenFL
+	public var baseClassCreateFunction(null, default):Void->MovieClip;
 
 	public function new(
 		movieClipUtilClass:Class<IMovieClipUtil>,
@@ -39,18 +44,22 @@ class NumericLine {
 		this.textAlignToRight = textAlignToRight;
 
 		graphicsSet = [];
+
+		baseClassCreateFunction = function(){
+			return Type.createInstance(baseClass, []);
+		};
 	}
 	public function create(number:Float) {
 
 		graphicsSet = [];
 
-		var numberStr:String = '$number';
+		var numberStr:String = Std.string(number);
 		var length:Int = numberStr.length;
 		var px:Float = (!textAlignToRight) ? positionX : positionX - (numberStr.length * baseWidth);
 
 		for (i in 0...length){
 
-			var graphics:MovieClip = Type.createInstance(baseClass, []);
+			var graphics:MovieClip = baseClassCreateFunction();
 			var movieClipUtil:IMovieClipUtil = Type.createInstance(movieClipUtilClass, [graphics]);
 
 			var character = numberStr.charAt(i);

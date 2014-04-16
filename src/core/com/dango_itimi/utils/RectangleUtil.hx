@@ -16,7 +16,7 @@ class RectangleUtil {
 		this.height = height;
 		setPosition(x, y);
 	}
-	public static function convert(rect:Dynamic):RectangleUtil{
+	public static function convert(rect:{var x:Float; var y:Float; var width:Float; var height:Float;}):RectangleUtil{
 		return new RectangleUtil(rect.x, rect.y, rect.width, rect.height);
 	}
 	public function clone():RectangleUtil{

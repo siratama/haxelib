@@ -66,6 +66,19 @@ class MouseEventChecker {
 		return PointUtil.create(movedEvent.stageX, movedEvent.stageY);
 	}
 
+	public function getClickedLocalPoint():Point {
+		return PointUtil.create(clickedEvent.localX, clickedEvent.localY);
+	}
+	public function getDownedLocalPoint():Point {
+		return PointUtil.create(downedEvent.localX, downedEvent.localY);
+	}
+	public function getUppedLocalPoint():Point {
+		return PointUtil.create(uppedEvent.localX, uppedEvent.localY);
+	}
+	public function getMovedLocalPoint():Point {
+		return PointUtil.create(movedEvent.localX, movedEvent.localY);
+	}
+
 	public function isClicked():Bool{
 		return clicked;
 	}

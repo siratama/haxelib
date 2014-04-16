@@ -7,13 +7,15 @@ import flash.media.Sound;
 
 class SoundEffectForFlash extends SoundEffect {
 
-	private var sound:Sound;
+	public var sound(null, default):Sound;
 	private var soundChannel:SoundChannel;
 
-	public function new(soundClass:Class<Sound>, id:String, intervalFrame:Int, volume:Float, pan:Float, loop:Int) {
+	public function new(id:String, intervalFrame:Int, volume:Float, pan:Float, loop:Int) {
 
-		sound = Type.createInstance(soundClass, []);
 		super(id, intervalFrame, volume, pan, loop);
+	}
+	public function setSound(sound:Sound){
+		this.sound = sound;
 	}
 	override private function playChild() {
 

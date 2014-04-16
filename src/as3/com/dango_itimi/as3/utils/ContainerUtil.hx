@@ -5,7 +5,7 @@ import flash.display.DisplayObjectContainer;
 import com.dango_itimi.as3_and_createjs.utils.IContainerUtil;
 class ContainerUtil implements IContainerUtil{
 
-	private var displayObjectContainer:DisplayObjectContainer;
+	public var displayObjectContainer(default, null):DisplayObjectContainer;
 
 	public function new(displayObjectContainer:DisplayObjectContainer){
 		this.displayObjectContainer = displayObjectContainer;

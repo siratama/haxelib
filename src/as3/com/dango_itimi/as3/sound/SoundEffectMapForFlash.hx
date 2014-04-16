@@ -13,7 +13,17 @@ class SoundEffectMapForFlash extends SoundEffectMap{
 
 		var id = Type.getClassName(cls);
 
-		var soundEffect:SoundEffectForFlash = new SoundEffectForFlash(cls, id, intervalFrame, volume, pan, loop);
+		var soundEffect:SoundEffectForFlash = new SoundEffectForFlash(id, intervalFrame, volume, pan, loop);
+		soundEffect.sound = Type.createInstance(cls, []);
+		soundEffectMap.set(id, soundEffect);
+		return id;
+	}
+	//for OpenFL
+	public function registerInstance(id:String, soundInstance:Sound, ?intervalFrame:Int = 5, ?volume:Float = 1.0, ?pan:Float = 0, ?loop:Int):String {
+
+		var soundEffect:SoundEffectForFlash = new SoundEffectForFlash(id, intervalFrame, volume, pan, loop);
+		soundEffect.sound = soundInstance;
+
 		soundEffectMap.set(id, soundEffect);
 		return id;
 	}

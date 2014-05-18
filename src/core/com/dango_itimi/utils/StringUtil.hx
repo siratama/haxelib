@@ -16,7 +16,7 @@ class StringUtil {
 
 	public static function addZeroToHeadOfNumber(number:Int, addedNum:Int):String{
 
-		var numStr:String = cast number;
+		var numStr:String = Std.string(number);
 		var len:Int = addedNum - numStr.length;
 		for(i in 0...len) numStr = "0" + numStr;
 		return numStr;

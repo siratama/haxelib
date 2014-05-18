@@ -1,5 +1,6 @@
 package com.dango_itimi.as3_and_createjs.layout;
 
+import com.dango_itimi.as3_and_createjs.layout.NumericLineAligh;
 import com.dango_itimi.as3_and_createjs.utils.IMovieClipUtil;
 import com.dango_itimi.as3_and_createjs.display.IDisplayObjectContainer;
 
@@ -13,35 +14,32 @@ import flash.display.MovieClip;
 
 class NumericLine {
 
-	private var movieClipUtilClass:Class<IMovieClipUtil>;
 	private var layer:IDisplayObjectContainer;
 	private var intervalPixel:Int;
 	private var baseClass:Class<MovieClip>;
 	private var graphicsSet:Array<MovieClip>;
 	private var positionX:Float;
 	private var positionY:Float;
-	private var baseWidth:Int;
-	private var textAlignToRight:Bool;
+	private var numericGraphicsWidth:Int;
+	private var align:NumericLineAligh;
 	private var testDisplayObject:DisplayObject;
 
 	//for OpenFL
 	public var baseClassCreateFunction(null, default):Void->MovieClip;
 
 	public function new(
-		movieClipUtilClass:Class<IMovieClipUtil>,
 		layer:IDisplayObjectContainer,
 		baseClass:Class<MovieClip>,
-		positionX:Float, positionY:Float, intervalPixel:Int, baseWidth:Int,
-		textAlignToRight:Bool = false
+		positionX:Float, positionY:Float, intervalPixel:Int, numericGraphicsWidth:Int,
+		align:NumericLineAligh
 	) {
-		this.movieClipUtilClass = movieClipUtilClass;
 		this.positionY = positionY;
 		this.positionX = positionX;
 		this.baseClass = baseClass;
 		this.intervalPixel = intervalPixel;
 		this.layer = layer;
-		this.baseWidth = baseWidth;
-		this.textAlignToRight = textAlignToRight;
+		this.numericGraphicsWidth = numericGraphicsWidth;
+		this.align = align;
 
 		graphicsSet = [];
 
@@ -51,16 +49,32 @@ class NumericLine {
 	}
 	public function create(number:Float) {
 
+		createFromString(Std.string(number));
+	}
+	public function createFromString(numberStr:String) {
+
+		var place:Int = numberStr.length;
+
+		var px:Float = switch(align){
+			case NumericLineAligh.LEFT:
+				positionX;
+
+			case NumericLineAligh.RIGHT:
+				positionX - (place * numericGraphicsWidth);
+
+			case NumericLineAligh.CENTER:
+				positionX - Math.floor((place * numericGraphicsWidth) / 2);
+		}
+		createGraphics(numberStr, place, px);
+	}
+	private function createGraphics(numberStr:String, place:Int, px:Float) {
+
 		graphicsSet = [];
 
-		var numberStr:String = Std.string(number);
-		var length:Int = numberStr.length;
-		var px:Float = (!textAlignToRight) ? positionX : positionX - (numberStr.length * baseWidth);
-
-		for (i in 0...length){
+		for (i in 0...place){
 
 			var graphics:MovieClip = baseClassCreateFunction();
-			var movieClipUtil:IMovieClipUtil = Type.createInstance(movieClipUtilClass, [graphics]);
+			var movieClipUtil:IMovieClipUtil = Type.createInstance(CommonClassSet.movieClipUtilClass, [graphics]);
 
 			var character = numberStr.charAt(i);
 			if(character == "."){
@@ -75,25 +89,17 @@ class NumericLine {
 			graphics.y = positionY;
 			graphicsSet.push(graphics);
 
-			px += baseWidth + intervalPixel;
+			px += numericGraphicsWidth + intervalPixel;
 		}
 	}
-	public function show() {
+	public inline function show() {
 
 		for(graphics in graphicsSet)
 			layer.addChild(graphics);
 	}
-	public function hide() {
+	public inline function hide() {
 
 		for(graphics in graphicsSet)
 			layer.removeChild(graphics);
-	}
-	public function alignRight(positionX:Float){
-
-		var px = positionX - (graphicsSet.length * baseWidth);
-		for(graphics in graphicsSet){
-			graphics.x = px;
-			px += baseWidth;
-		}
 	}
 }

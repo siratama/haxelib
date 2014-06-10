@@ -17,11 +17,13 @@ class MouseEventCheckerForFlash extends MouseEventChecker{
 		displayObject.addEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		displayObject.addEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		displayObject.addEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		displayObject.addEventListener(MouseEvent.ROLL_OUT, onRollOut);
 	}
 	override public function removeEventListener(){
 		displayObject.removeEventListener(MouseEvent.CLICK, onClick);
 		displayObject.removeEventListener(MouseEvent.MOUSE_DOWN, onMouseDown);
 		displayObject.removeEventListener(MouseEvent.MOUSE_UP, onMouseUp);
 		displayObject.removeEventListener(MouseEvent.MOUSE_MOVE, onMouseMove);
+		displayObject.removeEventListener(MouseEvent.ROLL_OUT, onRollOut);
 	}
 }

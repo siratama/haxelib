@@ -16,11 +16,13 @@ class MouseEventChecker {
 	public var downedEvent(default, null):MouseEvent;
 	public var uppedEvent(default, null):MouseEvent;
 	public var movedEvent(default, null):MouseEvent;
+	public var rollOutedEvent(default, null):MouseEvent;
 
 	public var clicked(default, null):Bool;
 	public var downed(default, null):Bool;
 	public var upped(default, null):Bool;
 	public var moved(default, null):Bool;
+	public var rollOuted(default, null):Bool;
 
 	public function new(){
 		addEventListener();
@@ -45,12 +47,17 @@ class MouseEventChecker {
 		movedEvent = event;
 		moved = true;
 	}
+	private function onRollOut(event:MouseEvent){
+		rollOutedEvent = event;
+		rollOuted = true;
+	}
 	public function reset(){
 
 		clicked = false;
 		downed = false;
 		upped = false;
 		moved = false;
+		rollOuted = false;
 	}
 
 	public function getClickedStagePoint():Point {
@@ -65,6 +72,9 @@ class MouseEventChecker {
 	public function getMovedStagePoint():Point {
 		return PointUtil.create(movedEvent.stageX, movedEvent.stageY);
 	}
+	public function getRollOutedStagePoint():Point {
+		return PointUtil.create(rollOutedEvent.stageX, rollOutedEvent.stageY);
+	}
 
 	public function getClickedLocalPoint():Point {
 		return PointUtil.create(clickedEvent.localX, clickedEvent.localY);
@@ -77,6 +87,9 @@ class MouseEventChecker {
 	}
 	public function getMovedLocalPoint():Point {
 		return PointUtil.create(movedEvent.localX, movedEvent.localY);
+	}
+	public function getRollOutedLocalPoint():Point {
+		return PointUtil.create(rollOutedEvent.localX, rollOutedEvent.localY);
 	}
 
 	public function isClicked():Bool{
@@ -91,6 +104,9 @@ class MouseEventChecker {
 	public function isMoved():Bool{
 		return moved;
 	}
+	public function isRollOuted():Bool{
+		return rollOuted;
+	}
 	public function getClickedEvent():MouseEvent{
 		return clickedEvent;
 	}
@@ -102,6 +118,9 @@ class MouseEventChecker {
 	}
 	public function getMovedEvent():MouseEvent{
 		return movedEvent;
+	}
+	public function getRollOutedEvent():MouseEvent{
+		return rollOutedEvent;
 	}
 
 	public function destroy(){

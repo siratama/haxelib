@@ -32,4 +32,15 @@ class MathUtil {
 		else
 			return value;
 	}
+
+	//精度パラメータ
+	public static inline var ACCY:Float = 1.0E-10;
+
+	/**
+	 * a と b とを引いた結果が指定精度より小さいならば a と b とを同値とみなす
+	 */
+	public static inline function equals(a:Float, b:Float):Bool
+	{
+		return Math.abs(a - b) < ACCY;
+	}
 }

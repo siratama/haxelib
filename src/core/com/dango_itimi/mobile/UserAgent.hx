@@ -2,7 +2,7 @@ package com.dango_itimi.mobile;
 class UserAgent {
 
 	public static inline var ANDROID = "Android";
-	private var userAgentString:String;
+	public var userAgentString(default, null):String;
 
 	public static function create(){
 

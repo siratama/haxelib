@@ -1,5 +1,6 @@
 package com.dango_itimi.as3.utils;
 
+import flash.display.DisplayObject;
 import com.dango_itimi.as3_and_createjs.utils.IMovieClipUtil;
 import flash.display.MovieClip;
 
@@ -47,7 +48,7 @@ class MovieClipUtil implements IMovieClipUtil{
 	public function isLastFrame():Bool{
 		return mc.currentFrame == mc.totalFrames;
 	}
-	public function setPosition(position:MovieClip){
+	public function setPosition(position:DisplayObject){
 		mc.x = position.x;
 		mc.y = position.y;
 	}

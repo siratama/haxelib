@@ -2,8 +2,10 @@ package com.dango_itimi.as3_and_createjs.utils;
 
 #if js
 import createjs.easeljs.MovieClip;
+import createjs.easeljs.DisplayObject;
 
 #else
+import flash.display.DisplayObject;
 import flash.display.MovieClip;
 
 #end
@@ -23,6 +25,6 @@ interface IMovieClipUtil {
 	public function getTotalFrames():Int;
 	public function isCurrentLabel(label:String):Bool;
 	public function isLastFrame():Bool;
-	public function setPosition(position:MovieClip):Void;
+	public function setPosition(position:DisplayObject):Void;
 	public function contains(objectString:String):Bool;
 }

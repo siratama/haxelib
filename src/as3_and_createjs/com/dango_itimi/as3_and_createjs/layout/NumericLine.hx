@@ -14,30 +14,30 @@ import flash.display.MovieClip;
 
 class NumericLine {
 
+	private var parentLayer:IDisplayObjectContainer;
 	private var layer:IDisplayObjectContainer;
 	private var intervalPixel:Int;
 	private var baseClass:Class<MovieClip>;
 	private var graphicsSet:Array<MovieClip>;
-	private var positionX:Float;
-	private var positionY:Float;
+	private var basePositionX:Float;
+	private var basePositionY:Float;
 	private var numericGraphicsWidth:Int;
 	private var align:NumericLineAligh;
-	private var testDisplayObject:DisplayObject;
 
 	//for OpenFL
 	public var baseClassCreateFunction(null, default):Void->MovieClip;
 
 	public function new(
-		layer:IDisplayObjectContainer,
+		parentLayer:IDisplayObjectContainer,
 		baseClass:Class<MovieClip>,
-		positionX:Float, positionY:Float, intervalPixel:Int, numericGraphicsWidth:Int,
+		basePositionX:Float, basePositionY:Float, intervalPixel:Int, numericGraphicsWidth:Int,
 		align:NumericLineAligh
 	) {
-		this.positionY = positionY;
-		this.positionX = positionX;
+		this.basePositionY = basePositionY;
+		this.basePositionX = basePositionX;
 		this.baseClass = baseClass;
 		this.intervalPixel = intervalPixel;
-		this.layer = layer;
+		this.parentLayer = parentLayer;
 		this.numericGraphicsWidth = numericGraphicsWidth;
 		this.align = align;
 
@@ -46,52 +46,61 @@ class NumericLine {
 		baseClassCreateFunction = function(){
 			return Type.createInstance(baseClass, []);
 		};
+
+		layer = CommonClassSet.createLayer();
+		parentLayer.addChild(cast layer);
+		changeLayerPosition(basePositionX, basePositionY);
 	}
 	public function create(number:Float) {
 
 		createFromString(Std.string(number));
 	}
-	public function createFromString(numberStr:String) {
+	public function createFromString(numberString:String) {
 
-		var place:Int = numberStr.length;
-
-		var px:Float = switch(align){
+		var place:Int = numberString.length;
+		var numericPositionX:Float =  switch(align){
 			case NumericLineAligh.LEFT:
-				positionX;
+				0;
 
 			case NumericLineAligh.RIGHT:
-				positionX - (place * numericGraphicsWidth);
+				-(place * numericGraphicsWidth);
 
 			case NumericLineAligh.CENTER:
-				positionX - Math.floor((place * numericGraphicsWidth) / 2);
+				-Math.floor((place * numericGraphicsWidth) / 2);
 		}
-		createGraphics(numberStr, place, px);
+		createGraphics(numberString, place, numericPositionX);
 	}
-	private function createGraphics(numberStr:String, place:Int, px:Float) {
+	private function createGraphics(numberString:String, place:Int, numericPositionX:Float) {
 
 		graphicsSet = [];
 
 		for (i in 0...place){
 
 			var graphics:MovieClip = baseClassCreateFunction();
-			var movieClipUtil:IMovieClipUtil = Type.createInstance(CommonClassSet.movieClipUtilClass, [graphics]);
+			setCharacter(graphics, numberString, i);
 
-			var character = numberStr.charAt(i);
-			if(character == "."){
-				movieClipUtil.gotoAndStop(movieClipUtil.getTotalFrames());
-			}
-			else{
-				var num:Int = Std.parseInt(numberStr.charAt(i));
-				movieClipUtil.gotoAndStop(num + 1);
-			}
-
-			graphics.x = px;
-			graphics.y = positionY;
+			graphics.x = numericPositionX;
 			graphicsSet.push(graphics);
 
-			px += numericGraphicsWidth + intervalPixel;
+			numericPositionX += numericGraphicsWidth + intervalPixel;
 		}
 	}
+	private function setCharacter(graphics:MovieClip, numberString:String, index:Int)
+	{
+		//var movieClipUtil:IMovieClipUtil = Type.createInstance(CommonClassSet.movieClipUtilClass, [graphics]);
+		var movieClipUtil = CommonClassSet.createMovieClipUtil(graphics);
+
+		var character = numberString.charAt(index);
+		if(character == "."){
+			movieClipUtil.gotoAndStop(movieClipUtil.getTotalFrames());
+		}
+		else{
+			var num:Int = Std.parseInt(character);
+			movieClipUtil.gotoAndStop(num + 1);
+		}
+	}
+
+	//
 	public inline function show() {
 
 		for(graphics in graphicsSet)
@@ -101,5 +110,32 @@ class NumericLine {
 
 		for(graphics in graphicsSet)
 			layer.removeChild(graphics);
+	}
+	public function showing():Bool
+	{
+		return layer.contains(graphicsSet[0]);
+	}
+
+	//
+	public function changeFromString(numberString:String)
+	{
+		if(numberString.length != graphicsSet.length)
+			throw "length error";
+
+		for(index in 0...graphicsSet.length){
+			setCharacter(graphicsSet[index], numberString, index);
+		}
+	}
+
+	//
+	public function changeLayerPosition(positionX:Float, positionY:Float){
+		changeLayerPositionX(positionX);
+		changeLayerPositionY(positionY);
+	}
+	public function changeLayerPositionX(positionX:Float){
+		cast(layer).x = positionX;
+	}
+	public function changeLayerPositionY(positionY:Float){
+		cast(layer).y = positionY;
 	}
 }

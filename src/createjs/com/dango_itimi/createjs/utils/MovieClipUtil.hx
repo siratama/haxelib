@@ -3,6 +3,7 @@ package com.dango_itimi.createjs.utils;
 import com.dango_itimi.as3_and_createjs.utils.IMovieClipUtil;
 import createjs.tweenjs.Timeline;
 import createjs.easeljs.MovieClip;
+import createjs.easeljs.DisplayObject;
 
 class MovieClipUtil implements IMovieClipUtil{
 
@@ -56,7 +57,7 @@ class MovieClipUtil implements IMovieClipUtil{
 	public function isLastFrame():Bool{
 		return mc.currentFrame == totalFrames;
 	}
-	public function setPosition(position:MovieClip){
+	public function setPosition(position:DisplayObject){
 		mc.x = position.x;
 		mc.y = position.y;
 	}

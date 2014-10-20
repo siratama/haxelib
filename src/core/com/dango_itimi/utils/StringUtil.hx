@@ -14,12 +14,12 @@ class StringUtil {
 		return after;
 	}
 
-	public static function addZeroToHeadOfNumber(number:Int, addedNum:Int):String{
+	public static function addZeroToHeadOfNumber(number:Int, place:Int):String{
 
-		var numStr:String = Std.string(number);
-		var len:Int = addedNum - numStr.length;
-		for(i in 0...len) numStr = "0" + numStr;
-		return numStr;
+		var numberString:String = Std.string(number);
+		var zeroTotal:Int = place - numberString.length;
+		for(i in 0...zeroTotal) numberString = "0" + numberString;
+		return numberString;
 	}
 
 	public static inline var CR = String.fromCharCode(13);

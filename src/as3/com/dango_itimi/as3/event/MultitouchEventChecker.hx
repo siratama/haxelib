@@ -5,7 +5,7 @@ import flash.display.DisplayObject;
 
 class MultitouchEventChecker {
 
-	private var displayObject:DisplayObject;
+	public var displayObject:DisplayObject;
 	public var touchMap(default, null):Map<Int, Touch>;
 
 	public var tapped(default, null):Bool;

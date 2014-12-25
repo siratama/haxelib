@@ -7,14 +7,17 @@ import com.dango_itimi.as3_and_createjs.display.IDisplayObjectContainer;
 #if js
 import createjs.easeljs.MovieClip;
 import createjs.easeljs.DisplayObject;
+import createjs.easeljs.Container;
 #else
 import flash.display.DisplayObject;
 import flash.display.MovieClip;
+import flash.display.DisplayObjectContainer;
 #end
 
 class NumericLine {
 
-	private var parentLayer:IDisplayObjectContainer;
+	//private var parentLayer:IDisplayObjectContainer;
+	private var parentLayer:DisplayObject;
 	private var layer:IDisplayObjectContainer;
 	private var intervalPixel:Int;
 	private var baseClass:Class<MovieClip>;
@@ -28,7 +31,8 @@ class NumericLine {
 	public var baseClassCreateFunction(null, default):Void->MovieClip;
 
 	public function new(
-		parentLayer:IDisplayObjectContainer,
+		//parentLayer:IDisplayObjectContainer,
+		parentLayer:#if js Container #else DisplayObjectContainer #end,
 		baseClass:Class<MovieClip>,
 		basePositionX:Float, basePositionY:Float, intervalPixel:Int, numericGraphicsWidth:Int,
 		align:NumericLineAligh
@@ -87,7 +91,6 @@ class NumericLine {
 	}
 	private function setCharacter(graphics:MovieClip, numberString:String, index:Int)
 	{
-		//var movieClipUtil:IMovieClipUtil = Type.createInstance(CommonClassSet.movieClipUtilClass, [graphics]);
 		var movieClipUtil = CommonClassSet.createMovieClipUtil(graphics);
 
 		var character = numberString.charAt(index);
